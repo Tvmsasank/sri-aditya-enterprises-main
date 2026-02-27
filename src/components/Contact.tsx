@@ -26,9 +26,7 @@ const handleSubmit = (e: React.FormEvent) => {
 
   const whatsappMessage = `Hello! My name is ${formData.name}. ${formData.message} (Phone: ${userPhone})`;
 
-  const url = `https://api.whatsapp.com/send?phone=${ownerNumber}&text=${encodeURIComponent(
-    whatsappMessage
-  )}`;
+  const url = `https://api.whatsapp.com/send?phone=${ownerNumber}&text=${encodeURIComponent(whatsappMessage)}`;
 
   window.open(url, "_blank");
 
