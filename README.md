@@ -1,0 +1,55 @@
+# Sri Aditya Enterprises Website
+
+Official website for **Sri Aditya Enterprises**, a trusted furniture showroom in Hyderabad, offering quality furniture solutions for homes and offices.
+
+---
+
+## 🌐 Live Website
+**URL**: https://sriadityaenterprises.com
+
+---
+
+## 📌 Project Overview
+
+This project is a modern, responsive business website built to showcase:
+- Furniture collections
+- Company background
+- Partner brands
+- Contact information
+
+The website is optimized for performance, SEO, and mobile devices.
+
+---
+
+## 🛠️ Tech Stack
+
+This project is built using:
+
+- **Vite**
+- **React**
+- **TypeScript**
+- **Tailwind CSS**
+- **shadcn/ui**
+
+---
+
+## 🚀 How to Run the Project Locally
+
+### Prerequisites
+- Node.js (v18+ recommended)
+- npm
+
+### Steps
+
+```sh
+# Clone the repository
+git clone https://github.com/Tvmsasank/sri-aditya-enterprises-main.git
+
+# Navigate into the project folder
+cd sri-aditya-enterprises-main
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
