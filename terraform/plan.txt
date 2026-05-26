@@ -1,0 +1,171 @@
+[0m[1mdata.aws_route53_zone.main: Reading...[0m[0m
+[0m[1maws_s3_bucket.website_bucket: Refreshing state... [id=sri-aditya-enterprises][0m
+[0m[1maws_cloudfront_distribution.website_cdn: Refreshing state... [id=E2CDACUB9ZBIRN][0m
+[0m[1mdata.aws_route53_zone.main: Read complete after 2s [id=Z06278222USVOCNITZ6P0][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+  [33m~[0m update in-place[0m
+
+Terraform will perform the following actions:
+
+[1m  # aws_acm_certificate.ssl_cert[0m will be created
+[0m  [32m+[0m[0m resource "aws_acm_certificate" "ssl_cert" {
+      [32m+[0m[0m arn                       = (known after apply)
+      [32m+[0m[0m domain_name               = "sriadityaenterprises.com"
+      [32m+[0m[0m domain_validation_options = [
+          [32m+[0m[0m {
+              [32m+[0m[0m domain_name           = "sriadityaenterprises.com"
+              [32m+[0m[0m resource_record_name  = (known after apply)
+              [32m+[0m[0m resource_record_type  = (known after apply)
+              [32m+[0m[0m resource_record_value = (known after apply)
+            },
+        ]
+      [32m+[0m[0m id                        = (known after apply)
+      [32m+[0m[0m key_algorithm             = (known after apply)
+      [32m+[0m[0m not_after                 = (known after apply)
+      [32m+[0m[0m not_before                = (known after apply)
+      [32m+[0m[0m pending_renewal           = (known after apply)
+      [32m+[0m[0m region                    = "ap-south-1"
+      [32m+[0m[0m renewal_eligibility       = (known after apply)
+      [32m+[0m[0m renewal_summary           = (known after apply)
+      [32m+[0m[0m status                    = (known after apply)
+      [32m+[0m[0m subject_alternative_names = [
+          [32m+[0m[0m "sriadityaenterprises.com",
+        ]
+      [32m+[0m[0m tags_all                  = (known after apply)
+      [32m+[0m[0m type                      = (known after apply)
+      [32m+[0m[0m validation_emails         = (known after apply)
+      [32m+[0m[0m validation_method         = "DNS"
+
+      [32m+[0m[0m options (known after apply)
+    }
+
+[1m  # aws_cloudfront_distribution.website_cdn[0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_cloudfront_distribution" "website_cdn" {
+      [33m~[0m[0m aliases                         = [
+          [31m-[0m[0m "sriadityaenterprises.com",
+          [31m-[0m[0m "www.sriadityaenterprises.com",
+        ]
+        id                              = "E2CDACUB9ZBIRN"
+      [33m~[0m[0m is_ipv6_enabled                 = true [33m->[0m[0m false
+      [33m~[0m[0m tags                            = {
+          [31m-[0m[0m "Name" = "Sri Aditya Enterprises" [90m-> null[0m[0m
+        }
+      [33m~[0m[0m tags_all                        = {
+          [31m-[0m[0m "Name" = "Sri Aditya Enterprises" [90m-> null[0m[0m
+        }
+      [31m-[0m[0m web_acl_id                      = "arn:aws:wafv2:us-east-1:957177121835:global/webacl/CreatedByCloudFront-f2d538a0/31a3fd0e-6b83-4bcb-97e5-c958243441af" [90m-> null[0m[0m
+        [90m# (20 unchanged attributes hidden)[0m[0m
+
+      [33m~[0m[0m default_cache_behavior {
+          [31m-[0m[0m cache_policy_id            = "658327ea-f89d-4fab-a63d-7e88639e58f6" [90m-> null[0m[0m
+          [33m~[0m[0m compress                   = true [33m->[0m[0m false
+          [33m~[0m[0m target_origin_id           = "sri-aditya-enterprises.s3.ap-south-1.amazonaws.com-mk6oa320wtf" [33m->[0m[0m "s3-origin"
+            [90m# (13 unchanged attributes hidden)[0m[0m
+
+          [32m+[0m[0m forwarded_values {
+              [32m+[0m[0m headers                 = (known after apply)
+              [32m+[0m[0m query_string            = false
+              [32m+[0m[0m query_string_cache_keys = (known after apply)
+
+              [32m+[0m[0m cookies {
+                  [32m+[0m[0m forward           = "none"
+                  [32m+[0m[0m whitelisted_names = (known after apply)
+                }
+            }
+
+          [31m-[0m[0m function_association {
+              [31m-[0m[0m event_type   = "viewer-request" [90m-> null[0m[0m
+              [31m-[0m[0m function_arn = "arn:aws:cloudfront::957177121835:function/redirect-to-www" [90m-> null[0m[0m
+            }
+
+            [90m# (1 unchanged block hidden)[0m[0m
+        }
+
+      [31m-[0m[0m origin {
+          [31m-[0m[0m connection_attempts         = 3 [90m-> null[0m[0m
+          [31m-[0m[0m connection_timeout          = 10 [90m-> null[0m[0m
+          [31m-[0m[0m domain_name                 = "sri-aditya-enterprises.s3-website.ap-south-1.amazonaws.com" [90m-> null[0m[0m
+          [31m-[0m[0m origin_id                   = "sri-aditya-enterprises.s3.ap-south-1.amazonaws.com-mk6oa320wtf" [90m-> null[0m[0m
+          [31m-[0m[0m response_completion_timeout = 0 [90m-> null[0m[0m
+            [90m# (2 unchanged attributes hidden)[0m[0m
+
+          [31m-[0m[0m custom_origin_config {
+              [31m-[0m[0m http_port                = 80 [90m-> null[0m[0m
+              [31m-[0m[0m https_port               = 443 [90m-> null[0m[0m
+              [31m-[0m[0m ip_address_type          = "ipv4" [90m-> null[0m[0m
+              [31m-[0m[0m origin_keepalive_timeout = 5 [90m-> null[0m[0m
+              [31m-[0m[0m origin_protocol_policy   = "http-only" [90m-> null[0m[0m
+              [31m-[0m[0m origin_read_timeout      = 30 [90m-> null[0m[0m
+              [31m-[0m[0m origin_ssl_protocols     = [
+                  [31m-[0m[0m "SSLv3",
+                  [31m-[0m[0m "TLSv1",
+                  [31m-[0m[0m "TLSv1.1",
+                  [31m-[0m[0m "TLSv1.2",
+                ] [90m-> null[0m[0m
+            }
+        }
+      [32m+[0m[0m origin {
+          [32m+[0m[0m connection_attempts         = 3
+          [32m+[0m[0m connection_timeout          = 10
+          [32m+[0m[0m domain_name                 = "sri-aditya-enterprises.s3.ap-south-1.amazonaws.com"
+          [32m+[0m[0m origin_id                   = "s3-origin"
+          [32m+[0m[0m response_completion_timeout = (known after apply)
+            [90m# (2 unchanged attributes hidden)[0m[0m
+        }
+
+      [33m~[0m[0m viewer_certificate {
+          [31m-[0m[0m acm_certificate_arn            = "arn:aws:acm:us-east-1:957177121835:certificate/fa685071-3be1-42f8-bc7b-4a81f715c4e1" [90m-> null[0m[0m
+          [33m~[0m[0m cloudfront_default_certificate = false [33m->[0m[0m true
+          [33m~[0m[0m minimum_protocol_version       = "TLSv1.2_2021" [33m->[0m[0m "TLSv1"
+          [31m-[0m[0m ssl_support_method             = "sni-only" [90m-> null[0m[0m
+            [90m# (1 unchanged attribute hidden)[0m[0m
+        }
+
+        [90m# (1 unchanged block hidden)[0m[0m
+    }
+
+[1m  # aws_route53_record.website[0m will be created
+[0m  [32m+[0m[0m resource "aws_route53_record" "website" {
+      [32m+[0m[0m allow_overwrite = (known after apply)
+      [32m+[0m[0m fqdn            = (known after apply)
+      [32m+[0m[0m id              = (known after apply)
+      [32m+[0m[0m name            = "sriadityaenterprises.com"
+      [32m+[0m[0m type            = "A"
+      [32m+[0m[0m zone_id         = "Z06278222USVOCNITZ6P0"
+
+      [32m+[0m[0m alias {
+          [32m+[0m[0m evaluate_target_health = false
+          [32m+[0m[0m name                   = "d35q03z9sf5ldr.cloudfront.net"
+          [32m+[0m[0m zone_id                = "Z2FDTNDATAQYW2"
+        }
+    }
+
+[1m  # aws_s3_bucket_website_configuration.website_config[0m will be created
+[0m  [32m+[0m[0m resource "aws_s3_bucket_website_configuration" "website_config" {
+      [32m+[0m[0m bucket           = "sri-aditya-enterprises"
+      [32m+[0m[0m id               = (known after apply)
+      [32m+[0m[0m region           = "ap-south-1"
+      [32m+[0m[0m routing_rules    = (known after apply)
+      [32m+[0m[0m website_domain   = (known after apply)
+      [32m+[0m[0m website_endpoint = (known after apply)
+
+      [32m+[0m[0m error_document {
+          [32m+[0m[0m key = "index.html"
+        }
+
+      [32m+[0m[0m index_document {
+          [32m+[0m[0m suffix = "index.html"
+        }
+
+      [32m+[0m[0m routing_rule (known after apply)
+    }
+
+[1mPlan:[0m [0m3 to add, 1 to change, 0 to destroy.
+[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
