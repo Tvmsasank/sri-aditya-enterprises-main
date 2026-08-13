@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
-const OWNER_NUMBER = import.meta.env.VITE_OWNER_PHONE; // Replace with actual number
+const DEFAULT_OWNER_PHONE = "918019404140";
 
 export const Contact = () => {
   const { toast } = useToast();
@@ -15,28 +15,34 @@ export const Contact = () => {
     message: "",
   });
 
-const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
-  // Sanitize owner number (digits only)
-  const ownerNumber = OWNER_NUMBER.replace(/\D/g, "");
+    // Sanitize owner number (digits only, defaults to store number 918019404140)
+    const rawOwner = (import.meta.env.VITE_OWNER_PHONE || DEFAULT_OWNER_PHONE) as string;
+    let ownerNumber = String(rawOwner).replace(/\D/g, "");
+    if (ownerNumber.length === 10) {
+      ownerNumber = `91${ownerNumber}`;
+    }
 
-  // Sanitize user phone
-  const userPhone = formData.phone.replace(/\D/g, "");
+    // Sanitize customer details
+    const userName = formData.name.trim();
+    const userPhone = formData.phone.trim();
+    const userMessage = formData.message.trim();
 
-  const whatsappMessage = `Hello! My name is ${formData.name}. ${formData.message} (Phone: ${userPhone})`;
+    const whatsappMessage = `Hello Sri Aditya Enterprises,\n\n*Name:* ${userName}\n*Phone:* ${userPhone}\n*Message:* ${userMessage}`;
 
-  const url = `https://api.whatsapp.com/send?phone=${ownerNumber}&text=${encodeURIComponent(whatsappMessage)}`;
+    const url = `https://wa.me/${ownerNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
-  window.open(url, "_blank");
+    window.open(url, "_blank", "noopener,noreferrer");
 
-  toast({
-    title: "Redirecting to WhatsApp",
-    description: "Opening WhatsApp to send your message.",
-  });
+    toast({
+      title: "Redirecting to WhatsApp",
+      description: "Opening WhatsApp to send your inquiry to Sri Aditya Enterprises.",
+    });
 
-  setFormData({ name: "", phone: "", message: "" });
-};
+    setFormData({ name: "", phone: "", message: "" });
+  };
 
   return (
     <section id="contact" className="py-20 md:py-28 bg-background">

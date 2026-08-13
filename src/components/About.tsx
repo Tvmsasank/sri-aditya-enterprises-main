@@ -1,4 +1,4 @@
-import { Award, Truck, Shield, HeartHandshake } from "lucide-react";
+import { Award, HeartHandshake } from "lucide-react";
 
 const features = [
   {

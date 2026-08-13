@@ -84,7 +84,7 @@ export const Collections = () => {
           </h2>
           <div className="w-24 h-1 bg-accent mx-auto mb-6" />
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Discover our wide range of products, Designer to elevate every corner of your home.
+            Discover our wide range of products, designed to elevate every corner of your home.
           </p>
         </div>
 

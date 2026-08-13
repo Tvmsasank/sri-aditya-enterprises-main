@@ -34,31 +34,37 @@ export const Navbar = () => {
     setIsMobileMenuOpen(false);
   };
 
-  const handleNavClick = (link: any) => {
-  if (link.external) {
-    window.open(link.href, "_blank", "noopener,noreferrer");
-  } else {
-    scrollToSection(link.href);
+  interface NavLinkItem {
+    label: string;
+    href: string;
+    external?: boolean;
   }
-};
+
+  const handleNavClick = (link: NavLinkItem) => {
+    if (link.external) {
+      window.open(link.href, "_blank", "noopener,noreferrer");
+    } else {
+      scrollToSection(link.href);
+    }
+  };
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled
-        ? "bg-background/95 backdrop-blur-md shadow-md"
-        : "bg-black/20 backdrop-blur-sm"
+        isScrolled
+          ? "bg-background/95 backdrop-blur-md shadow-md"
+          : "bg-black/20 backdrop-blur-sm"
       }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20 px-2">
           <button
             onClick={() => scrollToSection("#home")}
-            className={`font-heading text-xl md:text-2xl font-bold transition-colors mb-2 ${
+            className={`font-heading text-xl md:text-2xl font-bold transition-colors mb-2 text-left ${
               isScrolled ? "text-primary" : "text-primary-foreground"
             }`}
           >
-            <div className="font-heading text-x1 md:text-2x1 font-bold tracking-wide leading-light">
+            <div className="font-heading text-xl md:text-2xl font-bold tracking-wide leading-tight">
               Sri Aditya Enterprises
             </div>
             <div className="text-[10px] md:text-xs tracking-widest opacity-80">
