@@ -4,11 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { TricolorWave } from "./TricolorWave";
+import { isIndependenceDayActive } from "@/lib/festive";
 
 const DEFAULT_OWNER_PHONE = "918019404140";
 
 export const Contact = () => {
   const { toast } = useToast();
+  const isFestive = isIndependenceDayActive();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -30,7 +33,8 @@ export const Contact = () => {
     const userPhone = formData.phone.trim();
     const userMessage = formData.message.trim();
 
-    const whatsappMessage = `Hello Sri Aditya Enterprises,\n\n*Name:* ${userName}\n*Phone:* ${userPhone}\n*Message:* ${userMessage}`;
+    const greetingTag = isFestive ? " (🇮🇳 80th Independence Day Inquiry)" : "";
+    const whatsappMessage = `Hello Sri Aditya Enterprises${greetingTag},\n\n*Name:* ${userName}\n*Phone:* ${userPhone}\n*Message:* ${userMessage}`;
 
     const url = `https://wa.me/${ownerNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
@@ -45,13 +49,25 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 md:py-28 bg-background">
-      <div className="container mx-auto px-4">
+    <section id="contact" className="relative py-20 md:py-28 bg-background overflow-hidden">
+      {/* Flowing Tricolor Wave Watermark Behind Contact Us Form & Section */}
+      {isFestive && (
+        <>
+          <TricolorWave className="absolute top-10 left-0 right-0 w-full" opacity={0.55} />
+          <TricolorWave className="absolute bottom-0 left-0 right-0 w-full" flip={true} opacity={0.52} />
+        </>
+      )}
+
+      <div className="relative z-10 container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
             Contact Us
           </h2>
-          <div className="w-24 h-1 bg-accent mx-auto mb-6" />
+          {isFestive ? (
+            <div className="w-28 h-1.5 rounded-full mx-auto mb-6 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />
+          ) : (
+            <div className="w-24 h-1 bg-accent mx-auto mb-6" />
+          )}
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             Ready to transform your space? Get in touch with us today.
             Please visit our store.

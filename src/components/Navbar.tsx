@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { IndependenceDayBanner } from "./IndependenceDayBanner";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -49,15 +50,19 @@ export const Navbar = () => {
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-background/95 backdrop-blur-md shadow-md"
-          : "bg-black/20 backdrop-blur-sm"
-      }`}
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20 px-2">
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+      {/* 🇮🇳 Top Independence Day Celebration Ribbon */}
+      <IndependenceDayBanner />
+
+      <nav
+        className={`w-full transition-all duration-300 ${
+          isScrolled
+            ? "bg-background/95 backdrop-blur-md shadow-md"
+            : "bg-black/40 backdrop-blur-sm"
+        }`}
+      >
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16 md:h-20 px-2">
           <button
             onClick={() => scrollToSection("#home")}
             className={`font-heading text-xl md:text-2xl font-bold transition-colors mb-2 text-left ${
@@ -116,5 +121,6 @@ export const Navbar = () => {
         )}
       </div>
     </nav>
+  </header>
   );
 };

@@ -74,15 +74,29 @@ const furnitureItems = [
   }
 ];
 
+import { TricolorWave } from "./TricolorWave";
+import { isIndependenceDayActive } from "@/lib/festive";
+
 export const Collections = () => {
+  const isFestive = isIndependenceDayActive();
+
   return (
-    <section id="collections" className="py-20 md:py-28 bg-secondary/30">
-      <div className="container mx-auto px-4">
+    <section id="collections" className="relative py-20 md:py-28 bg-secondary/30 overflow-hidden">
+      {/* Flowing Tricolor Wave Watermark */}
+      {isFestive && (
+        <TricolorWave className="absolute top-1/4 left-0 right-0 w-full" flip={true} opacity={0.52} />
+      )}
+
+      <div className="relative z-10 container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
             Our Collections
           </h2>
-          <div className="w-24 h-1 bg-accent mx-auto mb-6" />
+          {isFestive ? (
+            <div className="w-28 h-1.5 rounded-full mx-auto mb-6 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />
+          ) : (
+            <div className="w-24 h-1 bg-accent mx-auto mb-6" />
+          )}
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             Discover our wide range of products, designed to elevate every corner of your home.
           </p>
@@ -92,9 +106,15 @@ export const Collections = () => {
           {furnitureItems.map((item, index) => (
             <div
               key={item.name}
-              className="group bg-card rounded-lg overflow-hidden border border-border hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              className="group relative bg-card rounded-lg overflow-hidden border border-border hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
+              {/* Subtle Festive Badge on featured items (only when festive mode is active) */}
+              {isFestive && index < 3 && (
+                <div className="absolute top-2.5 right-2.5 z-20 px-2 py-0.5 rounded-md bg-gradient-to-r from-amber-500/90 to-emerald-600/90 backdrop-blur-sm text-white text-[10px] font-bold shadow-md tracking-wider uppercase">
+                  🇮🇳 80th I-Day Special
+                </div>
+              )}
               <div className="relative h-56 overflow-hidden">
                 <img
                   src={item.image}

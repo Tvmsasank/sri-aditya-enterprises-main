@@ -1,4 +1,6 @@
 import { Award, HeartHandshake } from "lucide-react";
+import { TricolorWave } from "./TricolorWave";
+import { isIndependenceDayActive } from "@/lib/festive";
 
 const features = [
   {
@@ -14,15 +16,26 @@ const features = [
 ];
 
 export const About = () => {
+  const isFestive = isIndependenceDayActive();
+
   return (
-    <section id="about" className="py-20 md:py-28 bg-background">
-      <div className="container mx-auto px-4">
+    <section id="about" className="relative py-20 md:py-28 bg-background overflow-hidden">
+      {/* Flowing Tricolor Wave Watermark */}
+      {isFestive && (
+        <TricolorWave className="absolute -top-16 left-0 right-0 w-full" opacity={0.55} />
+      )}
+
+      <div className="relative z-10 container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
             About Us
           </h2>
-          <div className="w-24 h-1 bg-accent mx-auto mb-6" />
-          </div>
+          {isFestive ? (
+            <div className="w-28 h-1.5 rounded-full mx-auto mb-6 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />
+          ) : (
+            <div className="w-24 h-1 bg-accent mx-auto mb-6" />
+          )}
+        </div>
 
           {/* Image + Content */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto mb-16">
