@@ -18,7 +18,7 @@ export const isIndependenceDayActive = (): boolean => {
   const AUGUST = 7; // JavaScript months are 0-indexed (0 = January, 7 = August)
 
   // Active ONLY on August 15th (00:00:00 to 23:59:59)
-  const startDate = new Date(currentYear, AUGUST, 15, 0, 0, 0, 0); // Aug 15, 00:00:00
+  const startDate = new Date(currentYear, AUGUST, 14, 10, 30, 0, 0); // Aug 15, 00:00:00
   const endDate = new Date(currentYear, AUGUST, 15, 23, 59, 59, 999); // Aug 15, 23:59:59
 
   return now >= startDate && now <= endDate;

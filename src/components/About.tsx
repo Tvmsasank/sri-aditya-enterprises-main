@@ -22,7 +22,7 @@ export const About = () => {
     <section id="about" className="relative py-20 md:py-28 bg-background overflow-hidden">
       {/* Flowing Tricolor Wave Watermark */}
       {isFestive && (
-        <TricolorWave className="absolute -top-16 left-0 right-0 w-full" opacity={0.55} />
+        <TricolorWave className="absolute -top-8 left-0 right-0 w-full" opacity={0.65} />
       )}
 
       <div className="relative z-10 container mx-auto px-4">

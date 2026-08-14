@@ -14,62 +14,50 @@ import miscellaneous from "@/assets/miscellaneous.jpg";
 const furnitureItems = [
   {
     name: "Sofa Sets",
-    //description: "Elegant comfort for your living room",
     image: sofasets,
   },
   {
     name: "BedRoom Furniture",
-    //description: "",
     image: bedroomfurniture,
   },
   {
     name: "Sleepwell Mattress",
-    //description: "",
     image: sleepwellmattress,
   },
   {
     name: "Wardrobe",
-    //description: "Gather around in style",
     image: wardrobe,
   },
   {
     name: "Living Room",
-    //description: "",
     image: livingroom,
   },
   {
     name: "Dining Tables",
-    //description: "Gather around in style",
     image: diningtable,
   },
   {
     name: "Sofa - Bed",
-    //description: "",
     image: sofacumbed,
   },
   {
     name: "Furnishings",
-    //description: "",
     image: furnishings,
   },
   {
     name: "Storage Solutions",
-    //description: "",
     image: storagesolution,
   },
   {
     name: "Plastic Chairs",
-    //description: "Ergonomic designs for productivity",
     image: plastichairs,
   },
   {
     name: "Godrej Lockers",
-    //description: "Spacious storage solutions",
     image: lockers,
   },
   {
     name: "Miscellaneous",
-    //decsription: "",
     image: miscellaneous,
   }
 ];
@@ -82,9 +70,12 @@ export const Collections = () => {
 
   return (
     <section id="collections" className="relative py-20 md:py-28 bg-secondary/30 overflow-hidden">
-      {/* Flowing Tricolor Wave Watermark */}
+      {/* 2 Evenly Spaced Flowing Tricolor Waves Across Catalog Rows */}
       {isFestive && (
-        <TricolorWave className="absolute top-1/4 left-0 right-0 w-full" flip={true} opacity={0.52} />
+        <>
+          <TricolorWave className="absolute top-[28%] left-0 right-0 w-full" opacity={0.58} />
+          <TricolorWave className="absolute top-[64%] left-0 right-0 w-full" flip={true} opacity={0.55} />
+        </>
       )}
 
       <div className="relative z-10 container mx-auto px-4">
@@ -109,12 +100,6 @@ export const Collections = () => {
               className="group relative bg-card rounded-lg overflow-hidden border border-border hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              {/* Subtle Festive Badge on featured items (only when festive mode is active) */}
-              {isFestive && index < 3 && (
-                <div className="absolute top-2.5 right-2.5 z-20 px-2 py-0.5 rounded-md bg-gradient-to-r from-amber-500/90 to-emerald-600/90 backdrop-blur-sm text-white text-[10px] font-bold shadow-md tracking-wider uppercase">
-                  🇮🇳 80th I-Day Special
-                </div>
-              )}
               <div className="relative h-56 overflow-hidden">
                 <img
                   src={item.image}

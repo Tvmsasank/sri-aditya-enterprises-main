@@ -221,7 +221,11 @@ export const Contact = () => {
           <h3 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-4">
             Our Partners
           </h3>
-          <div className="w-20 h-1 bg-accent mx-auto mb-10" />
+          {isFestive ? (
+            <div className="w-24 h-1.5 rounded-full mx-auto mb-10 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />
+          ) : (
+            <div className="w-20 h-1 bg-accent mx-auto mb-10" />
+          )}
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 items-center max-w-5xl mx-auto">
             {[
@@ -252,7 +256,11 @@ export const Contact = () => {
           <h3 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-4">
             We Accept
           </h3>
-          <div className="w-20 h-1 bg-accent mx-auto mb-10" />
+          {isFestive ? (
+            <div className="w-24 h-1.5 rounded-full mx-auto mb-10 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />
+          ) : (
+            <div className="w-20 h-1 bg-accent mx-auto mb-10" />
+          )}
 
           <div className="flex flex-wrap justify-center gap-3 items-center max-w-3xl mx-auto">
             {[

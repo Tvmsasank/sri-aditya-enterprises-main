@@ -154,32 +154,32 @@
   animation: chakra-spin 24s linear infinite;
 }
 
-@keyframes flag-wave {
+@keyframes flag-flutter {
   0% {
-    transform: perspective(600px) rotateY(0deg) skewY(0deg);
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+    transform: translateY(0) rotate(0deg) scale(1);
+    filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.4));
   }
   25% {
-    transform: perspective(600px) rotateY(12deg) skewY(-2deg);
-    filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.25));
+    transform: translateY(-2px) rotate(1deg) scale(1.01);
+    filter: drop-shadow(6px 9px 12px rgba(0,0,0,0.3));
   }
   50% {
-    transform: perspective(600px) rotateY(0deg) skewY(0deg);
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+    transform: translateY(1px) rotate(-0.5deg) scale(0.995);
+    filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.4));
   }
   75% {
-    transform: perspective(600px) rotateY(-12deg) skewY(2deg);
-    filter: drop-shadow(1px 3px 5px rgba(0,0,0,0.35));
+    transform: translateY(-1px) rotate(-1deg) scale(1.005);
+    filter: drop-shadow(3px 5px 7px rgba(0,0,0,0.45));
   }
   100% {
-    transform: perspective(600px) rotateY(0deg) skewY(0deg);
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+    transform: translateY(0) rotate(0deg) scale(1);
+    filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.4));
   }
 }
 
 .animate-flag-wave {
-  animation: flag-wave 3.5s ease-in-out infinite;
-  transform-origin: left center;
+  animation: flag-flutter 4s ease-in-out infinite;
+  transform-origin: bottom left;
 }
 
 @keyframes ribbon-shimmer {
