@@ -13,7 +13,7 @@ export const TricolorWave: React.FC<TricolorWaveProps> = ({
 }) => {
   return (
     <div
-      className={`pointer-events-none overflow-hidden select-none transition-opacity duration-500 w-full h-36 sm:h-48 md:h-64 lg:h-72 ${className}`}
+      className={`pointer-events-none overflow-hidden select-none transition-opacity duration-500 w-full h-36 sm:h-48 md:h-64 lg:h-72 z-0 ${className}`}
       style={{ opacity }}
       aria-hidden="true"
     >

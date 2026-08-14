@@ -227,7 +227,7 @@ export const Contact = () => {
             <div className="w-20 h-1 bg-accent mx-auto mb-10" />
           )}
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 items-center max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 items-center max-w-5xl mx-auto relative z-10">
             {[
               { name: "Sleepwell", logo: "/partners/sleepwell.png" },
               { name: "Cello Wim Plast", logo: "/partners/cello.png" },
@@ -239,7 +239,7 @@ export const Contact = () => {
             ].map((partner) => (
               <div
                 key={partner.name}
-                className="flex items-center justify-center p-4 bg-card rounded-lg border border-border hover:shadow-md transition"
+                className="relative z-10 flex items-center justify-center p-4 bg-white rounded-lg border border-border shadow-sm hover:shadow-md transition"
               >
                 <img
                   src={partner.logo}
@@ -252,7 +252,7 @@ export const Contact = () => {
         </div>
 
         {/* Payments */}
-        <div className="text-center">
+        <div className="text-center relative z-10">
           <h3 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-4">
             We Accept
           </h3>
@@ -262,7 +262,7 @@ export const Contact = () => {
             <div className="w-20 h-1 bg-accent mx-auto mb-10" />
           )}
 
-          <div className="flex flex-wrap justify-center gap-3 items-center max-w-3xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-3 items-center max-w-3xl mx-auto relative z-10">
             {[
               { name: "Bajaj Finserv", logo: "/payments/bajaj-finserv.png" },
               { name: "Master Cards", logo: "/payments/master-cards.png" },
@@ -272,7 +272,7 @@ export const Contact = () => {
             ].map((payment) => (
               <div
                 key={payment.name}
-                className="flex items-center justify-center p-4 bg-card rounded-lg border border-border hover:shadow-md transition"
+                className="relative z-10 flex items-center justify-center p-4 bg-white rounded-lg border border-border shadow-sm hover:shadow-md transition"
               >
                 <img
                   src={payment.logo}
