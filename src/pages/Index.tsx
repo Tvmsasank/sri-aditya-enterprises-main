@@ -6,14 +6,18 @@ import { Collections } from "@/components/Collections";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 import { TricolorParticles } from "@/components/TricolorParticles";
-import { isIndependenceDayActive } from "@/lib/festive";
+import { DivinePetals } from "@/components/DivinePetals";
+import { isIndependenceDayActive, isVaralakshmiVrathamActive } from "@/lib/festive";
 
 const Index = () => {
-  useEffect(() => {
-    const isFestive = isIndependenceDayActive();
+  const isIday = isIndependenceDayActive();
+  const isVratham = isVaralakshmiVrathamActive();
 
-    // 1. Dynamic Browser Tab Title (Clean without IN / emoji prefix)
-    if (isFestive) {
+  useEffect(() => {
+    // 1. Dynamic Browser Tab Title
+    if (isVratham) {
+      document.title = "Sri Aditya Enterprises | శ్రీ వరలక్ష్మీ వ్రత శుభాకాంక్షలు";
+    } else if (isIday) {
       document.title = "Sri Aditya Enterprises | 80th Independence Day Special";
     } else {
       document.title = "Sri Aditya Enterprises | Premier Furniture Store in Hyderabad";
@@ -28,9 +32,9 @@ const Index = () => {
     // 3. Dynamic Mobile Browser Header Color
     const themeColorMeta = document.querySelector<HTMLMetaElement>("meta[name='theme-color']");
     if (themeColorMeta) {
-      themeColorMeta.content = isFestive ? "#FF9933" : "#3f5f2e";
+      themeColorMeta.content = isVratham ? "#800020" : isIday ? "#FF9933" : "#3f5f2e";
     }
-  }, []);
+  }, [isIday, isVratham]);
 
   return (
     <main className="min-h-screen relative overflow-x-hidden">
@@ -40,7 +44,9 @@ const Index = () => {
       <Collections />
       <Contact />
       <Footer />
-      <TricolorParticles />
+      {/* Background Floating Particles for Active Festival */}
+      {isVratham && <DivinePetals />}
+      {isIday && <TricolorParticles />}
     </main>
   );
 };

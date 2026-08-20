@@ -1,6 +1,7 @@
 import { Award, HeartHandshake } from "lucide-react";
 import { TricolorWave } from "./TricolorWave";
-import { isIndependenceDayActive } from "@/lib/festive";
+import { isIndependenceDayActive, isVaralakshmiVrathamActive } from "@/lib/festive";
+import { DivineDivider } from "./DivineDivider";
 
 const features = [
   {
@@ -16,13 +17,25 @@ const features = [
 ];
 
 export const About = () => {
-  const isFestive = isIndependenceDayActive();
+  const isIday = isIndependenceDayActive();
+  const isVratham = isVaralakshmiVrathamActive();
 
   return (
     <section id="about" className="relative py-20 md:py-28 bg-background overflow-hidden">
-      {/* Flowing Tricolor Wave Watermark */}
-      {isFestive && (
+      {/* Flowing Tricolor Wave Watermark (Independence Day) */}
+      {isIday && (
         <TricolorWave className="absolute -top-8 left-0 right-0 w-full" opacity={0.65} />
+      )}
+
+      {/* Divine Goddess Lakshmi Watermark Accent (Varalakshmi Vratham) */}
+      {isVratham && (
+        <div className="absolute right-[-8%] md:right-[2%] top-[20%] pointer-events-none opacity-[0.07] select-none">
+          <img
+            src="/goddess-lakshmi.png"
+            alt=""
+            className="w-[340px] md:w-[480px] h-auto"
+          />
+        </div>
       )}
 
       <div className="relative z-10 container mx-auto px-4">
@@ -30,7 +43,9 @@ export const About = () => {
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
             About Us
           </h2>
-          {isFestive ? (
+          {isVratham ? (
+            <DivineDivider />
+          ) : isIday ? (
             <div className="w-28 h-1.5 rounded-full mx-auto mb-6 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />
           ) : (
             <div className="w-24 h-1 bg-accent mx-auto mb-6" />

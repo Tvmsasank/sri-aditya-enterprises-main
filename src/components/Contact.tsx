@@ -5,13 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { TricolorWave } from "./TricolorWave";
-import { isIndependenceDayActive } from "@/lib/festive";
+import { isIndependenceDayActive, isVaralakshmiVrathamActive } from "@/lib/festive";
+import { DivineDivider } from "./DivineDivider";
 
 const DEFAULT_OWNER_PHONE = "918019404140";
 
 export const Contact = () => {
   const { toast } = useToast();
-  const isFestive = isIndependenceDayActive();
+  const isIday = isIndependenceDayActive();
+  const isVratham = isVaralakshmiVrathamActive();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -33,7 +35,11 @@ export const Contact = () => {
     const userPhone = formData.phone.trim();
     const userMessage = formData.message.trim();
 
-    const greetingTag = isFestive ? " (🇮🇳 80th Independence Day Inquiry)" : "";
+    const greetingTag = isVratham
+      ? " (🪔 Sri Varalakshmi Vratham Inquiry)"
+      : isIday
+      ? " (🇮🇳 80th Independence Day Inquiry)"
+      : "";
     const whatsappMessage = `Hello Sri Aditya Enterprises${greetingTag},\n\n*Name:* ${userName}\n*Phone:* ${userPhone}\n*Message:* ${userMessage}`;
 
     const url = `https://wa.me/${ownerNumber}?text=${encodeURIComponent(whatsappMessage)}`;
@@ -50,12 +56,23 @@ export const Contact = () => {
 
   return (
     <section id="contact" className="relative py-20 md:py-28 bg-background overflow-hidden">
-      {/* Flowing Tricolor Wave Watermark Behind Contact Us Form & Section */}
-      {isFestive && (
+      {/* Flowing Tricolor Wave Watermark Behind Contact Us Form & Section (Independence Day) */}
+      {isIday && (
         <>
           <TricolorWave className="absolute top-10 left-0 right-0 w-full" opacity={0.55} />
           <TricolorWave className="absolute bottom-0 left-0 right-0 w-full" flip={true} opacity={0.52} />
         </>
+      )}
+
+      {/* Divine Goddess Lakshmi Watermark Accent (Varalakshmi Vratham) */}
+      {isVratham && (
+        <div className="absolute right-[-6%] md:right-[3%] top-[15%] pointer-events-none opacity-[0.07] select-none">
+          <img
+            src="/goddess-lakshmi.png"
+            alt=""
+            className="w-[340px] md:w-[480px] h-auto"
+          />
+        </div>
       )}
 
       <div className="relative z-10 container mx-auto px-4">
@@ -63,7 +80,9 @@ export const Contact = () => {
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
             Contact Us
           </h2>
-          {isFestive ? (
+          {isVratham ? (
+            <DivineDivider />
+          ) : isIday ? (
             <div className="w-28 h-1.5 rounded-full mx-auto mb-6 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />
           ) : (
             <div className="w-24 h-1 bg-accent mx-auto mb-6" />
@@ -221,7 +240,9 @@ export const Contact = () => {
           <h3 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-4">
             Our Partners
           </h3>
-          {isFestive ? (
+          {isVratham ? (
+            <DivineDivider className="mb-10" />
+          ) : isIday ? (
             <div className="w-24 h-1.5 rounded-full mx-auto mb-10 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />
           ) : (
             <div className="w-20 h-1 bg-accent mx-auto mb-10" />
@@ -256,7 +277,9 @@ export const Contact = () => {
           <h3 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-4">
             We Accept
           </h3>
-          {isFestive ? (
+          {isVratham ? (
+            <DivineDivider className="mb-10" />
+          ) : isIday ? (
             <div className="w-24 h-1.5 rounded-full mx-auto mb-10 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />
           ) : (
             <div className="w-20 h-1 bg-accent mx-auto mb-10" />

@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IndependenceDayBanner } from "./IndependenceDayBanner";
+import { VaralakshmiBanner } from "./VaralakshmiBanner";
+import { ToranamGarland } from "./ToranamGarland";
+import { isIndependenceDayActive, isVaralakshmiVrathamActive } from "@/lib/festive";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -18,6 +21,8 @@ const navLinks = [
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isVratham = isVaralakshmiVrathamActive();
+  const isIday = isIndependenceDayActive();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,16 +56,22 @@ export const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-      {/* 🇮🇳 Top Independence Day Celebration Ribbon */}
-      <IndependenceDayBanner />
+      {/* 🪔 Varalakshmi Vratham Festive Ribbon */}
+      {isVratham && <VaralakshmiBanner />}
+
+      {/* 🇮🇳 Independence Day Festive Ribbon */}
+      {isIday && <IndependenceDayBanner />}
 
       <nav
-        className={`w-full transition-all duration-300 ${
+        className={`w-full transition-all duration-300 relative ${
           isScrolled
             ? "bg-background/95 backdrop-blur-md shadow-md"
-            : "bg-black/40 backdrop-blur-sm"
+            : "bg-black/60 backdrop-blur-md"
         }`}
       >
+        {/* 🌿 Auspicious Traditional Mango Leaf & Marigold Toranam hanging gracefully at bottom of navbar */}
+        {isVratham && <ToranamGarland className="absolute top-full left-0 right-0 drop-shadow-lg" />}
+
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16 md:h-20 px-2">
           <button

@@ -5,8 +5,11 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    host: "::",
+    host: true,
     port: 8080,
+    allowedHosts: [
+      "affects-implement-metal-investigation.trycloudflare.com"
+    ]
   },
   plugins: [react()],
   resolve: {

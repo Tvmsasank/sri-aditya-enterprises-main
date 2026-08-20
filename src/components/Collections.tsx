@@ -63,19 +63,32 @@ const furnitureItems = [
 ];
 
 import { TricolorWave } from "./TricolorWave";
-import { isIndependenceDayActive } from "@/lib/festive";
+import { isIndependenceDayActive, isVaralakshmiVrathamActive } from "@/lib/festive";
+import { DivineDivider } from "./DivineDivider";
 
 export const Collections = () => {
-  const isFestive = isIndependenceDayActive();
+  const isIday = isIndependenceDayActive();
+  const isVratham = isVaralakshmiVrathamActive();
 
   return (
     <section id="collections" className="relative py-20 md:py-28 bg-secondary/30 overflow-hidden">
-      {/* 2 Evenly Spaced Flowing Tricolor Waves Across Catalog Rows */}
-      {isFestive && (
+      {/* 2 Evenly Spaced Flowing Tricolor Waves Across Catalog Rows (Independence Day) */}
+      {isIday && (
         <>
           <TricolorWave className="absolute top-[28%] left-0 right-0 w-full" opacity={0.58} />
           <TricolorWave className="absolute top-[64%] left-0 right-0 w-full" flip={true} opacity={0.55} />
         </>
+      )}
+
+      {/* Divine Goddess Lakshmi Watermark Accent (Varalakshmi Vratham) */}
+      {isVratham && (
+        <div className="absolute left-[-6%] md:left-[2%] top-[35%] pointer-events-none opacity-[0.06] select-none">
+          <img
+            src="/goddess-lakshmi.png"
+            alt=""
+            className="w-[360px] md:w-[500px] h-auto"
+          />
+        </div>
       )}
 
       <div className="relative z-10 container mx-auto px-4">
@@ -83,7 +96,9 @@ export const Collections = () => {
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
             Our Collections
           </h2>
-          {isFestive ? (
+          {isVratham ? (
+            <DivineDivider />
+          ) : isIday ? (
             <div className="w-28 h-1.5 rounded-full mx-auto mb-6 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />
           ) : (
             <div className="w-24 h-1 bg-accent mx-auto mb-6" />
