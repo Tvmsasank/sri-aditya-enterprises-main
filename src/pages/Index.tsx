@@ -16,15 +16,15 @@ const Index = () => {
   const isVratham = isVaralakshmiVrathamActive();
 
   useEffect(() => {
-    // 1. Dynamic Browser Tab Title
+    // 1. Dynamic Browser Tab Title for Today's Active Festival
     if (isRakhi) {
-      document.title = "Sri Aditya Enterprises | 🧵 హ్యాపీ రక్షా బంధన్ శుభాకాంక్షలు";
+      document.title = "Sri Aditya Enterprises | రక్షాబంధన్ శుభాకాంక్షలు";
     } else if (isVratham) {
       document.title = "Sri Aditya Enterprises | శ్రీ వరలక్ష్మీ వ్రత శుభాకాంక్షలు";
     } else if (isIday) {
       document.title = "Sri Aditya Enterprises | 80th Independence Day Special";
     } else {
-      document.title = "Sri Aditya Enterprises | Premier Furniture Store in Hyderabad";
+      document.title = "Sri Aditya Enterprises";
     }
 
     // 2. Keep the original official SAE logo in the browser tab favicon
