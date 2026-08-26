@@ -3,8 +3,10 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IndependenceDayBanner } from "./IndependenceDayBanner";
 import { VaralakshmiBanner } from "./VaralakshmiBanner";
+import { RakshaBandhanBanner } from "./RakshaBandhanBanner";
 import { ToranamGarland } from "./ToranamGarland";
-import { isIndependenceDayActive, isVaralakshmiVrathamActive } from "@/lib/festive";
+import { RakhiThreadGarland } from "./RakhiThreadGarland";
+import { isIndependenceDayActive, isVaralakshmiVrathamActive, isRakshaBandhanActive } from "@/lib/festive";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -21,6 +23,7 @@ const navLinks = [
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isRakhi = isRakshaBandhanActive();
   const isVratham = isVaralakshmiVrathamActive();
   const isIday = isIndependenceDayActive();
 
@@ -56,6 +59,9 @@ export const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+      {/* 🧵 Raksha Bandhan Festive Ribbon */}
+      {isRakhi && <RakshaBandhanBanner />}
+
       {/* 🪔 Varalakshmi Vratham Festive Ribbon */}
       {isVratham && <VaralakshmiBanner />}
 
@@ -69,6 +75,9 @@ export const Navbar = () => {
             : "bg-black/60 backdrop-blur-md"
         }`}
       >
+        {/* 🧵 Auspicious Rakhi Silk Thread Garland hanging gracefully at bottom of navbar */}
+        {isRakhi && <RakhiThreadGarland className="absolute top-full left-0 right-0 drop-shadow-lg" />}
+
         {/* 🌿 Auspicious Traditional Mango Leaf & Marigold Toranam hanging gracefully at bottom of navbar */}
         {isVratham && <ToranamGarland className="absolute top-full left-0 right-0 drop-shadow-lg" />}
 

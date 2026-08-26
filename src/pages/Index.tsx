@@ -7,15 +7,19 @@ import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 import { TricolorParticles } from "@/components/TricolorParticles";
 import { DivinePetals } from "@/components/DivinePetals";
-import { isIndependenceDayActive, isVaralakshmiVrathamActive } from "@/lib/festive";
+import { RakhiParticles } from "@/components/RakhiParticles";
+import { isIndependenceDayActive, isVaralakshmiVrathamActive, isRakshaBandhanActive } from "@/lib/festive";
 
 const Index = () => {
+  const isRakhi = isRakshaBandhanActive();
   const isIday = isIndependenceDayActive();
   const isVratham = isVaralakshmiVrathamActive();
 
   useEffect(() => {
     // 1. Dynamic Browser Tab Title
-    if (isVratham) {
+    if (isRakhi) {
+      document.title = "Sri Aditya Enterprises | 🧵 హ్యాపీ రక్షా బంధన్ శుభాకాంక్షలు";
+    } else if (isVratham) {
       document.title = "Sri Aditya Enterprises | శ్రీ వరలక్ష్మీ వ్రత శుభాకాంక్షలు";
     } else if (isIday) {
       document.title = "Sri Aditya Enterprises | 80th Independence Day Special";
@@ -32,9 +36,9 @@ const Index = () => {
     // 3. Dynamic Mobile Browser Header Color
     const themeColorMeta = document.querySelector<HTMLMetaElement>("meta[name='theme-color']");
     if (themeColorMeta) {
-      themeColorMeta.content = isVratham ? "#800020" : isIday ? "#FF9933" : "#3f5f2e";
+      themeColorMeta.content = isRakhi ? "#800020" : isVratham ? "#800020" : isIday ? "#FF9933" : "#3f5f2e";
     }
-  }, [isIday, isVratham]);
+  }, [isRakhi, isIday, isVratham]);
 
   return (
     <main className="min-h-screen relative overflow-x-hidden">
@@ -45,6 +49,7 @@ const Index = () => {
       <Contact />
       <Footer />
       {/* Background Floating Particles for Active Festival */}
+      {isRakhi && <RakhiParticles />}
       {isVratham && <DivinePetals />}
       {isIday && <TricolorParticles />}
     </main>

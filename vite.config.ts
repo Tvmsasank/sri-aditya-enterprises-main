@@ -8,7 +8,7 @@ export default defineConfig({
     host: true,
     port: 8080,
     allowedHosts: [
-      "affects-implement-metal-investigation.trycloudflare.com"
+      "span-sitting-icon-chassis.trycloudflare.com"
     ]
   },
   plugins: [react()],

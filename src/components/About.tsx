@@ -1,7 +1,8 @@
 import { Award, HeartHandshake } from "lucide-react";
 import { TricolorWave } from "./TricolorWave";
-import { isIndependenceDayActive, isVaralakshmiVrathamActive } from "@/lib/festive";
+import { isIndependenceDayActive, isVaralakshmiVrathamActive, isRakshaBandhanActive } from "@/lib/festive";
 import { DivineDivider } from "./DivineDivider";
+import { RakhiDivider } from "./RakhiDivider";
 
 const features = [
   {
@@ -17,6 +18,7 @@ const features = [
 ];
 
 export const About = () => {
+  const isRakhi = isRakshaBandhanActive();
   const isIday = isIndependenceDayActive();
   const isVratham = isVaralakshmiVrathamActive();
 
@@ -43,7 +45,9 @@ export const About = () => {
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
             About Us
           </h2>
-          {isVratham ? (
+          {isRakhi ? (
+            <RakhiDivider />
+          ) : isVratham ? (
             <DivineDivider />
           ) : isIday ? (
             <div className="w-28 h-1.5 rounded-full mx-auto mb-6 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />

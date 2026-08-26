@@ -5,13 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { TricolorWave } from "./TricolorWave";
-import { isIndependenceDayActive, isVaralakshmiVrathamActive } from "@/lib/festive";
+import { isIndependenceDayActive, isVaralakshmiVrathamActive, isRakshaBandhanActive } from "@/lib/festive";
 import { DivineDivider } from "./DivineDivider";
+import { RakhiDivider } from "./RakhiDivider";
 
 const DEFAULT_OWNER_PHONE = "918019404140";
 
 export const Contact = () => {
   const { toast } = useToast();
+  const isRakhi = isRakshaBandhanActive();
   const isIday = isIndependenceDayActive();
   const isVratham = isVaralakshmiVrathamActive();
   const [formData, setFormData] = useState({
@@ -35,7 +37,9 @@ export const Contact = () => {
     const userPhone = formData.phone.trim();
     const userMessage = formData.message.trim();
 
-    const greetingTag = isVratham
+    const greetingTag = isRakhi
+      ? " (🧵 Raksha Bandhan Inquiry)"
+      : isVratham
       ? " (🪔 Sri Varalakshmi Vratham Inquiry)"
       : isIday
       ? " (🇮🇳 80th Independence Day Inquiry)"
@@ -80,7 +84,9 @@ export const Contact = () => {
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
             Contact Us
           </h2>
-          {isVratham ? (
+          {isRakhi ? (
+            <RakhiDivider />
+          ) : isVratham ? (
             <DivineDivider />
           ) : isIday ? (
             <div className="w-28 h-1.5 rounded-full mx-auto mb-6 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />
