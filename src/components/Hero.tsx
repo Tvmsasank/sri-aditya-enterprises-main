@@ -152,7 +152,7 @@ export const Hero = () => {
             ? "శ్రీ వరలక్ష్మీ దేవి దివ్య ఆశీస్సులతో మీ గృహాన్ని సుందరమైన ఫర్నిచర్‌తో తీర్చిదిద్దుకోండి. Over three decades of crafting traditional comfort & divine elegance in Hyderabad."
             : isIday
             ? "Celebrating 80 Years of Freedom with over three decades of crafting comfort and elegance for Indian homes in Hyderabad."
-            : "Your premier furniture destination in Hyderabad. Celebrating Indian craftsmanship, comfort, and timeless elegance for every home."}
+            : "Celebrating Indian craftsmanship, comfort, and timeless elegance for every home in Hyderabad for over three decades."}
         </p>
 
         {/* Action Button */}
