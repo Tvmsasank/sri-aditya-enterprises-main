@@ -1,16 +1,10 @@
-import { ChevronDown, Sparkles } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-furniture.jpg";
 import goddessLakshmiImg from "@/assets/goddess-lakshmi.png";
 import rakhiSisterBrotherImg from "@/assets/rakhi-sister-brother.png";
 import { TirangaFlag, AshokaChakra } from "./TirangaFlag";
-import { SleepwellOfferCard } from "./SleepwellOfferCard";
-import {
-  isIndependenceDayActive,
-  isVaralakshmiVrathamActive,
-  isRakshaBandhanActive,
-  isSleepwellFestivalActive,
-} from "@/lib/festive";
+import { isIndependenceDayActive, isVaralakshmiVrathamActive, isRakshaBandhanActive } from "@/lib/festive";
 
 const TiedRakhiIcon = ({ size = 20 }: { size?: number }) => (
   <svg
@@ -30,7 +24,6 @@ const TiedRakhiIcon = ({ size = 20 }: { size?: number }) => (
 );
 
 export const Hero = () => {
-  const isSleepwell = isSleepwellFestivalActive();
   const isRakhi = isRakshaBandhanActive();
   const isVratham = isVaralakshmiVrathamActive();
   const isIday = isIndependenceDayActive();
@@ -75,16 +68,6 @@ export const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center max-w-4xl">
-        {/* Great Sleepwell Festival Catchy Tag */}
-        {isSleepwell && (
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 sm:px-6 sm:py-2 rounded-full bg-gradient-to-r from-[#002244]/90 via-[#004488]/90 to-[#002244]/90 backdrop-blur-md border border-amber-300/80 text-white text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-[0_0_25px_rgba(0,102,204,0.6)] animate-fade-in">
-            <Sparkles className="w-4 h-4 text-amber-300 animate-spin" />
-            <span className="font-extrabold text-amber-300 tracking-wide uppercase">
-              గ్రేట్ స్లీప్‌వెల్ ఫెస్టివల్ | STARTS 7TH SEPT 🛏️✨
-            </span>
-          </div>
-        )}
-
         {/* Festive Independence Day Tag */}
         {isIday && (
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-black/60 backdrop-blur-md border border-amber-400/50 text-white text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-2xl animate-fade-in">
@@ -162,22 +145,15 @@ export const Hero = () => {
           )}
         </div>
 
-        {/* Highlighted Catchy Sleepwell Festival Card */}
-        {isSleepwell ? (
-          <div className="mb-6 animate-fade-in [animation-delay:0.2s]">
-            <SleepwellOfferCard className="max-w-3xl mx-auto" />
-          </div>
-        ) : (
-          <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed animate-fade-in [animation-delay:0.2s] px-2">
-            {isRakhi
-              ? "అనుబంధానికి ప్రతీక రక్షా బంధన్. Celebrating the sacred bond of love, protection, and togetherness with timeless furniture crafted with care for Indian homes in Hyderabad."
-              : isVratham
-              ? "శ్రీ వరలక్ష్మీ దేవి దివ్య ఆశీస్సులతో మీ గృహాన్ని సుందరమైన ఫర్నిచర్‌తో తీర్చిదిద్దుకోండి. Over three decades of crafting traditional comfort & divine elegance in Hyderabad."
-              : isIday
-              ? "Celebrating 80 Years of Freedom with over three decades of crafting comfort and elegance for Indian homes in Hyderabad."
-              : "Celebrating Indian craftsmanship, comfort, and timeless elegance for every home in Hyderabad for over three decades."}
-          </p>
-        )}
+        <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed animate-fade-in [animation-delay:0.2s] px-2">
+          {isRakhi
+            ? "అనుబంధానికి ప్రతీక రక్షా బంధన్. Celebrating the sacred bond of love, protection, and togetherness with timeless furniture crafted with care for Indian homes in Hyderabad."
+            : isVratham
+            ? "శ్రీ వరలక్ష్మీ దేవి దివ్య ఆశీస్సులతో మీ గృహాన్ని సుందరమైన ఫర్నిచర్‌తో తీర్చిదిద్దుకోండి. Over three decades of crafting traditional comfort & divine elegance in Hyderabad."
+            : isIday
+            ? "Celebrating 80 Years of Freedom with over three decades of crafting comfort and elegance for Indian homes in Hyderabad."
+            : "Celebrating Indian craftsmanship, comfort, and timeless elegance for every home in Hyderabad for over three decades."}
+        </p>
 
         {/* Action Button */}
         <div className="animate-fade-in [animation-delay:0.4s] flex justify-center px-2">
@@ -185,26 +161,22 @@ export const Hero = () => {
             onClick={scrollToCollections}
             size="lg"
             className={`relative group font-semibold px-6 sm:px-8 md:px-10 py-5 sm:py-6 text-sm sm:text-base md:text-lg rounded-xl shadow-2xl overflow-hidden transition-all hover:scale-105 active:scale-95 w-full sm:w-auto max-w-md ${
-              isSleepwell
-                ? "bg-gradient-to-r from-red-600 via-amber-500 to-blue-700 hover:from-red-700 hover:to-blue-800 text-white border border-amber-300/80 shadow-[0_0_30px_rgba(255,215,0,0.6)]"
-                : isRakhi
+              isRakhi
                 ? "bg-gradient-to-r from-[#C9184A] via-[#990024] to-[#800020] hover:from-[#B0143E] hover:to-[#6B001A] text-white border border-amber-300/60 shadow-[0_0_25px_rgba(201,24,74,0.6)]"
                 : isVratham
                 ? "bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white border border-amber-300/50 shadow-[0_0_25px_rgba(218,165,32,0.5)]"
                 : "bg-accent hover:bg-accent/90 text-white"
             }`}
           >
-            <span className="relative z-10 flex items-center justify-center gap-2 whitespace-normal sm:whitespace-nowrap font-bold">
+            <span className="relative z-10 flex items-center justify-center gap-2 whitespace-normal sm:whitespace-nowrap">
               <span>
-                {isSleepwell
-                  ? "Explore Sleepwell Mattresses & Collections"
-                  : isVratham
+                {isVratham
                   ? "Explore Varalakshmi Vratham Offers"
                   : isIday
                   ? "Explore 80th Independence Day Offers"
                   : "Explore Collections"}
               </span>
-              <span className="text-lg sm:text-xl shrink-0">{isSleepwell ? "🛏️" : isVratham ? "🪔" : "🛋️"}</span>
+              <span className="text-lg sm:text-xl shrink-0">{isVratham ? "🪔" : "🛋️"}</span>
             </span>
             <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/25 to-transparent" />
           </Button>

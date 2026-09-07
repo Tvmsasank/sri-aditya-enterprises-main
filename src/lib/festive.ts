@@ -1,30 +1,25 @@
 /**
- * Multi-Festival & Special Promotion Management for Sri Aditya Enterprises
- * Supported Festivals & Offers:
+ * Multi-Festival Festive Management for Sri Aditya Enterprises
+ * Supported Festivals:
  * 1. Independence Day (August 15th)
  * 2. Sri Varalakshmi Vratham (August 20th - August 21st)
- * 3. Raksha Bandhan (August 24th - August 28th)
- * 4. Great Sleepwell Festival (Active from September 7th onwards - Flat 25% OFF / 100% Cashback)
+ * 3. Raksha Bandhan (August 24th - August 28th, 2026 - peaking on August 27th)
  * 
  * Query Parameter Preview Overrides:
- * - ?offer=sleepwell / ?festive=sleepwell -> Previews Great Sleepwell Festival offer
- * - ?festive=raksha                        -> Previews Raksha Bandhan theme
- * - ?festive=varalakshmi                   -> Previews Sri Varalakshmi Vratham theme
- * - ?festive=independence                  -> Previews 80th Independence Day theme
- * - ?festive=true                          -> Previews current active offer (Great Sleepwell Festival)
- * - ?festive=false                         -> Forces standard showroom theme
+ * - ?festive=raksha       -> Previews Raksha Bandhan theme
+ * - ?festive=varalakshmi  -> Previews Sri Varalakshmi Vratham theme
+ * - ?festive=independence -> Previews 80th Independence Day theme
+ * - ?festive=true         -> Previews current festival (Raksha Bandhan)
+ * - ?festive=false        -> Forces standard showroom theme
  */
 
-export type FestivalType = "independence-day" | "varalakshmi-vratham" | "raksha-bandhan" | "sleepwell-festival" | null;
+export type FestivalType = "independence-day" | "varalakshmi-vratham" | "raksha-bandhan" | null;
 
 export const getActiveFestival = (): FestivalType => {
   if (typeof window !== "undefined") {
     const params = new URLSearchParams(window.location.search);
-    const festiveParam = params.get("festive")?.toLowerCase() || params.get("offer")?.toLowerCase();
+    const festiveParam = params.get("festive")?.toLowerCase();
 
-    if (festiveParam === "sleepwell" || festiveParam === "sleepwell-festival" || festiveParam === "greatsleepwell") {
-      return "sleepwell-festival";
-    }
     if (festiveParam === "raksha" || festiveParam === "rakhibandhan" || festiveParam === "rakhi") {
       return "raksha-bandhan";
     }
@@ -35,8 +30,8 @@ export const getActiveFestival = (): FestivalType => {
       return "independence-day";
     }
     if (festiveParam === "true") {
-      // Default active promotion to Great Sleepwell Festival starting Sept 7th
-      return "sleepwell-festival";
+      // Default festive preview to upcoming Raksha Bandhan
+      return "raksha-bandhan";
     }
     if (festiveParam === "false") {
       return null;
@@ -45,8 +40,7 @@ export const getActiveFestival = (): FestivalType => {
 
   const now = new Date();
   const currentYear = now.getFullYear();
-  const AUGUST = 7; // 0-indexed (7 = August)
-  const SEPTEMBER = 8; // 0-indexed (8 = September)
+  const AUGUST = 7; // JavaScript months are 0-indexed (0 = January, 7 = August)
 
   // 1. Independence Day Boundary (Aug 15)
   const idayStart = new Date(currentYear, AUGUST, 15, 0, 0, 0, 0);
@@ -62,18 +56,11 @@ export const getActiveFestival = (): FestivalType => {
     return "varalakshmi-vratham";
   }
 
-  // 3. Raksha Bandhan 2026 Boundary (Aug 24 - Aug 28)
+  // 3. Raksha Bandhan 2026 Boundary (Active Aug 24, 00:00:00 to Aug 28, 23:59:59, peaking on Thursday Aug 27th)
   const rakhiStart = new Date(currentYear, AUGUST, 24, 0, 0, 0, 0);
   const rakhiEnd = new Date(currentYear, AUGUST, 28, 23, 59, 59, 999);
   if (now >= rakhiStart && now <= rakhiEnd) {
     return "raksha-bandhan";
-  }
-
-  // 4. Great Sleepwell Festival Offer Boundary (Starts Sept 7th, active Sept 7 - Sept 30)
-  const sleepwellStart = new Date(currentYear, SEPTEMBER, 7, 0, 0, 0, 0);
-  const sleepwellEnd = new Date(currentYear, SEPTEMBER, 30, 23, 59, 59, 999);
-  if (now >= sleepwellStart && now <= sleepwellEnd) {
-    return "sleepwell-festival";
   }
 
   return null;
@@ -89,10 +76,6 @@ export const isVaralakshmiVrathamActive = (): boolean => {
 
 export const isRakshaBandhanActive = (): boolean => {
   return getActiveFestival() === "raksha-bandhan";
-};
-
-export const isSleepwellFestivalActive = (): boolean => {
-  return getActiveFestival() === "sleepwell-festival";
 };
 
 export const isAnyFestiveActive = (): boolean => {
