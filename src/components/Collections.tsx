@@ -10,6 +10,16 @@ import lockers from "@/assets/godrej-lockers.jpg";
 import wardrobe from "@/assets/wardrobe.jpg";
 import storagesolution from "@/assets/storage-solutions.jpg";
 import miscellaneous from "@/assets/miscellaneous.jpg";
+import { TricolorWave } from "./TricolorWave";
+import {
+  isIndependenceDayActive,
+  isVaralakshmiVrathamActive,
+  isRakshaBandhanActive,
+  isSleepwellFestivalActive,
+} from "@/lib/festive";
+import { DivineDivider } from "./DivineDivider";
+import { RakhiDivider } from "./RakhiDivider";
+import { Sparkles } from "lucide-react";
 
 const furnitureItems = [
   {
@@ -23,6 +33,7 @@ const furnitureItems = [
   {
     name: "Sleepwell Mattress",
     image: sleepwellmattress,
+    badge: "FLAT 25% OFF",
   },
   {
     name: "Wardrobe",
@@ -59,15 +70,11 @@ const furnitureItems = [
   {
     name: "Miscellaneous",
     image: miscellaneous,
-  }
+  },
 ];
 
-import { TricolorWave } from "./TricolorWave";
-import { isIndependenceDayActive, isVaralakshmiVrathamActive, isRakshaBandhanActive } from "@/lib/festive";
-import { DivineDivider } from "./DivineDivider";
-import { RakhiDivider } from "./RakhiDivider";
-
 export const Collections = () => {
+  const isSleepwell = isSleepwellFestivalActive();
   const isRakhi = isRakshaBandhanActive();
   const isIday = isIndependenceDayActive();
   const isVratham = isVaralakshmiVrathamActive();
@@ -113,27 +120,47 @@ export const Collections = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {furnitureItems.map((item, index) => (
-            <div
-              key={item.name}
-              className="group relative bg-card rounded-lg overflow-hidden border border-border hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="relative h-56 overflow-hidden">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {furnitureItems.map((item, index) => {
+            const isSleepwellItem = item.name === "Sleepwell Mattress" && isSleepwell;
+
+            return (
+              <div
+                key={item.name}
+                className={`group relative bg-card rounded-lg overflow-hidden border transition-all duration-300 hover:-translate-y-1 ${
+                  isSleepwellItem
+                    ? "border-amber-400 shadow-[0_0_25px_rgba(255,191,0,0.5)] ring-2 ring-amber-400/50"
+                    : "border-border hover:shadow-xl"
+                }`}
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                {/* Special Sleepwell Offer Badge */}
+                {isSleepwellItem && (
+                  <div className="absolute top-3 left-3 z-20 flex items-center gap-1 bg-gradient-to-r from-red-600 to-rose-600 text-white font-black text-[11px] px-2.5 py-1 rounded-md shadow-lg animate-pulse">
+                    <Sparkles className="w-3 h-3 text-amber-300" />
+                    <span>GREAT FESTIVAL: FLAT 25% OFF</span>
+                  </div>
+                )}
+
+                <div className="aspect-[4/3] overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <div className="p-4 text-center">
+                  <h3 className="font-heading font-semibold text-lg text-card-foreground">
+                    {item.name}
+                  </h3>
+                  {isSleepwellItem && (
+                    <p className="text-xs font-bold text-emerald-600 mt-1">
+                      ✨ Starts 7th Sept - Win Up to 100% Cashback!
+                    </p>
+                  )}
+                </div>
               </div>
-              <div className="p-5">
-                <h3 className="font-heading text-xl font-semibold text-foreground mb-1">
-                  {item.name}
-                </h3>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

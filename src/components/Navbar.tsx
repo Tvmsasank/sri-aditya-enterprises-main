@@ -4,9 +4,15 @@ import { Button } from "@/components/ui/button";
 import { IndependenceDayBanner } from "./IndependenceDayBanner";
 import { VaralakshmiBanner } from "./VaralakshmiBanner";
 import { RakshaBandhanBanner } from "./RakshaBandhanBanner";
+import { SleepwellBanner } from "./SleepwellBanner";
 import { ToranamGarland } from "./ToranamGarland";
 import { RakhiThreadGarland } from "./RakhiThreadGarland";
-import { isIndependenceDayActive, isVaralakshmiVrathamActive, isRakshaBandhanActive } from "@/lib/festive";
+import {
+  isIndependenceDayActive,
+  isVaralakshmiVrathamActive,
+  isRakshaBandhanActive,
+  isSleepwellFestivalActive,
+} from "@/lib/festive";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -23,6 +29,7 @@ const navLinks = [
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isSleepwell = isSleepwellFestivalActive();
   const isRakhi = isRakshaBandhanActive();
   const isVratham = isVaralakshmiVrathamActive();
   const isIday = isIndependenceDayActive();
@@ -59,6 +66,9 @@ export const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+      {/* 🛏️ Great Sleepwell Festival Ribbon */}
+      {isSleepwell && <SleepwellBanner />}
+
       {/* 🧵 Raksha Bandhan Festive Ribbon */}
       {isRakhi && <RakshaBandhanBanner />}
 
