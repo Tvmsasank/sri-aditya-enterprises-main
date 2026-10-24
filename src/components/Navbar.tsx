@@ -1,21 +1,28 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Menu, X, Instagram, ArrowUpRight } from "lucide-react";
 import { IndependenceDayBanner } from "./IndependenceDayBanner";
 import { VaralakshmiBanner } from "./VaralakshmiBanner";
 import { RakshaBandhanBanner } from "./RakshaBandhanBanner";
 import { ToranamGarland } from "./ToranamGarland";
 import { RakhiThreadGarland } from "./RakhiThreadGarland";
-import { isIndependenceDayActive, isVaralakshmiVrathamActive, isRakshaBandhanActive } from "@/lib/festive";
+import {
+  isIndependenceDayActive,
+  isVaralakshmiVrathamActive,
+  isRakshaBandhanActive,
+} from "@/lib/festive";
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About Us", href: "#about" },
   { label: "Collections", href: "#collections" },
-  { label: "Contact Us", href: "#contact" },
+  { label: "Our story", href: "#about" },
+  { label: "Visit us", href: "#contact" },
   {
-    label: "Customer Reviews",
-    href: "https://www.google.com/search?sca_esv=d38753b02e36b910&sxsrf=ANbL-n7UpXh6AcP5FSMWnIyrfco2kWLRTA:1769852308907&si=AL3DRZHrmvnFAVQPOO2Bzhf8AX9KZZ6raUI_dT7DG_z0kV2_x_mTt28_Ow6qDz_nMhKZX79uvFvRdUKIy3Vvmm4Yu3MlxtcxNR5xtWNqC80H5tKM-bDGUMJw7bbraeRdFFLJNhxNVOlPKG50sgCOX9tr6lVPuQlZLA%3D%3D&q=sri+aditya+enterprises+Reviews&sa=X&ved=2ahUKEwiYpLXRvbWSAxW9rlYBHa8kJaIQ0bkNegQIIRAF&biw=1280&bih=631&dpr=1.5&aic=0",
+    label: "Instagram",
+    href: "https://www.instagram.com/sri_aditya_enterprises/",
+    external: true,
+  },
+  {
+    label: "Customer reviews ↗",
+    href: "https://www.google.com/search?q=sri+aditya+enterprises+Reviews",
     external: true,
   },
 ];
@@ -29,7 +36,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -68,79 +75,112 @@ export const Navbar = () => {
       {/* 🇮🇳 Independence Day Festive Ribbon */}
       {isIday && <IndependenceDayBanner />}
 
+      {/* Top Notice Bar */}
+      <div className="bg-[#263a2b] text-[#f3efe3] py-2 text-center text-[10px] sm:text-[11px] font-bold tracking-[0.14em] uppercase flex items-center justify-center gap-3 px-3">
+        <span>FURNITURE FOR THE WAY YOU LIVE • VANASTHALIPURAM, HYDERABAD</span>
+        <a
+          href="https://www.instagram.com/sri_aditya_enterprises/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden md:inline-flex items-center gap-1 text-[#e5c8a5] hover:underline normal-case tracking-normal text-xs"
+        >
+          <Instagram size={13} />
+          <span>@sri_aditya_enterprises</span>
+        </a>
+      </div>
+
       <nav
-        className={`w-full transition-all duration-300 relative ${
+        className={`w-full transition-all duration-300 border-b border-[#242820]/10 ${
           isScrolled
-            ? "bg-background/95 backdrop-blur-md shadow-md"
-            : "bg-black/60 backdrop-blur-md"
+            ? "bg-[#fffefa]/95 backdrop-blur-md shadow-sm py-2 sm:py-2.5"
+            : "bg-[#fffefa] py-3 sm:py-3.5"
         }`}
       >
-        {/* 🧵 Auspicious Rakhi Silk Thread Garland hanging gracefully at bottom of navbar */}
+        {/* 🧵 Rakhi Garland */}
         {isRakhi && <RakhiThreadGarland className="absolute top-full left-0 right-0 drop-shadow-lg" />}
 
-        {/* 🌿 Auspicious Traditional Mango Leaf & Marigold Toranam hanging gracefully at bottom of navbar */}
+        {/* 🌿 Toranam Garland */}
         {isVratham && <ToranamGarland className="absolute top-full left-0 right-0 drop-shadow-lg" />}
 
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16 md:h-20 px-2">
-          <button
-            onClick={() => scrollToSection("#home")}
-            className={`font-heading text-xl md:text-2xl font-bold transition-colors mb-2 text-left ${
-              isScrolled ? "text-primary" : "text-primary-foreground"
-            }`}
-          >
-            <div className="font-heading text-xl md:text-2xl font-bold tracking-wide leading-tight">
-              Sri Aditya Enterprises
-            </div>
-            <div className="text-[10px] md:text-xs tracking-widest opacity-80">
-              ESTD. 1990
-            </div>
-          </button>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+          <div className="flex items-center justify-between">
+            {/* Brand Logo & Title */}
+            <button
+              onClick={() => scrollToSection("#home")}
+              className="flex items-center gap-3 text-left group"
+            >
+              <img
+                src="/logo.png"
+                alt="Sri Aditya Enterprises"
+                className="w-10 h-10 sm:w-11 sm:h-11 object-contain"
+              />
+              <div>
+                <strong className="block text-xs sm:text-sm font-bold tracking-[0.08em] uppercase text-[#242820] group-hover:text-[#344b39] transition-colors leading-tight">
+                  Sri Aditya Enterprises
+                </strong>
+                <small className="block text-[9px] sm:text-[10px] text-[#6d7168] tracking-[0.18em] uppercase mt-0.5">
+                  ESTABLISHED 1990
+                </small>
+              </div>
+            </button>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
+            {/* Desktop Nav Links */}
+            <div className="hidden md:flex items-center gap-7 text-xs font-semibold text-[#51564d]">
+              {navLinks.map((link) => (
+                <button
+                  key={link.href}
+                  onClick={() => handleNavClick(link)}
+                  className="hover:text-[#b7834b] transition-colors py-1"
+                >
+                  {link.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Right Action Button & Mobile Toggle */}
+            <div className="flex items-center gap-2 sm:gap-3">
               <button
-                key={link.href}
-                onClick={() => handleNavClick(link)}
-                className={`text-sm font-medium transition-colors hover:text-accent ${
-                  isScrolled ? "text-foreground" : "text-primary-foreground"
-                }`}
+                onClick={() => scrollToSection("#contact")}
+                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 border border-[#344b39] text-[#344b39] hover:bg-[#344b39] hover:text-white font-bold text-xs tracking-wider uppercase rounded transition-colors"
               >
-                {link.label}
+                <span>PLAN YOUR VISIT</span>
+                <ArrowUpRight size={14} />
               </button>
-            ))}
+
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-1.5 text-[#242820] rounded hover:bg-[#f6f4ed]"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              </button>
+            </div>
           </div>
 
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className={`md:hidden ${
-              isScrolled ? "text-foreground" : "text-primary-foreground"
-            }`}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </Button>
+          {/* Mobile Menu Drawer */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden bg-[#fffefa] border-t border-[#e6e4da] mt-3 py-3 rounded-xl shadow-lg space-y-1 animate-fade-in">
+              {navLinks.map((link) => (
+                <button
+                  key={link.href}
+                  onClick={() => handleNavClick(link)}
+                  className="block w-full text-left px-4 py-2.5 text-xs font-bold text-[#242820] hover:bg-[#f6f4ed] rounded transition-colors"
+                >
+                  {link.label}
+                </button>
+              ))}
+              <div className="px-4 pt-2">
+                <button
+                  onClick={() => scrollToSection("#contact")}
+                  className="w-full py-2.5 bg-[#344b39] text-white font-bold text-xs uppercase tracking-wider rounded text-center"
+                >
+                  Plan Your Visit ↗
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden bg-background border-t border-border py-4 animate-fade-in">
-            {navLinks.map((link) => (
-              <button
-                key={link.href}
-                onClick={() => handleNavClick(link)}
-                className="block w-full text-left px-4 py-3 text-foreground hover:bg-secondary transition-colors"
-              >
-                {link.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-    </nav>
-  </header>
+      </nav>
+    </header>
   );
 };

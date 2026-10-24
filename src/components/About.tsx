@@ -1,117 +1,76 @@
-import { Award, HeartHandshake } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 import { TricolorWave } from "./TricolorWave";
-import { isIndependenceDayActive, isVaralakshmiVrathamActive, isRakshaBandhanActive } from "@/lib/festive";
-import { DivineDivider } from "./DivineDivider";
-import { RakhiDivider } from "./RakhiDivider";
-
-const features = [
-  {
-    icon: Award,
-    title: "Premium Quality",
-    description: "Handcrafted furniture with finest materials",
-  },
-  {
-    icon: HeartHandshake,
-    title: "Custom Orders",
-    description: "Tailored furniture to your specifications",
-  },
-];
+import {
+  isIndependenceDayActive,
+  isVaralakshmiVrathamActive,
+  isRakshaBandhanActive,
+} from "@/lib/festive";
 
 export const About = () => {
-  const isRakhi = isRakshaBandhanActive();
   const isIday = isIndependenceDayActive();
-  const isVratham = isVaralakshmiVrathamActive();
+
+  const scrollToVisit = () => {
+    const el = document.querySelector("#contact");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <section id="about" className="relative py-20 md:py-28 bg-background overflow-hidden">
-      {/* Flowing Tricolor Wave Watermark (Independence Day) */}
-      {isIday && (
-        <TricolorWave className="absolute -top-8 left-0 right-0 w-full" opacity={0.65} />
-      )}
+    <section id="about" className="relative py-20 sm:py-24 bg-[#263a2b] text-white overflow-hidden">
+      {/* Tricolor wave for Independence Day */}
+      {isIday && <TricolorWave className="absolute -top-8 left-0 right-0 w-full" opacity={0.65} />}
 
-      {/* Divine Goddess Lakshmi Watermark Accent (Varalakshmi Vratham) */}
-      {isVratham && (
-        <div className="absolute right-[-8%] md:right-[2%] top-[20%] pointer-events-none opacity-[0.07] select-none">
-          <img
-            src="/goddess-lakshmi.png"
-            alt=""
-            className="w-[340px] md:w-[480px] h-auto"
-          />
-        </div>
-      )}
-
-      <div className="relative z-10 container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
-            About Us
-          </h2>
-          {isRakhi ? (
-            <RakhiDivider />
-          ) : isVratham ? (
-            <DivineDivider />
-          ) : isIday ? (
-            <div className="w-28 h-1.5 rounded-full mx-auto mb-6 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />
-          ) : (
-            <div className="w-24 h-1 bg-accent mx-auto mb-6" />
-          )}
-        </div>
-
-          {/* Image + Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto mb-16">
-            {/* Image */}
-            <div className="flex flex-col items-center">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+          {/* Left: Founder Photo */}
+          <div className="lg:col-span-5 flex justify-center">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/20 max-w-sm w-full group">
               <img
                 src="/founder.png"
-                alt="Founder of Sri Aditya Enterprises"
-                className="w-full max-w-xs rounded-xl shadow-lg object-cover"
+                alt="Proprietor of Sri Aditya Enterprises"
+                className="w-full h-80 sm:h-96 object-cover object-[center_30%] group-hover:scale-102 transition-transform duration-500"
               />
-              <span className="mt-3 text-sm font-medium text-muted-foreground">
-                Proprietor
-              </span>
-
-            </div>
-
-            {/* Text */}
-            <div>
-              <p className="text-muted-foreground text-lg leading-relaxed mb-5">
-                For over three decades, Sri Aditya Enterprises has been serving Hyderabad
-                and its surrounding regions with exceptional furniture solutions.
-              </p>
-
-              <p className="text-muted-foreground text-lg leading-relaxed mb-5">
-                We take pride in transforming houses into homes by crafting furniture
-                that reflects comfort, durability, and timeless design rooted in
-                traditional values.
-              </p>
-
-              <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                Our unwavering commitment to quality and customer satisfaction has
-                established us as a trusted and respected name in the furniture industry.
-              </p>
-
-              <p className="font-heading text-xl font-semibold text-foreground border-l-4 border-accent pl-4">
-                “Your trust is our asset.”
-              </p>
+              <div className="absolute bottom-3 left-3 right-3 bg-[#242820]/90 backdrop-blur-md p-3 rounded-xl border border-white/10 text-center">
+                <span className="block text-xs font-bold text-[#e5c8a5] uppercase tracking-wider">
+                  Founder & Proprietor
+                </span>
+                <span className="text-[11px] text-white/80">
+                  Sri Aditya Enterprises • Vanasthalipuram
+                </span>
+              </div>
             </div>
           </div>
 
-        {/* Features */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {features.map((feature, index) => (
-            <div
-              key={feature.title}
-              className="text-center p-6 bg-card rounded-lg border border-border hover:shadow-lg transition-shadow duration-300"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-                <feature.icon className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="font-heading text-xl font-semibold text-foreground mb-2">
-                {feature.title}
-              </h3>
-              <p className="text-muted-foreground">{feature.description}</p>
+          {/* Right: Story Narrative */}
+          <div className="lg:col-span-7 space-y-5 text-left">
+            <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#d6b486]">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>A neighbourhood name since 1990</span>
             </div>
-          ))}
+
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-semibold leading-[1.15] text-white">
+              Good furniture.<br />
+              Good people.<br />
+              <span className="text-[#e5c8a5] italic font-normal">Generations of trust.</span>
+            </h2>
+
+            <p className="text-sm sm:text-base text-[#d5d9d0] leading-relaxed max-w-xl">
+              For over three decades, Sri Aditya Enterprises has helped Hyderabad families make their houses feel like home. Come in, explore at your own pace, and let us help you find the right fit with genuine materials and honest pricing.
+            </p>
+
+            <div className="p-4 rounded-xl bg-white/10 border-l-4 border-[#d6b486] text-amber-100 text-sm sm:text-base font-heading italic max-w-lg">
+              “Your trust is our greatest asset.”
+            </div>
+
+            <div className="pt-2">
+              <button
+                onClick={scrollToVisit}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#f4f0e6] hover:bg-white text-[#263a2b] font-bold text-xs tracking-wider uppercase transition-transform hover:scale-105 active:scale-95 shadow-lg"
+              >
+                <span>GET TO KNOW US</span>
+                <ArrowRight size={14} />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
