@@ -34,10 +34,19 @@
     --input: 35 20% 85%;
     --ring: 30 60% 35%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Inter', sans-serif;
+
+    /* Architectural Living Room Studio Palette */
+    --studio-ivory: #FAF8F5;
+    --studio-sand: #F2ECE1;
+    --studio-oak: #A87D4F;
+    --studio-oak-dark: #7D562E;
+    --studio-espresso: #241C15;
+    --studio-brass: #D4AF37;
+    --studio-linen: #EFE9DD;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;

@@ -59,7 +59,7 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" className="relative py-20 md:py-28 bg-background overflow-hidden">
+    <section id="contact" className="relative py-20 sm:py-28 md:py-32 bg-[#FAF8F5] border-t border-[#A87D4F]/15 overflow-hidden">
       {/* Flowing Tricolor Wave Watermark Behind Contact Us Form & Section (Independence Day) */}
       {isIday && (
         <>
@@ -79,10 +79,13 @@ export const Contact = () => {
         </div>
       )}
 
-      <div className="relative z-10 container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-4">
-            Contact Us
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+        <div className="text-center mb-12 sm:mb-16">
+          <p className="text-xs sm:text-sm font-bold tracking-[0.2em] uppercase text-[#A87D4F] mb-2">
+            Get in Touch
+          </p>
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-[#241C15] mb-4">
+            Visit Our Showroom
           </h2>
           {isRakhi ? (
             <RakhiDivider />
@@ -91,99 +94,108 @@ export const Contact = () => {
           ) : isIday ? (
             <div className="w-28 h-1.5 rounded-full mx-auto mb-6 bg-gradient-to-r from-[#FF9933] via-slate-300 to-[#138808] shadow-[0_0_12px_rgba(255,153,51,0.3)]" />
           ) : (
-            <div className="w-24 h-1 bg-accent mx-auto mb-6" />
+            <div className="w-20 h-1 bg-gradient-to-r from-[#A87D4F] to-[#D4AF37] rounded-full mx-auto mb-6" />
           )}
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Ready to transform your space? Get in touch with us today.
-            Please visit our store.
+          <p className="text-[#4A3B2C] max-w-2xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed">
+            Ready to furnish your home? Visit our Vanasthalipuram showroom or send us an inquiry directly on WhatsApp.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {/* LEFT COLUMN */}
-          <div className="space-y-10">
-
+          <div className="space-y-8">
             {/* Contact Info */}
-            <div className="space-y-6">
+            <div className="space-y-4">
               {/* Visit Store */}
-              <div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow max-w-md">
-                <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center shrink-0">
-                  <MapPin className="w-6 h-6 text-primary" />
+              <div className="flex items-start gap-4 p-5 bg-white rounded-2xl border border-[#A87D4F]/20 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 bg-[#F2ECE1] border border-[#A87D4F]/30 rounded-xl flex items-center justify-center shrink-0 text-[#A87D4F]">
+                  <MapPin className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-lg font-semibold text-foreground">
-                    Visit Our Store
+                  <h3 className="font-heading text-lg font-bold text-[#241C15]">
+                    Visit Our Showroom
                   </h3>
-                  <p className="text-muted-foreground">
-                    Vanasthalipuram, Hyderabad, Telangana
+                  <p className="text-sm text-[#4A3B2C] mt-0.5">
+                    Opp. Ganesh Temple, Phase 1, Vanasthalipuram, Hyderabad, Telangana 500070
                   </p>
                   <a
                     href="https://www.google.com/maps/place/sri+aditya+enterprises/@17.3309764,78.5674217,719m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3bcba1025c5dfa69:0x7b20021308763e99!8m2!3d17.3309713!4d78.5699966!16s%2Fg%2F1tm09842"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block mt-2 px-4 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+                    className="inline-flex items-center gap-1.5 mt-3 px-4 py-2 bg-[#241C15] text-amber-50 font-bold text-xs rounded-xl hover:bg-[#3B2C21] transition-transform hover:scale-105 active:scale-95 shadow-sm"
                   >
-                    📍 View on Google Maps
+                    📍 Open in Google Maps
                   </a>
                 </div>
               </div>
 
               {/* Call Us */}
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center shrink-0">
-                  <Phone className="w-6 h-6 text-primary" />
+              <div className="flex items-start gap-4 p-5 bg-white rounded-2xl border border-[#A87D4F]/20 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 bg-[#F2ECE1] border border-[#A87D4F]/30 rounded-xl flex items-center justify-center shrink-0 text-[#A87D4F]">
+                  <Phone className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-lg font-semibold text-foreground mb-1">
-                    Call Us
+                  <h3 className="font-heading text-lg font-bold text-[#241C15]">
+                    Call Store Directly
                   </h3>
-                  <p className="text-muted-foreground">+91 8019404140</p>
+                  <a
+                    href="tel:+918019404140"
+                    className="text-base font-bold text-[#A87D4F] hover:underline"
+                  >
+                    +91 8019404140
+                  </a>
+                  <p className="text-xs text-[#7D562E] mt-0.5">
+                    Mon - Sun inquiries welcome
+                  </p>
                 </div>
               </div>
 
               {/* Working Hours */}
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center shrink-0">
-                  <Clock className="w-6 h-6 text-primary" />
+              <div className="flex items-start gap-4 p-5 bg-white rounded-2xl border border-[#A87D4F]/20 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 bg-[#F2ECE1] border border-[#A87D4F]/30 rounded-xl flex items-center justify-center shrink-0 text-[#A87D4F]">
+                  <Clock className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-lg font-semibold text-foreground mb-1">
-                    Working Hours
+                  <h3 className="font-heading text-lg font-bold text-[#241C15]">
+                    Showroom Timings
                   </h3>
-                  <p className="text-muted-foreground">
-                    Tuesday – Sunday: 09:30 AM – 09:00 PM
+                  <p className="text-sm text-[#4A3B2C] mt-0.5">
+                    <span className="font-bold text-[#241C15]">Tuesday – Sunday:</span> 09:30 AM – 09:00 PM
                     <br />
-                    Closed on Monday
+                    <span className="text-amber-700 font-semibold text-xs">Closed on Monday</span>
                   </p>
                 </div>
               </div>
             </div>
 
             {/* QR Code */}
-            <div className="bg-card p-6 rounded-xl border border-border text-center max-w-md mx-auto">
-              <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
-                Find Us on Google
+            <div className="bg-white p-6 rounded-2xl border border-[#A87D4F]/20 shadow-sm text-center">
+              <h3 className="font-heading text-lg font-bold text-[#241C15] mb-1">
+                Find Us on Google Maps
               </h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Scan the QR code to view Sri Aditya Enterprises
+              <p className="text-xs text-[#7D562E] mb-4">
+                Scan the QR code to open directions to Sri Aditya Enterprises
               </p>
               <img
                 src="/sae-qr.png"
                 alt="Sri Aditya Enterprises Google QR Code"
-                className="w-32 h-32 mx-auto"
+                className="w-32 h-32 mx-auto rounded-lg border border-[#A87D4F]/20 p-1"
               />
             </div>
           </div>
 
           {/* RIGHT COLUMN – CONTACT FORM */}
-          <div className="bg-card p-8 rounded-xl border border-border">
-            <h3 className="font-heading text-2xl font-semibold text-foreground mb-6">
-              Send us a Message
+          <div className="bg-white p-6 sm:p-8 rounded-2xl border border-[#A87D4F]/20 shadow-md">
+            <h3 className="font-heading text-2xl font-bold text-[#241C15] mb-2">
+              Send an Instant Inquiry
             </h3>
+            <p className="text-xs sm:text-sm text-[#7D562E] mb-6">
+              Fill in your details and send directly to our store WhatsApp.
+            </p>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-foreground mb-2 block">
+                <label className="text-xs font-bold text-[#241C15] mb-1.5 block uppercase tracking-wider">
                   Full Name
                 </label>
                 <Input
@@ -193,46 +205,49 @@ export const Contact = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
+                  className="rounded-xl border-[#A87D4F]/30 focus:border-[#A87D4F] bg-[#FAF8F5]"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-sm font-medium text-foreground mb-2 block">
+                <label className="text-xs font-bold text-[#241C15] mb-1.5 block uppercase tracking-wider">
                   Phone Number
                 </label>
                 <Input
                   type="tel"
-                  placeholder="Enter your phone number"
+                  placeholder="Enter your mobile number"
                   value={formData.phone}
                   onChange={(e) =>
                     setFormData({ ...formData, phone: e.target.value })
                   }
+                  className="rounded-xl border-[#A87D4F]/30 focus:border-[#A87D4F] bg-[#FAF8F5]"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-sm font-medium text-foreground mb-2 block">
-                  Message
+                <label className="text-xs font-bold text-[#241C15] mb-1.5 block uppercase tracking-wider">
+                  Inquiry Message
                 </label>
                 <Textarea
                   rows={4}
-                  placeholder="Tell us about your requirements..."
+                  placeholder="Tell us what furniture piece or custom design you're looking for..."
                   value={formData.message}
                   onChange={(e) =>
                     setFormData({ ...formData, message: e.target.value })
                   }
+                  className="rounded-xl border-[#A87D4F]/30 focus:border-[#A87D4F] bg-[#FAF8F5]"
                   required
                 />
               </div>
 
               <Button
                 type="submit"
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-6"
+                className="w-full py-6 rounded-xl bg-[#241C15] hover:bg-[#3B2C21] text-amber-50 font-bold text-base shadow-lg transition-transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
               >
-                <Send className="w-5 h-5 mr-2" />
-                Send via WhatsApp
+                <Send className="w-4 h-4 text-emerald-400" />
+                <span>Send WhatsApp Inquiry</span>
               </Button>
             </form>
           </div>

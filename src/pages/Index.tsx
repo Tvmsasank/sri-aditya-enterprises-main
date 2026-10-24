@@ -28,7 +28,7 @@ const Index = () => {
     // 3. Dynamic Mobile Browser Header Color
     const themeColorMeta = document.querySelector<HTMLMetaElement>("meta[name='theme-color']");
     if (themeColorMeta) {
-      themeColorMeta.content = isRakhi ? "#800020" : isVratham ? "#800020" : isIday ? "#FF9933" : "#3f5f2e";
+      themeColorMeta.content = isRakhi ? "#800020" : isVratham ? "#800020" : isIday ? "#FF9933" : "#FAF8F5";
     }
   }, [isRakhi, isIday, isVratham]);
 
