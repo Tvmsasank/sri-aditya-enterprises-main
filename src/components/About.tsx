@@ -15,7 +15,7 @@ export const About = () => {
   };
 
   return (
-    <section id="about" className="relative py-20 sm:py-24 bg-[#263a2b] text-white overflow-hidden">
+    <section id="about" className="relative py-16 sm:py-24 bg-[#162c20] text-white overflow-hidden transition-colors">
       {/* Tricolor wave for Independence Day */}
       {isIday && <TricolorWave className="absolute -top-8 left-0 right-0 w-full" opacity={0.65} />}
 
@@ -27,10 +27,10 @@ export const About = () => {
               <img
                 src="/founder.png"
                 alt="Proprietor of Sri Aditya Enterprises"
-                className="w-full h-80 sm:h-96 object-cover object-[center_30%] group-hover:scale-102 transition-transform duration-500"
+                className="w-full h-72 sm:h-96 object-cover object-[center_30%] group-hover:scale-102 transition-transform duration-500"
               />
-              <div className="absolute bottom-3 left-3 right-3 bg-[#242820]/90 backdrop-blur-md p-3 rounded-xl border border-white/10 text-center">
-                <span className="block text-xs font-bold text-[#e5c8a5] uppercase tracking-wider">
+              <div className="absolute bottom-3 left-3 right-3 bg-[#142019]/90 backdrop-blur-md p-3 rounded-xl border border-white/10 text-center">
+                <span className="block text-xs font-bold text-[#c99f52] uppercase tracking-wider">
                   Founder & Proprietor
                 </span>
                 <span className="text-[11px] text-white/80">
@@ -41,30 +41,30 @@ export const About = () => {
           </div>
 
           {/* Right: Story Narrative */}
-          <div className="lg:col-span-7 space-y-5 text-left">
-            <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#d6b486]">
+          <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
+            <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#c99f52]">
               <Sparkles className="w-3.5 h-3.5" />
               <span>A neighbourhood name since 1990</span>
             </div>
 
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-semibold leading-[1.15] text-white">
+            <h2 className="font-heading text-2xl sm:text-4xl md:text-5xl font-semibold leading-[1.18] text-white">
               Good furniture.<br />
               Good people.<br />
-              <span className="text-[#e5c8a5] italic font-normal">Generations of trust.</span>
+              <span className="text-[#c99f52] italic font-normal">Generations of trust.</span>
             </h2>
 
-            <p className="text-sm sm:text-base text-[#d5d9d0] leading-relaxed max-w-xl">
+            <p className="text-xs sm:text-base text-[#d5ded8] leading-relaxed max-w-xl">
               For over three decades, Sri Aditya Enterprises has helped Hyderabad families make their houses feel like home. Come in, explore at your own pace, and let us help you find the right fit with genuine materials and honest pricing.
             </p>
 
-            <div className="p-4 rounded-xl bg-white/10 border-l-4 border-[#d6b486] text-amber-100 text-sm sm:text-base font-heading italic max-w-lg">
+            <div className="p-3.5 sm:p-4 rounded-xl bg-white/10 border-l-4 border-[#c99f52] text-[#faeed4] text-xs sm:text-base font-heading italic max-w-lg">
               “Your trust is our greatest asset.”
             </div>
 
-            <div className="pt-2">
+            <div className="pt-1 sm:pt-2">
               <button
                 onClick={scrollToVisit}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#f4f0e6] hover:bg-white text-[#263a2b] font-bold text-xs tracking-wider uppercase transition-transform hover:scale-105 active:scale-95 shadow-lg"
+                className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-[#faeed4] hover:bg-white text-[#162c20] font-bold text-xs tracking-wider uppercase transition-transform hover:scale-105 active:scale-95 shadow-lg cursor-pointer"
               >
                 <span>GET TO KNOW US</span>
                 <ArrowRight size={14} />

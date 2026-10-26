@@ -1,0 +1,1432 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Mobile Design & Layout Proof of Concept — Sri Aditya Enterprises</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    /* -------------------------------------------------------------
+       THEME VARIABLES
+    -------------------------------------------------------------- */
+    /* Theme 1: Royal Midnight & Champagne Gold (Default) */
+    :root[data-theme="midnight"] {
+      --bg-canvas: #fbfbfa;
+      --bg-surface: #ffffff;
+      --bg-secondary: #0d1522;
+      --bg-secondary-card: #152238;
+      --text-main: #111827;
+      --text-muted: #596780;
+      --text-inverse: #f8fafc;
+      --accent: #0f1d33;
+      --accent-hover: #1e3a66;
+      --gold: #c5a059;
+      --gold-light: #f7ecd7;
+      --gold-border: rgba(197, 160, 89, 0.4);
+      --border-subtle: #eae8e1;
+      --pill-active-bg: #0f1d33;
+      --pill-active-text: #f7ecd7;
+      --card-shadow: 0 8px 24px -4px rgba(15, 29, 51, 0.08);
+      --theme-name: "Royal Midnight & Champagne Gold";
+    }
+
+    /* Theme 2: Imperial Sandstone & Teak */
+    :root[data-theme="sandstone"] {
+      --bg-canvas: #faf6f0;
+      --bg-surface: #fffdfa;
+      --bg-secondary: #382315;
+      --bg-secondary-card: #4c301e;
+      --text-main: #231913;
+      --text-muted: #6e5849;
+      --text-inverse: #fdfaf5;
+      --accent: #4a2e1b;
+      --accent-hover: #633e24;
+      --gold: #d49b43;
+      --gold-light: #faebd3;
+      --gold-border: rgba(212, 155, 67, 0.45);
+      --border-subtle: #ece2d5;
+      --pill-active-bg: #4a2e1b;
+      --pill-active-text: #faebd3;
+      --card-shadow: 0 8px 24px -4px rgba(74, 46, 27, 0.1);
+      --theme-name: "Imperial Sandstone & Burnished Teak";
+    }
+
+    /* Theme 3: Royal Emerald & Soft Linen */
+    :root[data-theme="emerald"] {
+      --bg-canvas: #f7f8f5;
+      --bg-surface: #ffffff;
+      --bg-secondary: #162c20;
+      --bg-secondary-card: #203f2e;
+      --text-main: #142019;
+      --text-muted: #54665c;
+      --text-inverse: #f8faf9;
+      --accent: #1e3b2b;
+      --accent-hover: #294f3a;
+      --gold: #c99f52;
+      --gold-light: #faeed4;
+      --gold-border: rgba(201, 159, 82, 0.4);
+      --border-subtle: #e2e7e2;
+      --pill-active-bg: #1e3b2b;
+      --pill-active-text: #faeed4;
+      --card-shadow: 0 8px 24px -4px rgba(30, 59, 43, 0.09);
+      --theme-name: "Royal Emerald & Soft Linen";
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: #0f1115;
+      color: #e5e7eb;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* -------------------------------------------------------------
+       TOP POC CONTROLLER BAR (For Testing & Switch)
+    -------------------------------------------------------------- */
+    .poc-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #181d25;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 10px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .poc-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .poc-title span {
+      background: #c5a059;
+      color: #000;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .poc-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ctrl-group {
+      display: flex;
+      align-items: center;
+      background: #242c38;
+      border-radius: 8px;
+      padding: 3px;
+      gap: 2px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .ctrl-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #94a3b8;
+      padding: 0 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .ctrl-btn {
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .ctrl-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .ctrl-btn.active {
+      background: #c5a059;
+      color: #0f172a;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    /* -------------------------------------------------------------
+       DEVICE STAGE & PHONE SIMULATOR
+    -------------------------------------------------------------- */
+    .stage-wrapper {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px 10px;
+      background: #0f1115;
+    }
+
+    /* Mode: Phone Frame */
+    .device-container.mode-phone {
+      width: 390px;
+      height: 844px;
+      border-radius: 44px;
+      border: 10px solid #282f3a;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-canvas);
+    }
+
+    .device-container.mode-phone::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 140px;
+      height: 24px;
+      background: #282f3a;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      z-index: 999;
+    }
+
+    /* Mode: Responsive / Full */
+    .device-container.mode-full {
+      width: 100%;
+      max-width: 480px;
+      min-height: 90vh;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-canvas);
+    }
+
+    .screen-scroller {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: var(--bg-canvas);
+      color: var(--text-main);
+      scroll-behavior: smooth;
+      position: relative;
+    }
+
+    /* Custom thin scrollbar */
+    .screen-scroller::-webkit-scrollbar {
+      width: 5px;
+    }
+    .screen-scroller::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
+    }
+
+    /* -------------------------------------------------------------
+       MOBILE APP CONTENT (Sri Aditya Enterprises)
+    -------------------------------------------------------------- */
+    /* Top Slim Notice Bar */
+    .app-topbar {
+      background: var(--accent);
+      color: var(--gold-light);
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 7px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .app-topbar .dot {
+      width: 4px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+
+    /* Navigation Header */
+    .app-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(251, 251, 250, 0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-crest {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--accent) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .brand-text-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: var(--text-main);
+      line-height: 1.15;
+    }
+
+    .brand-text-sub {
+      font-size: 9.5px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    /* -------------------------------------------------------------
+       HERO: MINIMALIST & SHORT (No Overcrowding!)
+    -------------------------------------------------------------- */
+    .mobile-hero {
+      padding: 24px 18px 18px;
+      text-align: center;
+    }
+
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--gold-light);
+      color: var(--accent);
+      border: 1px solid var(--gold-border);
+      border-radius: 30px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      margin-bottom: 12px;
+    }
+
+    .hero-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      line-height: 1.18;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .hero-heading em {
+      font-style: italic;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .hero-desc {
+      font-size: 13.5px;
+      line-height: 1.45;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      max-width: 330px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Wardrobe / Reveal Trigger Card */
+    .mini-wardrobe-trigger {
+      background: linear-gradient(135deg, #3a2213 0%, #24140b 100%);
+      border: 2px solid #5a3820;
+      border-radius: 16px;
+      padding: 14px 16px;
+      box-shadow: 0 10px 25px -5px rgba(36, 20, 11, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .mini-wardrobe-trigger:active {
+      transform: scale(0.98);
+    }
+
+    .wardrobe-icon-door {
+      width: 44px;
+      height: 48px;
+      background: #50311c;
+      border: 2px solid #7d4d2c;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .wardrobe-icon-door::after {
+      content: '';
+      position: absolute;
+      width: 1px;
+      height: 100%;
+      background: #301b0f;
+    }
+
+    .door-knob {
+      width: 4px;
+      height: 10px;
+      background: var(--gold);
+      border-radius: 2px;
+      position: absolute;
+      box-shadow: 0 0 4px rgba(212, 175, 55, 0.8);
+    }
+    .door-knob.left { left: 16px; }
+    .door-knob.right { right: 16px; }
+
+    .wardrobe-trigger-text {
+      text-align: left;
+      flex: 1;
+    }
+
+    .wardrobe-trigger-title {
+      color: #f7ecd7;
+      font-weight: 700;
+      font-size: 13.5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .wardrobe-trigger-sub {
+      color: #bfa38b;
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .wardrobe-trigger-btn {
+      background: var(--gold);
+      color: #1e130a;
+      font-weight: 700;
+      font-size: 11.5px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: none;
+      white-space: nowrap;
+    }
+
+    /* -------------------------------------------------------------
+       COLLECTIONS FORMAT A: HORIZONTAL SNAP CAROUSEL + FILTER PILLS
+    -------------------------------------------------------------- */
+    .format-carousel-wrapper {
+      padding: 0 0 24px;
+    }
+
+    .section-header-compact {
+      padding: 0 18px 12px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .section-header-compact h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .section-header-compact .subtext {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .swipe-hint-pill {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Category Filter Pills */
+    .category-pills-row {
+      display: flex;
+      gap: 8px;
+      padding: 0 18px 14px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .category-pills-row::-webkit-scrollbar { display: none; }
+
+    .cat-pill {
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 24px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .cat-pill.active {
+      background: var(--pill-active-bg);
+      color: var(--pill-active-text);
+      border-color: var(--pill-active-bg);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Horizontal Cards Snap Carousel */
+    .cards-carousel-snap {
+      display: flex;
+      gap: 14px;
+      padding: 0 18px 10px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .cards-carousel-snap::-webkit-scrollbar { display: none; }
+
+    .carousel-furniture-card {
+      flex: 0 0 250px;
+      scroll-snap-align: start;
+      background: var(--bg-surface);
+      border-radius: 18px;
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+    }
+
+    .card-img-box {
+      width: 100%;
+      height: 180px;
+      position: relative;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+
+    .card-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .card-category-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(6px);
+      color: var(--gold-light);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .card-body {
+      padding: 12px 14px 14px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      line-height: 1.25;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.35;
+      margin-bottom: 12px;
+    }
+
+    .card-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 10px;
+    }
+
+    .card-spec {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gold);
+    }
+
+    .card-cta-btn {
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* -------------------------------------------------------------
+       COLLECTIONS FORMAT B: 2-COLUMN COMPACT LUXURY GRID
+    -------------------------------------------------------------- */
+    .format-grid-wrapper {
+      padding: 0 16px 24px;
+    }
+
+    .two-col-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .grid-furniture-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+
+    .grid-img-box {
+      width: 100%;
+      height: 125px;
+      position: relative;
+      background: #e2e8f0;
+    }
+
+    .grid-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .grid-card-body {
+      padding: 10px 10px 12px;
+    }
+
+    .grid-card-tag {
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--gold);
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+
+    .grid-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .grid-card-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .view-more-collections-btn {
+      width: 100%;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--gold);
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 12.5px;
+      padding: 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    /* -------------------------------------------------------------
+       COLLECTIONS FORMAT C: SLIDE-UP BOTTOM SHEET DRAWER
+    -------------------------------------------------------------- */
+    .format-drawer-wrapper {
+      padding: 0 16px 24px;
+    }
+
+    .drawer-launch-card {
+      background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-canvas) 100%);
+      border: 1.5px dashed var(--gold);
+      border-radius: 16px;
+      padding: 18px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .drawer-launch-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .drawer-launch-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .drawer-launch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: var(--gold-light);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 30px;
+      border: none;
+    }
+
+    /* Actual Slide-Up Bottom Sheet Modal */
+    .sheet-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .sheet-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .bottom-sheet {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      max-height: 85%;
+      background: var(--bg-surface);
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      z-index: 501;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .sheet-overlay.open .bottom-sheet {
+      transform: translateY(0);
+    }
+
+    .sheet-handle-bar {
+      width: 44px;
+      height: 5px;
+      background: #cbd5e1;
+      border-radius: 10px;
+      margin: 12px auto 8px;
+    }
+
+    .sheet-header {
+      padding: 6px 18px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .sheet-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .sheet-close-btn {
+      background: #f1f5f9;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sheet-content-scroll {
+      padding: 14px 18px 30px;
+      overflow-y: auto;
+      max-height: calc(85vh - 70px);
+    }
+
+    /* -------------------------------------------------------------
+       SECTION: OUR STORY & TRUST (Now immediately accessible!)
+    -------------------------------------------------------------- */
+    .story-section {
+      background: var(--bg-secondary);
+      color: var(--text-inverse);
+      padding: 26px 18px;
+      border-radius: 20px;
+      margin: 0 12px 18px;
+    }
+
+    .story-tag {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .story-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 21px;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .story-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .story-card-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-secondary-card);
+      border-radius: 14px;
+      padding: 12px;
+      margin-top: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .story-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      object-fit: cover;
+    }
+
+    .story-author-name {
+      font-weight: 700;
+      font-size: 13px;
+      color: #fff;
+    }
+
+    .story-author-role {
+      font-size: 11px;
+      color: var(--gold-light);
+    }
+
+    /* -------------------------------------------------------------
+       BOTTOM STICKY BAR: CALL & WHATSAPP
+    -------------------------------------------------------------- */
+    .app-bottombar {
+      position: sticky;
+      bottom: 0;
+      z-index: 100;
+      background: rgba(251, 251, 250, 0.96);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border-subtle);
+      padding: 10px 16px 14px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-btn-call {
+      flex: 1;
+      height: 42px;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-subtle);
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 12.5px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .action-btn-whatsapp {
+      flex: 1.2;
+      height: 42px;
+      background: #25d366;
+      border: none;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 12.5px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP POC CONTROLLER BAR -->
+  <header class="poc-toolbar">
+    <div class="poc-title">
+      <span>PoC Switcher</span>
+      Sri Aditya Enterprises Mobile Experience
+    </div>
+
+    <div class="poc-controls">
+      <!-- Theme Switcher -->
+      <div class="ctrl-group">
+        <span class="ctrl-label">Theme:</span>
+        <button class="ctrl-btn active" onclick="setTheme('midnight', this)">👑 Midnight Gold</button>
+        <button class="ctrl-btn" onclick="setTheme('sandstone', this)">🏛️ Sandstone Teak</button>
+        <button class="ctrl-btn" onclick="setTheme('emerald', this)">🌿 Emerald Linen</button>
+      </div>
+
+      <!-- Mobile UX Format Switcher -->
+      <div class="ctrl-group">
+        <span class="ctrl-label">Collections UX:</span>
+        <button class="ctrl-btn active" onclick="setFormat('carousel', this)">✨ Horizontal Carousel</button>
+        <button class="ctrl-btn" onclick="setFormat('grid', this)">▦ 2-Col Grid</button>
+        <button class="ctrl-btn" onclick="setFormat('drawer', this)">📂 Bottom Drawer</button>
+      </div>
+
+      <!-- Viewport Device Switcher -->
+      <div class="ctrl-group">
+        <span class="ctrl-label">View:</span>
+        <button class="ctrl-btn active" onclick="setDeviceMode('phone', this)">📱 Phone Frame</button>
+        <button class="ctrl-btn" onclick="setDeviceMode('full', this)">🖥️ Full Screen</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- STAGE & PHONE SIMULATOR -->
+  <main class="stage-wrapper">
+    <div id="deviceContainer" class="device-container mode-phone">
+      
+      <!-- Inside Simulated Mobile Screen -->
+      <div class="screen-scroller" id="mobileScroller">
+
+        <!-- Top Slim Notice -->
+        <div class="app-topbar">
+          <span>Furniture For The Way You Live</span>
+          <span class="dot"></span>
+          <span>Vanasthalipuram, Hyderabad</span>
+        </div>
+
+        <!-- Sticky Mobile Navbar -->
+        <nav class="app-nav">
+          <div class="brand-logo-wrap">
+            <div class="brand-crest">SAE</div>
+            <div>
+              <div class="brand-text-name">Sri Aditya Enterprises</div>
+              <div class="brand-text-sub">ESTABLISHED 1990</div>
+            </div>
+          </div>
+          <div class="nav-actions">
+            <div class="icon-btn" title="Call Showroom" onclick="alert('Calling Sri Aditya Enterprises: +91 8019404140')">📞</div>
+            <div class="icon-btn" title="Menu" onclick="alert('Menu: Collections, About Founder, Visit Us, Contact')">☰</div>
+          </div>
+        </nav>
+
+        <!-- Minimalist Hero (Short & Sweet, High Breathing Room) -->
+        <section class="mobile-hero">
+          <div class="hero-badge-pill">
+            <span>✨</span> Locally Trusted Since 1990 • 36 Years
+          </div>
+          <h1 class="hero-heading">
+            Comfort that <em>feels like home.</em>
+          </h1>
+          <p class="hero-desc">
+            Handcrafted solid teak, luxury living suites & modern home furniture built for generations in Hyderabad.
+          </p>
+
+          <!-- Interactive Wardrobe Unlock Card -->
+          <div class="mini-wardrobe-trigger" onclick="handleWardrobeClick()">
+            <div class="wardrobe-icon-door">
+              <div class="door-knob left"></div>
+              <div class="door-knob right"></div>
+            </div>
+            <div class="wardrobe-trigger-text">
+              <div class="wardrobe-trigger-title">
+                <span>🚪</span> Royal Wardrobe Collections
+              </div>
+              <div class="wardrobe-trigger-sub">Tap to unlock 12 signature handcrafted suites</div>
+            </div>
+            <button class="wardrobe-trigger-btn">Open Door</button>
+          </div>
+        </section>
+
+        <!-- FORMAT A: HORIZONTAL SNAP CAROUSEL (Zero scroll trap!) -->
+        <section id="formatCarousel" class="format-carousel-wrapper">
+          <div class="section-header-compact">
+            <div>
+              <h2>Explore Collections</h2>
+              <div class="subtext">Curated luxury for every room</div>
+            </div>
+            <div class="swipe-hint-pill">
+              Swipe <span>👉</span>
+            </div>
+          </div>
+
+          <!-- Category Filter Pills -->
+          <div class="category-pills-row">
+            <button class="cat-pill active" onclick="filterCategory('all', this)">✨ All (12)</button>
+            <button class="cat-pill" onclick="filterCategory('living', this)">🛋️ Living Room</button>
+            <button class="cat-pill" onclick="filterCategory('bedroom', this)">🛏️ Royal Bedroom</button>
+            <button class="cat-pill" onclick="filterCategory('wardrobe', this)">🚪 Teak Wardrobes</button>
+            <button class="cat-pill" onclick="filterCategory('dining', this)">🍽️ Dining Suites</button>
+            <button class="cat-pill" onclick="filterCategory('office', this)">💼 Executive Office</button>
+          </div>
+
+          <!-- Horizontal Snap Cards Row -->
+          <div class="cards-carousel-snap" id="cardsSnapContainer">
+            
+            <!-- Card 1 -->
+            <div class="carousel-furniture-card" data-cat="living">
+              <div class="card-img-box">
+                <img src="/src/assets/sofa.jpg" alt="Living Room Sofa" onerror="this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&auto=format&fit=crop&q=80'" />
+                <span class="card-category-badge">Living Room</span>
+              </div>
+              <div class="card-body">
+                <div>
+                  <h3 class="card-title">Imperial Velvet Sofa Suite</h3>
+                  <p class="card-desc">High-density plush cushioning with hand-carved teak wood base.</p>
+                </div>
+                <div class="card-footer-row">
+                  <span class="card-spec">Premium Velvet • 5 Seater</span>
+                  <button class="card-cta-btn" onclick="alert('Inquiring about Imperial Velvet Sofa')">Inquire</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="carousel-furniture-card" data-cat="bedroom">
+              <div class="card-img-box">
+                <img src="/src/assets/bed.jpg" alt="Royal Teak Bed" onerror="this.src='https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500&auto=format&fit=crop&q=80'" />
+                <span class="card-category-badge">Bedroom</span>
+              </div>
+              <div class="card-body">
+                <div>
+                  <h3 class="card-title">Heritage Royal Teak Bed</h3>
+                  <p class="card-desc">Master craftsman carved headboard with hydraulic storage system.</p>
+                </div>
+                <div class="card-footer-row">
+                  <span class="card-spec">Solid Teak • King Size</span>
+                  <button class="card-cta-btn" onclick="alert('Inquiring about Heritage Royal Teak Bed')">Inquire</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="carousel-furniture-card" data-cat="wardrobe">
+              <div class="card-img-box">
+                <img src="/src/assets/wardrobe.jpg" alt="4-Door Teak Wardrobe" onerror="this.src='https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=500&auto=format&fit=crop&q=80'" />
+                <span class="card-category-badge">Wardrobe</span>
+              </div>
+              <div class="card-body">
+                <div>
+                  <h3 class="card-title">Grand 4-Door Teak Almirah</h3>
+                  <p class="card-desc">Traditional fluted crown moulding with soft-close brass hinges.</p>
+                </div>
+                <div class="card-footer-row">
+                  <span class="card-spec">Seasoned Teak • 4 Doors</span>
+                  <button class="card-cta-btn" onclick="alert('Inquiring about 4-Door Teak Almirah')">Inquire</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="carousel-furniture-card" data-cat="dining">
+              <div class="card-img-box">
+                <img src="/src/assets/dining.jpg" alt="6-Seater Dining Set" onerror="this.src='https://images.unsplash.com/photo-1617806118233-18e1de247200?w=500&auto=format&fit=crop&q=80'" />
+                <span class="card-category-badge">Dining</span>
+              </div>
+              <div class="card-body">
+                <div>
+                  <h3 class="card-title">Aristocrat 6-Seater Dining</h3>
+                  <p class="card-desc">Polished natural grain dining table with upholstered comfort chairs.</p>
+                </div>
+                <div class="card-footer-row">
+                  <span class="card-spec">Rosewood Finish • 6 Chairs</span>
+                  <button class="card-cta-btn" onclick="alert('Inquiring about Aristocrat Dining Set')">Inquire</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="carousel-furniture-card" data-cat="office">
+              <div class="card-img-box">
+                <img src="/src/assets/office-chair.jpg" alt="Executive Boss Chair" onerror="this.src='https://images.unsplash.com/photo-1580481077195-c328a37db71a?w=500&auto=format&fit=crop&q=80'" />
+                <span class="card-category-badge">Executive</span>
+              </div>
+              <div class="card-body">
+                <div>
+                  <h3 class="card-title">Presidential Leather Recliner</h3>
+                  <p class="card-desc">Ergonomic lumbar support with Italian full-grain leather upholstery.</p>
+                </div>
+                <div class="card-footer-row">
+                  <span class="card-spec">Genuine Leather • Heavy Duty</span>
+                  <button class="card-cta-btn" onclick="alert('Inquiring about Presidential Recliner')">Inquire</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- FORMAT B: 2-COLUMN COMPACT LUXURY GRID -->
+        <section id="formatGrid" class="format-grid-wrapper" style="display: none;">
+          <div class="section-header-compact" style="padding-left:0; padding-right:0;">
+            <div>
+              <h2>Signature Collections</h2>
+              <div class="subtext">Minimalist 2-column showcase</div>
+            </div>
+          </div>
+
+          <div class="two-col-grid">
+            <div class="grid-furniture-card">
+              <div class="grid-img-box">
+                <img src="/src/assets/sofa.jpg" alt="Sofa" onerror="this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&auto=format&fit=crop&q=80'" />
+              </div>
+              <div class="grid-card-body">
+                <div class="grid-card-tag">Living Room</div>
+                <h4 class="grid-card-title">Velvet Sofa Suites</h4>
+                <div class="grid-card-sub">From ₹45,000</div>
+              </div>
+            </div>
+
+            <div class="grid-furniture-card">
+              <div class="grid-img-box">
+                <img src="/src/assets/bed.jpg" alt="Bed" onerror="this.src='https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500&auto=format&fit=crop&q=80'" />
+              </div>
+              <div class="grid-card-body">
+                <div class="grid-card-tag">Bedroom</div>
+                <h4 class="grid-card-title">Royal Teak Beds</h4>
+                <div class="grid-card-sub">From ₹58,000</div>
+              </div>
+            </div>
+
+            <div class="grid-furniture-card">
+              <div class="grid-img-box">
+                <img src="/src/assets/wardrobe.jpg" alt="Wardrobe" onerror="this.src='https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=500&auto=format&fit=crop&q=80'" />
+              </div>
+              <div class="grid-card-body">
+                <div class="grid-card-tag">Wardrobe</div>
+                <h4 class="grid-card-title">Solid Teak Almirahs</h4>
+                <div class="grid-card-sub">From ₹62,000</div>
+              </div>
+            </div>
+
+            <div class="grid-furniture-card">
+              <div class="grid-img-box">
+                <img src="/src/assets/dining.jpg" alt="Dining" onerror="this.src='https://images.unsplash.com/photo-1617806118233-18e1de247200?w=500&auto=format&fit=crop&q=80'" />
+              </div>
+              <div class="grid-card-body">
+                <div class="grid-card-tag">Dining</div>
+                <h4 class="grid-card-title">6-Seater Dining Sets</h4>
+                <div class="grid-card-sub">From ₹52,000</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="view-more-collections-btn" onclick="alert('Expanding remaining 8 collections in 2-column view')">
+            <span>✨ View All 12 Collections</span>
+            <span>↓</span>
+          </button>
+        </section>
+
+        <!-- FORMAT C: SLIDE-UP BOTTOM SHEET DRAWER -->
+        <section id="formatDrawer" class="format-drawer-wrapper" style="display: none;">
+          <div class="drawer-launch-card" onclick="openBottomSheet()">
+            <div style="font-size: 32px; margin-bottom: 8px;">📂</div>
+            <h3 class="drawer-launch-title">Curated Collections Drawer</h3>
+            <p class="drawer-launch-sub">Tap below to open the native bottom sheet with all furniture suites</p>
+            <button class="drawer-launch-btn">
+              <span>View Collections Drawer</span>
+              <span>↑</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- SECTION: OUR STORY & FOUNDER (Directly accessible!) -->
+        <section class="story-section">
+          <div class="story-tag">
+            <span>👑</span> Our Heritage Since 1990
+          </div>
+          <h2 class="story-title">
+            Good furniture. Good people. <em>Generations of trust.</em>
+          </h2>
+          <p style="font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.85); margin-bottom: 12px;">
+            For over three decades, Sri Aditya Enterprises has helped Hyderabad families make their houses feel like home with authentic seasoned teak and genuine honest pricing.
+          </p>
+
+          <div class="story-card-inner">
+            <img class="story-avatar" src="/src/assets/founder.jpg" alt="Founder & Proprietor" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80'" />
+            <div>
+              <div class="story-author-name">Founder & Proprietor</div>
+              <div class="story-author-role">Sri Aditya Enterprises • Vanasthalipuram</div>
+              <div style="font-size: 10.5px; color: var(--gold); margin-top: 2px;">"Your trust is our greatest asset."</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Visit Showroom Info -->
+        <div style="padding: 16px 18px 24px; text-align: center;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.5px;">📍 Visit Our Showroom</div>
+          <div style="font-size: 14px; font-weight: 700; color: var(--text-main); margin-top: 4px;">Vanasthalipuram, Hyderabad</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Mon – Sat: 10:00 AM – 9:00 PM • Sunday Weekoff</div>
+        </div>
+
+        <!-- Sticky Bottom Contact Bar -->
+        <div class="app-bottombar">
+          <button class="action-btn-call" onclick="alert('Calling showroom: +91 8019404140')">
+            <span>📞</span> Call Showroom
+          </button>
+          <button class="action-btn-whatsapp" onclick="alert('Opening WhatsApp for Sri Aditya Enterprises (+91 8019404140)')">
+            <span>💬</span> WhatsApp Inquiry
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Slide-Up Bottom Sheet (Format C) -->
+      <div id="sheetOverlay" class="sheet-overlay" onclick="closeBottomSheet(event)">
+        <div class="bottom-sheet" onclick="event.stopPropagation()">
+          <div class="sheet-handle-bar"></div>
+          <div class="sheet-header">
+            <div class="sheet-title">Browse Collections</div>
+            <button class="sheet-close-btn" onclick="closeBottomSheet()">✕</button>
+          </div>
+          <div class="sheet-content-scroll">
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">All 12 collections available to browse in an app-like drawer:</p>
+            
+            <div class="two-col-grid">
+              <div class="grid-furniture-card">
+                <div class="grid-img-box">
+                  <img src="/src/assets/sofa.jpg" alt="Sofa" onerror="this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&auto=format&fit=crop&q=80'" />
+                </div>
+                <div class="grid-card-body">
+                  <div class="grid-card-tag">Living</div>
+                  <h4 class="grid-card-title">Imperial Velvet Sofa</h4>
+                </div>
+              </div>
+
+              <div class="grid-furniture-card">
+                <div class="grid-img-box">
+                  <img src="/src/assets/bed.jpg" alt="Bed" onerror="this.src='https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500&auto=format&fit=crop&q=80'" />
+                </div>
+                <div class="grid-card-body">
+                  <div class="grid-card-tag">Bedroom</div>
+                  <h4 class="grid-card-title">Royal Teak Bed</h4>
+                </div>
+              </div>
+
+              <div class="grid-furniture-card">
+                <div class="grid-img-box">
+                  <img src="/src/assets/wardrobe.jpg" alt="Wardrobe" onerror="this.src='https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=500&auto=format&fit=crop&q=80'" />
+                </div>
+                <div class="grid-card-body">
+                  <div class="grid-card-tag">Wardrobe</div>
+                  <h4 class="grid-card-title">Teak Almirah</h4>
+                </div>
+              </div>
+
+              <div class="grid-furniture-card">
+                <div class="grid-img-box">
+                  <img src="/src/assets/dining.jpg" alt="Dining" onerror="this.src='https://images.unsplash.com/photo-1617806118233-18e1de247200?w=500&auto=format&fit=crop&q=80'" />
+                </div>
+                <div class="grid-card-body">
+                  <div class="grid-card-tag">Dining</div>
+                  <h4 class="grid-card-title">Aristocrat Dining</h4>
+                </div>
+              </div>
+            </div>
+
+            <button class="view-more-collections-btn" style="margin-top: 10px;" onclick="closeBottomSheet()">
+              Done Browsing ✓
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- INTERACTION SCRIPTS -->
+  <script>
+    // Theme Switcher
+    function setTheme(themeName, btn) {
+      document.documentElement.setAttribute('data-theme', themeName);
+      document.querySelectorAll('.poc-controls .ctrl-group:nth-child(1) .ctrl-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // UX Format Switcher
+    function setFormat(format, btn) {
+      document.getElementById('formatCarousel').style.display = (format === 'carousel') ? 'block' : 'none';
+      document.getElementById('formatGrid').style.display = (format === 'grid') ? 'block' : 'none';
+      document.getElementById('formatDrawer').style.display = (format === 'drawer') ? 'block' : 'none';
+
+      document.querySelectorAll('.poc-controls .ctrl-group:nth-child(2) .ctrl-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // Device View Mode (Phone vs Full)
+    function setDeviceMode(mode, btn) {
+      const container = document.getElementById('deviceContainer');
+      container.className = 'device-container mode-' + mode;
+      document.querySelectorAll('.poc-controls .ctrl-group:nth-child(3) .ctrl-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // Wardrobe Trigger Click
+    function handleWardrobeClick() {
+      const activeFormat = document.querySelector('.poc-controls .ctrl-group:nth-child(2) .ctrl-btn.active').textContent;
+      if (activeFormat.includes('Drawer')) {
+        openBottomSheet();
+      } else {
+        const target = document.getElementById('formatCarousel').style.display !== 'none' 
+          ? document.getElementById('formatCarousel') 
+          : document.getElementById('formatGrid');
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    // Category Filter Pills
+    function filterCategory(cat, btn) {
+      document.querySelectorAll('.category-pills-row .cat-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.cards-carousel-snap .carousel-furniture-card');
+      cards.forEach(card => {
+        if (cat === 'all' || card.dataset.cat === cat) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Bottom Sheet (Format C)
+    function openBottomSheet() {
+      document.getElementById('sheetOverlay').classList.add('open');
+    }
+
+    function closeBottomSheet(e) {
+      if (!e || e.target === document.getElementById('sheetOverlay') || e.target.classList.contains('sheet-close-btn')) {
+        document.getElementById('sheetOverlay').classList.remove('open');
+      }
+    }
+  </script>
+</body>
+</html>

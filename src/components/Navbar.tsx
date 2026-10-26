@@ -88,15 +88,15 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
       {isIday && <IndependenceDayBanner />}
 
       {/* Top Notice Bar (Strictly brand & location without instagram handle) */}
-      <div className="bg-[#263a2b] text-[#f3efe3] py-2 text-center text-[10px] sm:text-[11px] font-bold tracking-[0.14em] uppercase flex items-center justify-center px-3">
+      <div className="bg-[#1e3b2b] text-[#faeed4] py-2 text-center text-[10px] sm:text-[11px] font-bold tracking-[0.14em] uppercase flex items-center justify-center px-3">
         <span>FURNITURE FOR THE WAY YOU LIVE • VANASTHALIPURAM, HYDERABAD</span>
       </div>
 
       <nav
-        className={`w-full transition-all duration-300 border-b border-[#242820]/10 ${
+        className={`w-full transition-all duration-300 border-b border-[#e2e7e2] ${
           isScrolled
-            ? "bg-[#fffefa]/95 backdrop-blur-md shadow-sm py-2 sm:py-2.5"
-            : "bg-[#fffefa] py-3 sm:py-3.5"
+            ? "bg-[#f7f8f5]/95 backdrop-blur-md shadow-sm py-2 sm:py-2.5"
+            : "bg-[#f7f8f5] py-3 sm:py-3.5"
         }`}
       >
         {/* 🧵 Rakhi Garland */}
@@ -110,7 +110,7 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
             {/* Brand Logo & Title */}
             <button
               onClick={() => scrollToSection("home")}
-              className="flex items-center gap-3 text-left group"
+              className="flex items-center gap-3 text-left group cursor-pointer"
             >
               <img
                 src="/logo.png"
@@ -118,22 +118,22 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
                 className="w-10 h-10 sm:w-11 sm:h-11 object-contain"
               />
               <div>
-                <strong className="block text-xs sm:text-sm font-bold tracking-[0.08em] uppercase text-[#242820] group-hover:text-[#344b39] transition-colors leading-tight">
+                <strong className="block text-xs sm:text-sm font-bold tracking-[0.08em] uppercase text-[#142019] group-hover:text-[#1e3b2b] transition-colors leading-tight">
                   Sri Aditya Enterprises
                 </strong>
-                <small className="block text-[9px] sm:text-[10px] text-[#6d7168] tracking-[0.18em] uppercase mt-0.5">
+                <small className="block text-[9px] sm:text-[10px] text-[#54665c] tracking-[0.18em] uppercase mt-0.5">
                   ESTABLISHED 1990
                 </small>
               </div>
             </button>
 
             {/* Desktop Nav Links */}
-            <div className="hidden md:flex items-center gap-7 text-xs font-semibold text-[#51564d]">
+            <div className="hidden md:flex items-center gap-7 text-xs font-semibold text-[#54665c]">
               {navLinks.map((link) => (
                 <button
                   key={link.label}
                   onClick={() => handleNavClick(link)}
-                  className="hover:text-[#b7834b] transition-colors py-1 cursor-pointer"
+                  className="hover:text-[#c99f52] transition-colors py-1 cursor-pointer"
                 >
                   {link.label}
                 </button>
@@ -144,7 +144,7 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
             <div className="flex items-center gap-2 sm:gap-3">
               <button
                 onClick={() => scrollToSection("contact")}
-                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 border border-[#344b39] text-[#344b39] hover:bg-[#344b39] hover:text-white font-bold text-xs tracking-wider uppercase rounded transition-colors cursor-pointer"
+                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 border border-[#1e3b2b] text-[#1e3b2b] hover:bg-[#1e3b2b] hover:text-[#faeed4] font-bold text-xs tracking-wider uppercase rounded-xl transition-colors cursor-pointer"
               >
                 <span>PLAN YOUR VISIT</span>
                 <ArrowUpRight size={14} />
@@ -152,7 +152,7 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
 
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-1.5 text-[#242820] rounded hover:bg-[#f6f4ed]"
+                className="md:hidden p-1.5 text-[#142019] rounded-lg hover:bg-white"
                 aria-label="Toggle menu"
               >
                 {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -162,12 +162,12 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
 
           {/* Mobile Menu Drawer */}
           {isMobileMenuOpen && (
-            <div className="md:hidden bg-[#fffefa] border-t border-[#e6e4da] mt-3 py-3 rounded-xl shadow-lg space-y-1 animate-fade-in">
+            <div className="md:hidden bg-white border border-[#e2e7e2] mt-3 py-3 rounded-2xl shadow-xl space-y-1 animate-fade-in">
               {navLinks.map((link) => (
                 <button
                   key={link.label}
                   onClick={() => handleNavClick(link)}
-                  className="block w-full text-left px-4 py-2.5 text-xs font-bold text-[#242820] hover:bg-[#f6f4ed] rounded transition-colors"
+                  className="block w-full text-left px-4 py-2.5 text-xs font-bold text-[#142019] hover:bg-[#f7f8f5] rounded-lg transition-colors cursor-pointer"
                 >
                   {link.label}
                 </button>
@@ -175,7 +175,7 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
               <div className="px-4 pt-2">
                 <button
                   onClick={() => scrollToSection("contact")}
-                  className="w-full py-2.5 bg-[#344b39] text-white font-bold text-xs uppercase tracking-wider rounded text-center cursor-pointer"
+                  className="w-full py-2.5 bg-[#1e3b2b] text-[#faeed4] font-bold text-xs uppercase tracking-wider rounded-xl text-center cursor-pointer shadow-md"
                 >
                   Plan Your Visit ↗
                 </button>

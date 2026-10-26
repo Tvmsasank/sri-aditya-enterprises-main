@@ -18,7 +18,7 @@ const Index = () => {
       link.href = "/favicon.ico";
     });
     const themeColorMeta = document.querySelector<HTMLMetaElement>("meta[name='theme-color']");
-    if (themeColorMeta) themeColorMeta.content = "#344b39";
+    if (themeColorMeta) themeColorMeta.content = "#1e3b2b";
   }, []);
 
   const ownerPhone = (import.meta.env.VITE_OWNER_PHONE || "918019404140").replace(/\D/g, "");
@@ -68,7 +68,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f6f4ed] text-[#242820] font-sans selection:bg-[#d6b486] selection:text-[#242820]">
+    <div className="min-h-screen bg-[#f7f8f5] text-[#142019] font-sans selection:bg-[#c99f52] selection:text-white transition-colors">
       <Navbar onOpenCollections={handleOpenCollections} />
       <main>
         <Hero
@@ -85,10 +85,10 @@ const Index = () => {
       <Footer onOpenCollections={handleOpenCollections} />
 
       {/* Floating / Sticky Mobile Action Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#fffefa]/95 backdrop-blur-md border-t border-[#e6e4da] p-2.5 flex items-center gap-2 shadow-2xl">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#e2e7e2] p-2.5 flex items-center gap-2 shadow-2xl">
         <a
           href="tel:+918019404140"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-lg border border-[#344b39] text-[#344b39] font-bold text-xs uppercase tracking-wider"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-[#1e3b2b] text-[#1e3b2b] bg-white font-bold text-xs uppercase tracking-wider active:scale-98 transition-transform"
         >
           <Phone size={14} />
           <span>Call Showroom</span>
@@ -97,7 +97,7 @@ const Index = () => {
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-[#344b39] text-white font-bold text-xs uppercase tracking-wider shadow-sm"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-[#25d366] text-white font-bold text-xs uppercase tracking-wider shadow-md active:scale-98 transition-transform"
         >
           <MessageCircle size={14} />
           <span>WhatsApp</span>

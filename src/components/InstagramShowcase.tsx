@@ -43,16 +43,16 @@ export const InstagramShowcase: React.FC = () => {
   const instaUrl = "https://www.instagram.com/sri_aditya_enterprises/";
 
   return (
-    <section id="instagram" className="py-20 sm:py-24 bg-[#fffefa] border-t border-[#e6e4da]">
+    <section id="instagram" className="py-16 sm:py-24 bg-white border-t border-[#e2e7e2] transition-colors">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 sm:mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-8 sm:mb-12">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#b7834b] flex items-center gap-2 mb-2">
-              <Instagram className="w-3.5 h-3.5 text-[#b7834b]" />
+            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#c99f52] flex items-center gap-2 mb-1.5">
+              <Instagram className="w-3.5 h-3.5 text-[#c99f52]" />
               <span>Connect on Instagram</span>
             </div>
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-semibold text-[#242820] tracking-tight">
+            <h2 className="font-heading text-2xl sm:text-4xl md:text-5xl font-semibold text-[#142019] tracking-tight">
               Follow Our Journey
             </h2>
           </div>
@@ -62,7 +62,7 @@ export const InstagramShowcase: React.FC = () => {
               href={instaUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#344b39] hover:bg-[#263a2b] text-[#f3efe3] font-bold text-xs tracking-wider uppercase transition-transform hover:scale-105 active:scale-95 shadow-md"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1e3b2b] hover:bg-[#294f3a] text-[#faeed4] font-bold text-xs tracking-wider uppercase transition-transform hover:scale-105 active:scale-95 shadow-md"
             >
               <Instagram className="w-4 h-4" />
               <span>@sri_aditya_enterprises ↗</span>
