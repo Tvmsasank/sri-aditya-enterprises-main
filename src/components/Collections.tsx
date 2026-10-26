@@ -278,15 +278,15 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
         {/* ========================================================
             DESKTOP / TABLET VIEW: RESPONSIVE GRID WITH TUMBLING BOUNCE
             ======================================================== */}
-        <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-4">
           {furnitureItems.map((item, index) => (
             <div
               key={`desktop-${item.name}`}
               onClick={() => handleItemInquire(item.name)}
-              className="group relative h-52 lg:h-64 rounded-xl overflow-hidden bg-[#e8e4da] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 card-falling"
+              className="category-card card-falling"
               style={
                 {
-                  "--fall-delay": `${index * 0.07}s`,
+                  "--fall-delay": `${index * 0.065}s`,
                   "--rand-rot": item.rot,
                   "--rand-x": item.x,
                 } as React.CSSProperties
@@ -295,20 +295,16 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
               <img
                 src={item.image}
                 alt={item.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
               />
-              {/* Bottom Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-
-              {/* Title & Tag */}
-              <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 z-10 text-white">
-                <small className="block text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.16em] text-[#e5c8a5] mb-0.5">
+              <div className="category-card-overlay">
+                <span className="category-tag">
                   {item.num} • {item.tag}
-                </small>
-                <b className="font-heading text-base sm:text-xl font-medium leading-tight">
+                </span>
+                <b className="category-name">
                   {item.name}
                 </b>
-                <span className="block text-[10px] text-white/70 group-hover:text-[#f5dfbe] transition-colors mt-1 font-medium">
+                <span className="category-action">
                   Inquire on WhatsApp →
                 </span>
               </div>
