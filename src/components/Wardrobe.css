@@ -1,0 +1,436 @@
+/* ========================================================
+   3D WARDROBE & FALLING TILES STYLES (MATCHING POC)
+   ======================================================== */
+
+.wardrobe-stage {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1600px;
+  user-select: none;
+}
+
+/* Floating Wardrobe Action Pill */
+.wardrobe-callout {
+  position: absolute;
+  top: -14px;
+  z-index: 50;
+  background: linear-gradient(135deg, #fffefa, #fbf7ee);
+  color: #242820;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid #b7834b;
+  box-shadow: 0 8px 24px rgba(183, 131, 75, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: floatBadge 3.2s ease-in-out infinite;
+}
+
+.wardrobe-callout:hover {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 12px 30px rgba(183, 131, 75, 0.35);
+  background: #ffffff;
+}
+
+.wardrobe-callout .key-icon {
+  font-size: 14px;
+  display: inline-block;
+  animation: wiggle 2s infinite ease-in-out;
+}
+
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-15deg); }
+  75% { transform: rotate(15deg); }
+}
+
+/* 3D Wardrobe Cabinet */
+.wardrobe-cabinet {
+  position: relative;
+  width: min(440px, 92%);
+  height: 480px;
+  background: #2a160d;
+  border-radius: 12px;
+  box-shadow: 
+    0 25px 60px -10px rgba(0, 0, 0, 0.45),
+    0 10px 20px -5px rgba(0, 0, 0, 0.25),
+    inset 0 0 40px rgba(0, 0, 0, 0.8);
+  transform-style: preserve-3d;
+  cursor: pointer;
+  transition: transform 0.4s ease;
+}
+
+.wardrobe-cabinet:hover {
+  transform: translateY(-4px) scale(1.01);
+}
+
+/* Top Crown Moulding */
+.wardrobe-crown {
+  position: absolute;
+  top: -14px;
+  left: -10px;
+  right: -10px;
+  height: 18px;
+  background: linear-gradient(180deg, #6c4026 0%, #462715 60%, #2e180d 100%);
+  border-radius: 8px 8px 3px 3px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border-top: 1px solid #8e5837;
+  z-index: 30;
+}
+
+.wardrobe-crown::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 6px;
+  right: 6px;
+  height: 4px;
+  background: #2a160d;
+}
+
+/* Bottom Plinth */
+.wardrobe-base {
+  position: absolute;
+  bottom: -16px;
+  left: -8px;
+  right: -8px;
+  height: 20px;
+  background: linear-gradient(180deg, #351d11 0%, #22120a 100%);
+  border-radius: 3px 3px 8px 8px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+  z-index: 30;
+}
+
+/* Outer Wooden Casing Frame */
+.wardrobe-frame {
+  position: absolute;
+  inset: 0;
+  border: 10px solid #4a2c19;
+  border-radius: 10px;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  z-index: 25;
+}
+
+/* Interior of Wardrobe (Packed with collections) */
+.wardrobe-interior {
+  position: absolute;
+  inset: 8px;
+  background: linear-gradient(180deg, #1f1109 0%, #301b10 40%, #1a0e07 100%);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  z-index: 5;
+  box-shadow: inset 0 0 45px rgba(0, 0, 0, 0.9);
+}
+
+.wardrobe-rod {
+  position: absolute;
+  top: 36px;
+  left: 14px;
+  right: 14px;
+  height: 6px;
+  background: linear-gradient(180deg, #d8ba82, #85693c, #3f311c);
+  border-radius: 3px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  z-index: 6;
+}
+
+.wardrobe-shelf {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  height: 8px;
+  background: linear-gradient(180deg, #5c3822, #392113);
+  border-top: 1px solid #784b2e;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  z-index: 6;
+}
+
+.shelf-top { top: 120px; }
+.shelf-mid { top: 250px; }
+.shelf-bot { top: 375px; }
+
+/* The Mini Stacked Packed Cards Inside */
+.interior-packed-preview {
+  position: absolute;
+  inset: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 8px;
+  padding-top: 24px;
+  z-index: 8;
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.mini-packed-card {
+  background: #f4efe4;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.4s ease, opacity 0.4s;
+}
+
+.mini-packed-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mini-packed-card .mini-label {
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  right: 2px;
+  background: rgba(36, 40, 32, 0.88);
+  color: #f3efe3;
+  font-size: 7px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 1px 2px;
+  border-radius: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* When doors open, the mini collection cards BURST FORWARD and FALL DOWN OUT OF THE WARDROBE! */
+.wardrobe-opened .interior-packed-preview .mini-packed-card {
+  animation: burstMini 0.8s forwards ease-out;
+}
+
+@keyframes burstMini {
+  0% {
+    transform: scale(1) translateZ(0);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.15) translateZ(80px) rotate(calc(var(--rand-rot, 0deg) * 1.5));
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.6) translateY(140px) translateZ(120px);
+    opacity: 0;
+  }
+}
+
+.interior-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 35%, rgba(245, 223, 190, 0.28), transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 7;
+}
+
+.wardrobe-opened .interior-glow {
+  opacity: 1;
+}
+
+.interior-crest {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: rgba(229, 200, 165, 0.5);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  z-index: 6;
+}
+
+/* ================= 3D DOUBLE WOODEN DOORS ================= */
+.doors-wrapper {
+  position: absolute;
+  inset: 6px;
+  display: flex;
+  z-index: 20;
+  pointer-events: auto;
+}
+
+.door {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.015) 0px,
+      rgba(0, 0, 0, 0.04) 2px,
+      rgba(255, 255, 255, 0.02) 6px,
+      transparent 12px
+    ),
+    linear-gradient(135deg, #7c4728 0%, #522f1a 45%, #381f10 100%);
+  box-shadow: 
+    inset 0 0 20px rgba(0, 0, 0, 0.6),
+    inset 0 2px 4px rgba(255, 255, 255, 0.15);
+  transform-style: preserve-3d;
+  transition: transform 0.95s cubic-bezier(0.25, 1, 0.45, 1), box-shadow 0.95s;
+  cursor: pointer;
+}
+
+.door-left {
+  border-radius: 6px 0 0 6px;
+  transform-origin: left center;
+  border-right: 1.5px solid #23130a;
+}
+
+.door-right {
+  border-radius: 0 6px 6px 0;
+  transform-origin: right center;
+  border-left: 1.5px solid #6b3e23;
+}
+
+.door-panel-top,
+.door-panel-bot {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  border: 2px solid #331d10;
+  background: linear-gradient(145deg, rgba(0, 0, 0, 0.15), rgba(255, 255, 255, 0.05));
+  border-radius: 4px;
+  box-shadow: 
+    inset 2px 2px 6px rgba(0, 0, 0, 0.5),
+    1px 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+.door-panel-top {
+  top: 24px;
+  height: 190px;
+}
+
+.door-panel-bot {
+  bottom: 24px;
+  height: 190px;
+}
+
+.door-handle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 72px;
+  background: linear-gradient(90deg, #fcedca 0%, #d4a359 40%, #8c6426 100%);
+  border-radius: 5px;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.45),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  z-index: 25;
+  transition: transform 0.2s ease;
+}
+
+.door-left .door-handle { right: 14px; }
+.door-right .door-handle { left: 14px; }
+
+.door-handle::before,
+.door-handle::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 6px;
+  background: #8c6426;
+  border-radius: 2px;
+  left: -2px;
+}
+.door-handle::before { top: 6px; }
+.door-handle::after { bottom: 6px; }
+
+.hinge {
+  position: absolute;
+  width: 5px;
+  height: 22px;
+  background: linear-gradient(180deg, #caa05b, #705221);
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  z-index: 22;
+}
+.door-left .hinge { left: 2px; }
+.door-right .hinge { right: 2px; }
+.hinge-top { top: 40px; }
+.hinge-bot { bottom: 40px; }
+
+/* ================= HOVER CRACK (TILES VISIBLE IN THE MIDDLE GAP!) ================= */
+.wardrobe-cabinet:hover:not(.wardrobe-opened) .door-left {
+  transform: rotateY(-8deg);
+}
+
+.wardrobe-cabinet:hover:not(.wardrobe-opened) .door-right {
+  transform: rotateY(8deg);
+}
+
+/* ================= FULL OPENED 3D ROTATION ================= */
+.wardrobe-opened .door-left {
+  transform: rotateY(-118deg);
+  box-shadow: -15px 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.wardrobe-opened .door-right {
+  transform: rotateY(118deg);
+  box-shadow: 15px 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* ================= FALLING TILES CHOREOGRAPHY ================= */
+.card-falling {
+  animation: tileTumbleFall 0.95s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: var(--fall-delay, 0s);
+}
+
+@keyframes tileTumbleFall {
+  0% {
+    opacity: 0;
+    transform: translateY(-240px) translateX(calc(var(--rand-x, 0px) * 1.5)) rotate(var(--rand-rot, -12deg)) scale(0.65);
+    box-shadow: 0 35px 50px rgba(0, 0, 0, 0.35);
+    filter: blur(2px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(24px) translateX(calc(var(--rand-x, 0px) * 0.3)) rotate(calc(var(--rand-rot, -12deg) * -0.4)) scale(1.04);
+    filter: blur(0);
+  }
+  75% {
+    transform: translateY(-8px) rotate(calc(var(--rand-rot, -12deg) * 0.15)) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    filter: blur(0);
+  }
+}
+
+.card-settled {
+  opacity: 1 !important;
+  transform: translateY(0) rotate(0deg) scale(1) !important;
+  filter: none !important;
+  pointer-events: auto !important;
+}
+
+@media (max-width: 900px) {
+  .wardrobe-stage { height: 440px; }
+  .wardrobe-cabinet { height: 420px; }
+}

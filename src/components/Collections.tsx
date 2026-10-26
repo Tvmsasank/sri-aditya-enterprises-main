@@ -19,6 +19,7 @@ import {
 } from "@/lib/festive";
 import { DivineDivider } from "./DivineDivider";
 import { RakhiDivider } from "./RakhiDivider";
+import "./Wardrobe.css";
 
 const DEFAULT_OWNER_PHONE = "918019404140";
 
@@ -33,7 +34,7 @@ const furnitureItems = [
     tag: "Gather",
     name: "Living Room",
     image: livingroom,
-    rot: "-8deg",
+    rot: "-9deg",
     x: "-25px",
   },
   {
@@ -41,7 +42,7 @@ const furnitureItems = [
     tag: "Unwind",
     name: "Bedroom",
     image: bedroomfurniture,
-    rot: "7deg",
+    rot: "8deg",
     x: "20px",
   },
   {
@@ -49,7 +50,7 @@ const furnitureItems = [
     tag: "Come together",
     name: "Dining",
     image: diningtable,
-    rot: "-5deg",
+    rot: "-6deg",
     x: "-15px",
   },
   {
@@ -57,72 +58,72 @@ const furnitureItems = [
     tag: "Rest Well",
     name: "Sleepwell Mattress",
     image: sleepwellmattress,
-    rot: "9deg",
-    x: "28px",
+    rot: "11deg",
+    x: "30px",
   },
   {
     num: "05",
     tag: "Lounge",
     name: "Sofa Sets",
     image: sofasets,
-    rot: "-9deg",
-    x: "-22px",
+    rot: "-10deg",
+    x: "-28px",
   },
   {
     num: "06",
     tag: "Make room",
     name: "Storage & Wardrobe",
     image: wardrobe,
-    rot: "6deg",
-    x: "16px",
+    rot: "7deg",
+    x: "18px",
   },
   {
     num: "07",
     tag: "Versatile",
     name: "Sofa - Bed",
     image: sofacumbed,
-    rot: "-7deg",
-    x: "-18px",
+    rot: "-8deg",
+    x: "-20px",
   },
   {
     num: "08",
     tag: "Finishing touch",
     name: "Furnishings",
     image: furnishings,
-    rot: "8deg",
-    x: "22px",
+    rot: "9deg",
+    x: "24px",
   },
   {
     num: "09",
     tag: "Organize",
     name: "Storage Solutions",
     image: storagesolution,
-    rot: "-6deg",
-    x: "-14px",
+    rot: "-7deg",
+    x: "-16px",
   },
   {
     num: "10",
     tag: "Seating",
     name: "Plastic Chairs",
     image: plastichairs,
-    rot: "9deg",
-    x: "24px",
+    rot: "10deg",
+    x: "22px",
   },
   {
     num: "11",
     tag: "Security",
     name: "Godrej Lockers",
     image: lockers,
-    rot: "-8deg",
-    x: "-20px",
+    rot: "-9deg",
+    x: "-26px",
   },
   {
     num: "12",
     tag: "Accessories",
     name: "Showroom Essentials",
     image: miscellaneous,
-    rot: "5deg",
-    x: "12px",
+    rot: "6deg",
+    x: "15px",
   },
 ];
 
@@ -130,6 +131,11 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
   const isRakhi = isRakshaBandhanActive();
   const isIday = isIndependenceDayActive();
   const isVratham = isVaralakshmiVrathamActive();
+
+  // If wardrobe is closed, do not render this section (Our Story sits directly below TrustRow)
+  if (!isOpen) {
+    return null;
+  }
 
   const handleItemInquire = (itemName: string) => {
     const rawOwner = (import.meta.env.VITE_OWNER_PHONE || DEFAULT_OWNER_PHONE) as string;
@@ -144,11 +150,7 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
   return (
     <section
       id="collections"
-      className={`relative bg-[#fffefa] transition-all duration-700 ease-in-out ${
-        isOpen
-          ? "max-h-[5000px] opacity-100 py-16 sm:py-24 border-t border-[#e6e4da]"
-          : "max-h-0 opacity-0 overflow-hidden pointer-events-none py-0 my-0 border-none"
-      }`}
+      className="relative py-16 sm:py-24 bg-[#fffefa] border-t border-[#e6e4da] animate-fade-in"
     >
       {/* Tricolor Waves for Independence Day */}
       {isIday && (
@@ -178,7 +180,7 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
             </h2>
             <div className="inline-flex items-center gap-2 mt-3 px-3 py-1 bg-[#eef2eb] text-[#344b39] text-xs font-semibold rounded-full border border-[#d4ded0]">
               <span className="w-2 h-2 rounded-full bg-[#344b39] animate-pulse" />
-              <span>Wardrobe Released • 12 Categories Unlocked</span>
+              <span>Wardrobe Released • 12 Collections Unlocked</span>
             </div>
           </div>
 
@@ -191,7 +193,7 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
                 onClick={onClose}
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#c7c8bf] hover:border-[#344b39] text-[#344b39] hover:bg-[#344b39] hover:text-white text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
               >
-                <span>Close Wardrobe 🔒</span>
+                <span>Close & Re-pack Wardrobe 🔒</span>
               </button>
             )}
           </div>
@@ -201,16 +203,16 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
         {isRakhi && <RakhiDivider />}
         {isVratham && <DivineDivider />}
 
-        {/* Category Grid with Cascading Tumble Animation */}
+        {/* Category Grid with Cascading Bouncy Tumble Animation */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
           {furnitureItems.map((item, index) => (
             <div
               key={item.name}
               onClick={() => handleItemInquire(item.name)}
-              className="group relative h-48 sm:h-56 md:h-64 rounded-xl overflow-hidden bg-[#e8e4da] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 animate-tile-tumble"
+              className="group relative h-48 sm:h-56 md:h-64 rounded-xl overflow-hidden bg-[#e8e4da] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 card-falling"
               style={
                 {
-                  "--fall-delay": `${index * 0.065}s`,
+                  "--fall-delay": `${index * 0.07}s`,
                   "--rand-rot": item.rot,
                   "--rand-x": item.x,
                 } as React.CSSProperties
