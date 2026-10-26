@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { TrustRow } from "@/components/TrustRow";
@@ -10,6 +10,8 @@ import { Footer } from "@/components/Footer";
 import { Phone, MessageCircle } from "lucide-react";
 
 const Index = () => {
+  const [isWardrobeOpen, setIsWardrobeOpen] = useState(false);
+
   useEffect(() => {
     document.title = "Sri Aditya Enterprises";
     document.querySelectorAll<HTMLLinkElement>("link[rel*='icon'], link[rel='apple-touch-icon']").forEach((link) => {
@@ -24,18 +26,70 @@ const Index = () => {
     "Hello Sri Aditya Enterprises 👋, I would like to know more about your furniture collections."
   )}`;
 
+  const handleToggleWardrobe = () => {
+    setIsWardrobeOpen((prev) => {
+      const nextState = !prev;
+      if (nextState) {
+        setTimeout(() => {
+          const el = document.getElementById("collections");
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 350);
+      }
+      return nextState;
+    });
+  };
+
+  const handleOpenCollections = () => {
+    setIsWardrobeOpen(true);
+    setTimeout(() => {
+      const el = document.getElementById("collections");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 350);
+  };
+
+  const handleCloseWardrobe = () => {
+    setIsWardrobeOpen(false);
+    const heroEl = document.getElementById("home");
+    if (heroEl) {
+      heroEl.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const scrollToSection = (targetId: string) => {
+    const cleanId = targetId.replace(/^#/, "");
+    if (cleanId === "collections") {
+      handleOpenCollections();
+      return;
+    }
+    const element = document.getElementById(cleanId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f6f4ed] text-[#242820] font-sans selection:bg-[#d6b486] selection:text-[#242820]">
-      <Navbar />
+      <Navbar onOpenCollections={handleOpenCollections} />
       <main>
-        <Hero />
+        <Hero
+          isWardrobeOpen={isWardrobeOpen}
+          onToggleWardrobe={handleToggleWardrobe}
+          onScrollTo={scrollToSection}
+        />
         <TrustRow />
-        <Collections />
+        <Collections isOpen={isWardrobeOpen} onClose={handleCloseWardrobe} />
         <About />
         <InstagramShowcase />
         <Contact />
       </main>
-      <Footer />
+      <Footer onOpenCollections={handleOpenCollections} />
 
       {/* Floating / Sticky Mobile Action Bar */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#fffefa]/95 backdrop-blur-md border-t border-[#e6e4da] p-2.5 flex items-center gap-2 shadow-2xl">

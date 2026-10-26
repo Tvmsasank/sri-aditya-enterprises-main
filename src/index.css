@@ -234,4 +234,38 @@
   animation: wave-drift-slow 11s ease-in-out infinite;
 }
 
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 2.6s ease-in-out infinite;
+}
+
+@keyframes tileTumbleFall {
+  0% {
+    opacity: 0;
+    transform: translateY(-220px) translateX(var(--rand-x, 0px)) rotate(var(--rand-rot, -10deg)) scale(0.68);
+    box-shadow: 0 30px 40px rgba(0, 0, 0, 0.35);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(18px) translateX(calc(var(--rand-x, 0px) * 0.3)) rotate(calc(var(--rand-rot, -10deg) * -0.35)) scale(1.03);
+  }
+  75% {
+    transform: translateY(-6px) rotate(calc(var(--rand-rot, -10deg) * 0.15)) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.animate-tile-tumble {
+  animation: tileTumbleFall 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: var(--fall-delay, 0s);
+}
+
 

@@ -1,16 +1,13 @@
-import { HeroCarousel } from "./HeroCarousel";
+import React from "react";
+import { WardrobeCabinet } from "./WardrobeCabinet";
 
-export const Hero = () => {
-  const scrollToCollections = () => {
-    const el = document.querySelector("#collections");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
+interface HeroProps {
+  isWardrobeOpen: boolean;
+  onToggleWardrobe: () => void;
+  onScrollTo: (targetId: string) => void;
+}
 
-  const scrollToVisit = () => {
-    const el = document.querySelector("#contact");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
+export const Hero: React.FC<HeroProps> = ({ isWardrobeOpen, onToggleWardrobe, onScrollTo }) => {
   return (
     <section id="home" className="pt-28 sm:pt-32 md:pt-36 pb-12 sm:pb-16 bg-[#f6f4ed] overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
@@ -39,14 +36,14 @@ export const Hero = () => {
             {/* Buttons */}
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <button
-                onClick={scrollToCollections}
-                className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg bg-[#344b39] hover:bg-[#263a2b] text-[#f3efe3] font-bold text-xs tracking-wider uppercase transition-transform hover:scale-105 active:scale-95 shadow-md"
+                onClick={onToggleWardrobe}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-[#344b39] hover:bg-[#263a2b] text-[#f3efe3] font-bold text-xs tracking-wider uppercase transition-transform hover:scale-105 active:scale-95 shadow-md cursor-pointer"
               >
-                <span>EXPLORE COLLECTIONS →</span>
+                <span>{isWardrobeOpen ? "EXPLORE COLLECTIONS 🔓" : "EXPLORE COLLECTIONS 🗝️"}</span>
               </button>
               <button
-                onClick={scrollToVisit}
-                className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg bg-transparent border border-[#c7c8bf] hover:border-[#344b39] text-[#344b39] font-bold text-xs tracking-wider uppercase transition-colors"
+                onClick={() => onScrollTo("contact")}
+                className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg bg-transparent border border-[#c7c8bf] hover:border-[#344b39] text-[#344b39] font-bold text-xs tracking-wider uppercase transition-colors cursor-pointer"
               >
                 <span>VISIT OUR SHOWROOM</span>
               </button>
@@ -60,9 +57,9 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Right Column: Multi-Photo Smooth Slideshow Carousel */}
-          <div className="lg:col-span-7 w-full">
-            <HeroCarousel />
+          {/* Right Column: 3D Wardrobe Cabinet */}
+          <div className="lg:col-span-7 w-full flex justify-center">
+            <WardrobeCabinet isOpen={isWardrobeOpen} onToggle={onToggleWardrobe} />
           </div>
         </div>
       </div>

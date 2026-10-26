@@ -1,8 +1,26 @@
 import { ArrowUp, Instagram, MessageCircle, Phone } from "lucide-react";
 
-export const Footer = () => {
+interface FooterProps {
+  onOpenCollections?: () => void;
+}
+
+export const Footer = ({ onOpenCollections }: FooterProps) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  };
+
+  const scrollTo = (id: string) => {
+    if (id === "collections" && onOpenCollections) {
+      onOpenCollections();
+    }
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
   };
 
   const currentYear = new Date().getFullYear();
@@ -30,15 +48,15 @@ export const Footer = () => {
 
           {/* Nav / Social Links */}
           <div className="flex flex-wrap items-center gap-6 sm:gap-8 text-xs font-medium text-white/80">
-            <a href="#collections" className="hover:text-[#e5c8a5] transition-colors">
+            <button onClick={() => scrollTo("collections")} className="hover:text-[#e5c8a5] transition-colors cursor-pointer">
               Collections
-            </a>
-            <a href="#about" className="hover:text-[#e5c8a5] transition-colors">
+            </button>
+            <button onClick={() => scrollTo("about")} className="hover:text-[#e5c8a5] transition-colors cursor-pointer">
               Our Story
-            </a>
-            <a href="#contact" className="hover:text-[#e5c8a5] transition-colors">
+            </button>
+            <button onClick={() => scrollTo("contact")} className="hover:text-[#e5c8a5] transition-colors cursor-pointer">
               Visit Showroom
-            </a>
+            </button>
             <a
               href="https://www.instagram.com/sri_aditya_enterprises/"
               target="_blank"

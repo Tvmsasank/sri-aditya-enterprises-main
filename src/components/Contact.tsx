@@ -61,8 +61,8 @@ export const Contact = () => {
             </p>
 
             {/* Detail Grid */}
-            <div className="grid grid-cols-2 gap-4 py-2 border-y border-[#e6e4da]">
-              <div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 py-3 border-y border-[#e6e4da]">
+              <div className="col-span-2 sm:col-span-1">
                 <b className="block text-[10px] uppercase font-bold tracking-[0.14em] text-[#344b39] mb-1">
                   Find us
                 </b>
@@ -83,18 +83,26 @@ export const Contact = () => {
               </div>
               <div>
                 <b className="block text-[10px] uppercase font-bold tracking-[0.14em] text-[#344b39] mb-1">
-                  We're open
+                  We're open on
                 </b>
-                <span className="text-xs sm:text-sm text-[#55594f]">
-                  Tue–Sun · 9:30 am–9:00 pm
+                <span className="text-xs sm:text-sm text-[#55594f] font-semibold">
+                  Tuesday – Sunday
                 </span>
               </div>
               <div>
                 <b className="block text-[10px] uppercase font-bold tracking-[0.14em] text-[#344b39] mb-1">
-                  Closed
+                  Weekoffs
                 </b>
-                <span className="text-xs sm:text-sm text-amber-700 font-semibold">
+                <span className="text-xs sm:text-sm text-amber-800 font-semibold">
                   Mondays
+                </span>
+              </div>
+              <div>
+                <b className="block text-[10px] uppercase font-bold tracking-[0.14em] text-[#344b39] mb-1">
+                  Timings
+                </b>
+                <span className="text-xs sm:text-sm text-[#344b39] font-bold">
+                  9:30 am – 9:00 pm
                 </span>
               </div>
             </div>

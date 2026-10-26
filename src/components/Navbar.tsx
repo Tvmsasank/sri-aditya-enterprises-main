@@ -12,9 +12,9 @@ import {
 } from "@/lib/festive";
 
 const navLinks = [
-  { label: "Collections", href: "#collections" },
-  { label: "Our story", href: "#about" },
-  { label: "Visit us", href: "#contact" },
+  { label: "Collections", target: "collections" },
+  { label: "Our story", target: "about" },
+  { label: "Visit us", target: "contact" },
   {
     label: "Instagram",
     href: "https://www.instagram.com/sri_aditya_enterprises/",
@@ -27,7 +27,11 @@ const navLinks = [
   },
 ];
 
-export const Navbar = () => {
+interface NavbarProps {
+  onOpenCollections?: () => void;
+}
+
+export const Navbar = ({ onOpenCollections }: NavbarProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isRakhi = isRakshaBandhanActive();
@@ -42,25 +46,33 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
+  const scrollToSection = (targetId: string) => {
+    const cleanId = targetId.replace(/^#/, "");
+    if (cleanId === "collections" && onOpenCollections) {
+      onOpenCollections();
+    }
+    const element = document.getElementById(cleanId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
+    }
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname);
     }
     setIsMobileMenuOpen(false);
   };
 
   interface NavLinkItem {
     label: string;
-    href: string;
+    target?: string;
+    href?: string;
     external?: boolean;
   }
 
   const handleNavClick = (link: NavLinkItem) => {
-    if (link.external) {
+    if (link.external && link.href) {
       window.open(link.href, "_blank", "noopener,noreferrer");
-    } else {
-      scrollToSection(link.href);
+    } else if (link.target) {
+      scrollToSection(link.target);
     }
   };
 
@@ -75,18 +87,9 @@ export const Navbar = () => {
       {/* 🇮🇳 Independence Day Festive Ribbon */}
       {isIday && <IndependenceDayBanner />}
 
-      {/* Top Notice Bar */}
-      <div className="bg-[#263a2b] text-[#f3efe3] py-2 text-center text-[10px] sm:text-[11px] font-bold tracking-[0.14em] uppercase flex items-center justify-center gap-3 px-3">
+      {/* Top Notice Bar (Strictly brand & location without instagram handle) */}
+      <div className="bg-[#263a2b] text-[#f3efe3] py-2 text-center text-[10px] sm:text-[11px] font-bold tracking-[0.14em] uppercase flex items-center justify-center px-3">
         <span>FURNITURE FOR THE WAY YOU LIVE • VANASTHALIPURAM, HYDERABAD</span>
-        <a
-          href="https://www.instagram.com/sri_aditya_enterprises/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden md:inline-flex items-center gap-1 text-[#e5c8a5] hover:underline normal-case tracking-normal text-xs"
-        >
-          <Instagram size={13} />
-          <span>@sri_aditya_enterprises</span>
-        </a>
       </div>
 
       <nav
@@ -106,7 +109,7 @@ export const Navbar = () => {
           <div className="flex items-center justify-between">
             {/* Brand Logo & Title */}
             <button
-              onClick={() => scrollToSection("#home")}
+              onClick={() => scrollToSection("home")}
               className="flex items-center gap-3 text-left group"
             >
               <img
@@ -128,9 +131,9 @@ export const Navbar = () => {
             <div className="hidden md:flex items-center gap-7 text-xs font-semibold text-[#51564d]">
               {navLinks.map((link) => (
                 <button
-                  key={link.href}
+                  key={link.label}
                   onClick={() => handleNavClick(link)}
-                  className="hover:text-[#b7834b] transition-colors py-1"
+                  className="hover:text-[#b7834b] transition-colors py-1 cursor-pointer"
                 >
                   {link.label}
                 </button>
@@ -140,8 +143,8 @@ export const Navbar = () => {
             {/* Right Action Button & Mobile Toggle */}
             <div className="flex items-center gap-2 sm:gap-3">
               <button
-                onClick={() => scrollToSection("#contact")}
-                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 border border-[#344b39] text-[#344b39] hover:bg-[#344b39] hover:text-white font-bold text-xs tracking-wider uppercase rounded transition-colors"
+                onClick={() => scrollToSection("contact")}
+                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 border border-[#344b39] text-[#344b39] hover:bg-[#344b39] hover:text-white font-bold text-xs tracking-wider uppercase rounded transition-colors cursor-pointer"
               >
                 <span>PLAN YOUR VISIT</span>
                 <ArrowUpRight size={14} />
@@ -162,7 +165,7 @@ export const Navbar = () => {
             <div className="md:hidden bg-[#fffefa] border-t border-[#e6e4da] mt-3 py-3 rounded-xl shadow-lg space-y-1 animate-fade-in">
               {navLinks.map((link) => (
                 <button
-                  key={link.href}
+                  key={link.label}
                   onClick={() => handleNavClick(link)}
                   className="block w-full text-left px-4 py-2.5 text-xs font-bold text-[#242820] hover:bg-[#f6f4ed] rounded transition-colors"
                 >
@@ -171,8 +174,8 @@ export const Navbar = () => {
               ))}
               <div className="px-4 pt-2">
                 <button
-                  onClick={() => scrollToSection("#contact")}
-                  className="w-full py-2.5 bg-[#344b39] text-white font-bold text-xs uppercase tracking-wider rounded text-center"
+                  onClick={() => scrollToSection("contact")}
+                  className="w-full py-2.5 bg-[#344b39] text-white font-bold text-xs uppercase tracking-wider rounded text-center cursor-pointer"
                 >
                   Plan Your Visit ↗
                 </button>

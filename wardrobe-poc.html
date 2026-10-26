@@ -1,0 +1,1559 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wardrobe Door Opening & Falling Collections PoC — Sri Aditya Enterprises</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #242820;
+      --green: #344b39;
+      --green2: #263a2b;
+      --cream: #f6f4ed;
+      --paper: #fffefa;
+      --muted: #6d7168;
+      --line: #e6e4da;
+      --gold: #b7834b;
+      --gold-light: #f5dfbe;
+      --wood-dark: #3b2214;
+      --wood-mid: #5d3820;
+      --wood-light: #845330;
+      --wood-grain: #4a2c19;
+      --speed-factor: 1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+      width: min(1200px, calc(100% - 48px));
+      margin: auto;
+    }
+
+    /* Top Notice Bar */
+    .top-notice {
+      height: 36px;
+      background: var(--green2);
+      color: #f3efe3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      padding: 0 16px;
+    }
+
+    .top-notice a {
+      color: #e5c8a5;
+      font-weight: 500;
+      letter-spacing: normal;
+      text-transform: none;
+    }
+
+    /* Header & Navigation */
+    header {
+      height: 78px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(36, 40, 32, .08);
+      background: rgba(255, 254, 250, .96);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 14px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #51564d;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .nav-cta {
+      border: 1px solid var(--green);
+      padding: 10px 18px;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      border-radius: 6px;
+      transition: all .2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--green);
+      color: white;
+    }
+
+    /* Floating PoC Control Widget */
+    .poc-controls {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      background: rgba(36, 40, 32, .94);
+      color: white;
+      padding: 14px 18px;
+      border-radius: 16px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, .32);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, .15);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 320px;
+      font-size: 12px;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(60px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .poc-controls-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, .15);
+      padding-bottom: 6px;
+    }
+
+    .poc-controls-head b {
+      color: #e5c8a5;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .poc-btn-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .poc-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all .2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .poc-btn-primary {
+      background: #d4a366;
+      color: #242820;
+    }
+
+    .poc-btn-primary:hover {
+      background: #e5b980;
+      transform: translateY(-1px);
+    }
+
+    .poc-btn-secondary {
+      background: rgba(255, 255, 255, .12);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, .2);
+    }
+
+    .poc-btn-secondary:hover {
+      background: rgba(255, 255, 255, .2);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 56px 0 72px;
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      align-items: center;
+      gap: 48px;
+      min-height: 540px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .22em;
+      font-weight: 700;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 28px;
+      height: 1.5px;
+      background: var(--gold);
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(42px, 5.2vw, 66px);
+      font-weight: 600;
+      line-height: 1.08;
+      letter-spacing: -.03em;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+
+    h1 em {
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--muted);
+      max-w: 440px;
+      margin-bottom: 30px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 22px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: white;
+      border: none;
+      box-shadow: 0 4px 14px rgba(52, 75, 57, .3);
+    }
+
+    .btn-primary:hover {
+      background: var(--green2);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      border: 1px solid #c7c8bf;
+      color: var(--green);
+      background: transparent;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--green);
+      background: rgba(52, 75, 57, .04);
+    }
+
+    .hero-trust {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: #73766d;
+    }
+
+    .hero-trust b {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    /* ========================================================
+       3D WARDROBE INTERACTIVE SHOWCASE STAGE
+       ======================================================== */
+    .wardrobe-stage {
+      position: relative;
+      width: 100%;
+      height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1600px;
+      user-select: none;
+    }
+
+    /* Floating Wardrobe Action Pill / Callout */
+    .wardrobe-callout {
+      position: absolute;
+      top: -14px;
+      z-index: 50;
+      background: linear-gradient(135deg, #fffefa, #fbf7ee);
+      color: var(--ink);
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--gold);
+      box-shadow: 0 8px 24px rgba(183, 131, 75, .25);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: floatBadge 3.2s ease-in-out infinite;
+    }
+
+    .wardrobe-callout:hover {
+      transform: scale(1.06) translateY(-2px);
+      box-shadow: 0 12px 30px rgba(183, 131, 75, .35);
+      background: #fff;
+    }
+
+    .wardrobe-callout .key-icon {
+      font-size: 14px;
+      display: inline-block;
+      animation: wiggle 2s infinite ease-in-out;
+    }
+
+    @keyframes floatBadge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-15deg); }
+      75% { transform: rotate(15deg); }
+    }
+
+    /* The Main 3D Wardrobe Cabinet */
+    .wardrobe-cabinet {
+      position: relative;
+      width: min(440px, 92%);
+      height: 480px;
+      background: #2a160d;
+      border-radius: 12px;
+      box-shadow: 
+        0 25px 60px -10px rgba(0, 0, 0, .45),
+        0 10px 20px -5px rgba(0, 0, 0, .25),
+        inset 0 0 40px rgba(0, 0, 0, .8);
+      transform-style: preserve-3d;
+      cursor: pointer;
+      transition: transform 0.4s ease;
+    }
+
+    .wardrobe-cabinet:hover {
+      transform: translateY(-4px) scale(1.01);
+    }
+
+    /* Top Crown Moulding */
+    .wardrobe-crown {
+      position: absolute;
+      top: -14px;
+      left: -10px;
+      right: -10px;
+      height: 18px;
+      background: linear-gradient(180deg, #6c4026 0%, #462715 60%, #2e180d 100%);
+      border-radius: 8px 8px 3px 3px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .3);
+      border-top: 1px solid #8e5837;
+      z-index: 30;
+    }
+
+    .wardrobe-crown::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 6px;
+      right: 6px;
+      height: 4px;
+      background: #2a160d;
+    }
+
+    /* Bottom Plinth / Skirting */
+    .wardrobe-base {
+      position: absolute;
+      bottom: -16px;
+      left: -8px;
+      right: -8px;
+      height: 20px;
+      background: linear-gradient(180deg, #351d11 0%, #22120a 100%);
+      border-radius: 3px 3px 8px 8px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .5);
+      z-index: 30;
+    }
+
+    /* Outer Wooden Casing Frame */
+    .wardrobe-frame {
+      position: absolute;
+      inset: 0;
+      border: 10px solid #4a2c19;
+      border-radius: 10px;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, .6);
+      pointer-events: none;
+      z-index: 25;
+    }
+
+    /* ========================================================
+       INSIDE OF WARDROBE (PACKED TO THE BRIM!)
+       ======================================================== */
+    .wardrobe-interior {
+      position: absolute;
+      inset: 8px;
+      background: 
+        linear-gradient(180deg, #1f1109 0%, #301b10 40%, #1a0e07 100%);
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px;
+      z-index: 5;
+      box-shadow: inset 0 0 45px rgba(0, 0, 0, .9);
+    }
+
+    /* Clothes hanging rod with hanger silhouettes */
+    .wardrobe-rod {
+      position: absolute;
+      top: 36px;
+      left: 14px;
+      right: 14px;
+      height: 6px;
+      background: linear-gradient(180deg, #d8ba82, #85693c, #3f311c);
+      border-radius: 3px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, .6);
+      z-index: 6;
+    }
+
+    /* Interior Shelves */
+    .wardrobe-shelf {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      height: 8px;
+      background: linear-gradient(180deg, #5c3822, #392113);
+      border-top: 1px solid #784b2e;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .7);
+      z-index: 6;
+    }
+
+    .shelf-top { top: 120px; }
+    .shelf-mid { top: 250px; }
+    .shelf-bot { top: 375px; }
+
+    /* The "Packed Stack of Collection Clothes / Parcels" inside */
+    .interior-packed-preview {
+      position: absolute;
+      inset: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 8px;
+      padding-top: 24px;
+      z-index: 8;
+      transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .mini-packed-card {
+      background: #f4efe4;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .4);
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, .2);
+      transition: transform 0.4s ease, opacity 0.4s;
+    }
+
+    .mini-packed-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .mini-packed-card .mini-label {
+      position: absolute;
+      bottom: 2px;
+      left: 2px;
+      right: 2px;
+      background: rgba(36, 40, 32, .88);
+      color: #f3efe3;
+      font-size: 7px;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 1px 2px;
+      border-radius: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* When doors are open, the packed cards burst out forward! */
+    .wardrobe-opened .interior-packed-preview .mini-packed-card {
+      animation: burstMini 0.8s forwards ease-out;
+    }
+
+    @keyframes burstMini {
+      0% { transform: scale(1) translateZ(0); opacity: 1; }
+      40% { transform: scale(1.15) translateZ(80px) rotate(calc(var(--rand-rot, 0deg) * 1.5)); opacity: 1; }
+      100% { transform: scale(0.6) translateY(120px) translateZ(120px); opacity: 0; }
+    }
+
+    /* Interior Warm Illumination Glow */
+    .interior-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 35%, rgba(245, 223, 190, .28), transparent 70%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: 7;
+    }
+
+    .wardrobe-opened .interior-glow {
+      opacity: 1;
+    }
+
+    /* Interior Brand Crest */
+    .interior-crest {
+      position: absolute;
+      bottom: 16px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: rgba(229, 200, 165, .5);
+      font-size: 9px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      font-weight: 700;
+      z-index: 6;
+    }
+
+    /* ========================================================
+       THE 3D WOODEN DOUBLE DOORS
+       ======================================================== */
+    .doors-wrapper {
+      position: absolute;
+      inset: 6px;
+      display: flex;
+      z-index: 20;
+      pointer-events: auto;
+    }
+
+    .door {
+      position: relative;
+      width: 50%;
+      height: 100%;
+      background: 
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, .01) 0px,
+          rgba(0, 0, 0, .04) 2px,
+          rgba(255, 255, 255, .02) 6px,
+          transparent 12px
+        ),
+        linear-gradient(135deg, #7c4728 0%, #522f1a 45%, #381f10 100%);
+      box-shadow: 
+        inset 0 0 20px rgba(0, 0, 0, .6),
+        inset 0 2px 4px rgba(255, 255, 255, .15);
+      transform-style: preserve-3d;
+      transition: transform calc(0.95s * var(--speed-factor)) cubic-bezier(0.25, 1, 0.45, 1);
+      cursor: pointer;
+    }
+
+    /* Left Door Hinges & Rotation */
+    .door-left {
+      border-radius: 6px 0 0 6px;
+      transform-origin: left center;
+      border-right: 1.5px solid #23130a;
+    }
+
+    /* Right Door Hinges & Rotation */
+    .door-right {
+      border-radius: 0 6px 6px 0;
+      transform-origin: right center;
+      border-left: 1.5px solid #6b3e23;
+    }
+
+    /* Subtle Door Inset Moldings / Bevel Panels */
+    .door-panel-top,
+    .door-panel-bot {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      border: 2px solid #331d10;
+      background: linear-gradient(145deg, rgba(0, 0, 0, .15), rgba(255, 255, 255, .05));
+      border-radius: 4px;
+      box-shadow: 
+        inset 2px 2px 6px rgba(0, 0, 0, .5),
+        1px 1px 2px rgba(255, 255, 255, .1);
+    }
+
+    .door-panel-top {
+      top: 24px;
+      height: 190px;
+    }
+
+    .door-panel-bot {
+      bottom: 24px;
+      height: 190px;
+    }
+
+    /* Polished Golden Brass Handles */
+    .door-handle {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 72px;
+      background: linear-gradient(90deg, #fcedca 0%, #d4a359 40%, #8c6426 100%);
+      border-radius: 5px;
+      box-shadow: 
+        0 4px 12px rgba(0, 0, 0, .45),
+        inset 0 1px 2px rgba(255, 255, 255, .8);
+      z-index: 25;
+      transition: transform 0.2s ease, filter 0.2s;
+    }
+
+    .door-left .door-handle {
+      right: 14px;
+    }
+
+    .door-right .door-handle {
+      left: 14px;
+    }
+
+    .door-handle::before,
+    .door-handle::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 6px;
+      background: #8c6426;
+      border-radius: 2px;
+      left: -2px;
+    }
+
+    .door-handle::before { top: 6px; }
+    .door-handle::after { bottom: 6px; }
+
+    /* Door Hinges (Brass accent on outer edges) */
+    .hinge {
+      position: absolute;
+      width: 5px;
+      height: 22px;
+      background: linear-gradient(180deg, #caa05b, #705221);
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+      z-index: 22;
+    }
+
+    .door-left .hinge { left: 2px; }
+    .door-right .hinge { right: 2px; }
+
+    .hinge-top { top: 40px; }
+    .hinge-bot { bottom: 40px; }
+
+    /* ========================================================
+       DOOR STATES: HOVER CRACK & FULL OPENING ROTATION
+       ======================================================== */
+    /* On Hover: Slight crack open teasing the interior light */
+    .wardrobe-cabinet:hover:not(.wardrobe-opened) .door-left {
+      transform: rotateY(-6deg);
+    }
+
+    .wardrobe-cabinet:hover:not(.wardrobe-opened) .door-right {
+      transform: rotateY(6deg);
+    }
+
+    /* FULL OPENED STATE: Wide 3D swing */
+    .wardrobe-opened .door-left {
+      transform: rotateY(-118deg);
+      box-shadow: -15px 10px 30px rgba(0, 0, 0, .4);
+    }
+
+    .wardrobe-opened .door-right {
+      transform: rotateY(118deg);
+      box-shadow: 15px 10px 30px rgba(0, 0, 0, .4);
+    }
+
+    /* ========================================================
+       TRUST BAR
+       ======================================================== */
+    .trust-bar {
+      border-y: 1px solid var(--line);
+      background: var(--paper);
+      padding: 24px 0;
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      text-align: center;
+    }
+
+    .trust-col {
+      padding: 4px 18px;
+      border-right: 1px solid var(--line);
+    }
+
+    .trust-col:last-child {
+      border-right: none;
+    }
+
+    .trust-col b {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 2px;
+    }
+
+    .trust-col span {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+
+    /* ========================================================
+       COLLECTIONS SECTION & FALLING TILES CHOREOGRAPHY
+       ======================================================== */
+    section.collections {
+      padding: 92px 0 110px;
+      background: var(--paper);
+      position: relative;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 36px;
+    }
+
+    .section-head h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(34px, 4vw, 44px);
+      font-weight: 600;
+      letter-spacing: -.02em;
+      color: var(--ink);
+    }
+
+    .section-head p {
+      max-width: 380px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* Status Banner for the Collection State */
+    .collection-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #eef2eb;
+      color: var(--green);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      border: 1px solid #d4ded0;
+    }
+
+    .collection-status-pill .pulse-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulseDot 1.4s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .4; transform: scale(1.4); }
+    }
+
+    /* The 12-Card Category Grid */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      position: relative;
+    }
+
+    /* Initial State: When door is closed, tiles are packed/waiting inside */
+    .category-card {
+      position: relative;
+      height: 250px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #e8e4da;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .06);
+      cursor: pointer;
+      border: 1px solid var(--line);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transform-origin: center top;
+    }
+
+    /* Closed state: hidden / compact preview placeholder */
+    .door-closed-state .category-card {
+      opacity: 0.15;
+      transform: translateY(-40px) scale(0.92) rotateX(15deg);
+      filter: blur(4px) grayscale(80%);
+      pointer-events: none;
+    }
+
+    /* ========================================================
+       THE "TUMBLING CLOTHES / FALLING TILES" ANIMATION CLASS
+       ======================================================== */
+    .card-falling {
+      animation: tileTumbleFall calc(0.95s * var(--speed-factor)) cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      animation-delay: calc(var(--fall-delay, 0s) * var(--speed-factor));
+    }
+
+    @keyframes tileTumbleFall {
+      0% {
+        opacity: 0;
+        /* Starting from high up as if spilling out from the open wardrobe */
+        transform: translateY(-240px) translateX(calc(var(--rand-x, 0px) * 1.5)) rotate(var(--rand-rot, -12deg)) scale(0.65);
+        box-shadow: 0 35px 50px rgba(0, 0, 0, .35);
+        filter: blur(2px);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(24px) translateX(calc(var(--rand-x, 0px) * 0.3)) rotate(calc(var(--rand-rot, -12deg) * -0.4)) scale(1.04);
+        filter: blur(0);
+      }
+      75% {
+        transform: translateY(-8px) rotate(calc(var(--rand-rot, -12deg) * 0.15)) scale(0.98);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
+        filter: blur(0);
+      }
+    }
+
+    /* Once settled */
+    .card-settled {
+      opacity: 1 !important;
+      transform: translateY(0) rotate(0deg) scale(1) !important;
+      filter: none !important;
+      pointer-events: auto !important;
+    }
+
+    .category-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, .14);
+      border-color: var(--gold);
+    }
+
+    .category-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s ease;
+    }
+
+    .category-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .category-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(15, 20, 15, .88) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 16px;
+      color: white;
+    }
+
+    .category-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: #e5c8a5;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .category-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .category-action {
+      margin-top: 6px;
+      font-size: 11px;
+      color: rgba(255, 255, 255, .8);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: all .25s ease;
+    }
+
+    .category-card:hover .category-action {
+      opacity: 1;
+      transform: translateY(0);
+      color: #f5dfbe;
+    }
+
+    /* Floating Dust / Sparkle Particle Canvas */
+    #particleCanvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 40;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+      .wardrobe-stage {
+        height: 440px;
+      }
+      .wardrobe-cabinet {
+        height: 420px;
+      }
+      .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .trust-grid {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 18px;
+      }
+      .trust-col:nth-child(2) {
+        border-right: none;
+      }
+      .poc-controls {
+        left: 16px;
+        right: 16px;
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-notice">
+    <span>FURNITURE FOR THE WAY YOU LIVE • VANASTHALIPURAM, HYDERABAD</span>
+    <a href="https://www.instagram.com/sri_aditya_enterprises/" target="_blank">@sri_aditya_enterprises ↗</a>
+  </div>
+
+  <!-- Main Navigation -->
+  <header>
+    <div class="wrap nav-inner">
+      <a class="brand" href="#home">
+        <img src="/logo.png" onerror="this.src='/public/logo.png'" alt="Sri Aditya Enterprises" />
+        <div>
+          <strong>Sri Aditya Enterprises</strong>
+          <small>ESTABLISHED 1990</small>
+        </div>
+      </a>
+      <nav class="nav-links">
+        <a href="#collections">Collections</a>
+        <a href="#about">Our story</a>
+        <a href="#contact">Visit showroom</a>
+        <a href="https://www.instagram.com/sri_aditya_enterprises/" target="_blank">Instagram ↗</a>
+      </nav>
+      <a class="nav-cta" href="tel:+918019404140">Call Showroom</a>
+    </div>
+  </header>
+
+  <!-- Floating PoC Control Box for Live Testing -->
+  <aside class="poc-controls" aria-label="Interactive Proof of Concept Controls">
+    <div class="poc-controls-head">
+      <b>Wardrobe Animation PoC</b>
+      <span id="pocStateBadge" style="color: #f5dfbe;">Door: Closed</span>
+    </div>
+    <p style="font-size: 11px; color: rgba(255, 255, 255, .75); line-height: 1.4;">
+      Click the wardrobe doors/handle to trigger the 3D swing and tumbling collections avalanche.
+    </p>
+    <div class="poc-btn-row">
+      <button class="poc-btn poc-btn-primary" id="btnToggleWardrobe">
+        <span id="btnActionIcon">🚪</span>
+        <span id="btnActionText">Open Wardrobe</span>
+      </button>
+      <button class="poc-btn poc-btn-secondary" id="btnToggleSpeed">
+        <span>⏱️ Speed: 1.0x</span>
+      </button>
+    </div>
+  </aside>
+
+  <main>
+    <!-- Hero Section with Handcrafted 3D Wardrobe -->
+    <section class="hero" id="home">
+      <div class="wrap hero-grid">
+        <!-- Editorial Copy -->
+        <div class="hero-copy">
+          <div class="eyebrow">A home, made yours</div>
+          <h1>Comfort that<br>feels like <em>home.</em></h1>
+          <p class="hero-desc">
+            Thoughtful furniture for every room, every gathering, and all the little moments in between. Find your next favourite piece in Hyderabad.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="openWardrobeSequence()">
+              <span>EXPLORE COLLECTIONS 🗝️</span>
+            </button>
+            <a class="btn btn-outline" href="#contact">
+              <span>VISIT OUR SHOWROOM</span>
+            </a>
+          </div>
+
+          <div class="hero-trust">
+            <b>Locally trusted since 1990</b>
+            <span>•</span>
+            <span>Serving Hyderabad for 36 years</span>
+          </div>
+        </div>
+
+        <!-- Right Side: The 3D Wardrobe Stage -->
+        <div class="wardrobe-stage">
+          <!-- Floating Interactive Callout -->
+          <div class="wardrobe-callout" id="wardrobeCallout" onclick="openWardrobeSequence()">
+            <span class="key-icon">🗝️</span>
+            <span id="calloutText">For more collections, open this door</span>
+          </div>
+
+          <!-- The 3D Wardrobe Cabinet -->
+          <div class="wardrobe-cabinet" id="wardrobeCabinet" onclick="handleWardrobeClick(event)">
+            <!-- Top Crown Moulding -->
+            <div class="wardrobe-crown"></div>
+
+            <!-- Outer Frame Inset -->
+            <div class="wardrobe-frame"></div>
+
+            <!-- Inside Packed Interior (Revealed when open) -->
+            <div class="wardrobe-interior">
+              <div class="wardrobe-rod"></div>
+              <div class="wardrobe-shelf shelf-top"></div>
+              <div class="wardrobe-shelf shelf-mid"></div>
+              <div class="wardrobe-shelf shelf-bot"></div>
+              <div class="interior-glow"></div>
+
+              <!-- Mini Packed Collection Preview Cards (Tumble forward on open) -->
+              <div class="interior-packed-preview" id="interiorPackedPreview">
+                <div class="mini-packed-card" style="--rand-rot: -8deg;"><img src="/assets/living-room.jpg" onerror="this.src='/src/assets/living-room.jpg'"><div class="mini-label">Living</div></div>
+                <div class="mini-packed-card" style="--rand-rot: 6deg;"><img src="/assets/bed-room.jpg" onerror="this.src='/src/assets/bed-room.jpg'"><div class="mini-label">Bedroom</div></div>
+                <div class="mini-packed-card" style="--rand-rot: -5deg;"><img src="/assets/dining-table.jpg" onerror="this.src='/src/assets/dining-table.jpg'"><div class="mini-label">Dining</div></div>
+                <div class="mini-packed-card" style="--rand-rot: 10deg;"><img src="/assets/sofas.jpg" onerror="this.src='/src/assets/sofas.jpg'"><div class="mini-label">Sofas</div></div>
+                <div class="mini-packed-card" style="--rand-rot: -7deg;"><img src="/assets/sleepwell-mattress.jpg" onerror="this.src='/src/assets/sleepwell-mattress.jpg'"><div class="mini-label">Mattress</div></div>
+                <div class="mini-packed-card" style="--rand-rot: 4deg;"><img src="/assets/wardrobe.jpg" onerror="this.src='/src/assets/wardrobe.jpg'"><div class="mini-label">Wardrobes</div></div>
+                <div class="mini-packed-card" style="--rand-rot: -9deg;"><img src="/assets/sofa-cum-bed.jpg" onerror="this.src='/src/assets/sofa-cum-bed.jpg'"><div class="mini-label">Sofa Bed</div></div>
+                <div class="mini-packed-card" style="--rand-rot: 7deg;"><img src="/assets/storage-solutions.jpg" onerror="this.src='/src/assets/storage-solutions.jpg'"><div class="mini-label">Storage</div></div>
+                <div class="mini-packed-card" style="--rand-rot: -4deg;"><img src="/assets/furnishings.jpg" onerror="this.src='/src/assets/furnishings.jpg'"><div class="mini-label">Furnishings</div></div>
+                <div class="mini-packed-card" style="--rand-rot: 8deg;"><img src="/assets/plastic-chairs.jpg" onerror="this.src='/src/assets/plastic-chairs.jpg'"><div class="mini-label">Chairs</div></div>
+                <div class="mini-packed-card" style="--rand-rot: -6deg;"><img src="/assets/godrej-lockers.jpg" onerror="this.src='/src/assets/godrej-lockers.jpg'"><div class="mini-label">Lockers</div></div>
+                <div class="mini-packed-card" style="--rand-rot: 5deg;"><img src="/assets/miscellaneous.jpg" onerror="this.src='/src/assets/miscellaneous.jpg'"><div class="mini-label">Essentials</div></div>
+              </div>
+
+              <div class="interior-crest">Sri Aditya Enterprises • Handcrafted Since 1990</div>
+            </div>
+
+            <!-- The Double 3D Doors -->
+            <div class="doors-wrapper">
+              <!-- Left Door -->
+              <div class="door door-left" id="doorLeft">
+                <div class="hinge hinge-top"></div>
+                <div class="hinge hinge-bot"></div>
+                <div class="door-panel-top"></div>
+                <div class="door-panel-bot"></div>
+                <div class="door-handle"></div>
+              </div>
+
+              <!-- Right Door -->
+              <div class="door door-right" id="doorRight">
+                <div class="hinge hinge-top"></div>
+                <div class="hinge hinge-bot"></div>
+                <div class="door-panel-top"></div>
+                <div class="door-panel-bot"></div>
+                <div class="door-handle"></div>
+              </div>
+            </div>
+
+            <!-- Bottom Base Plinth -->
+            <div class="wardrobe-base"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust Row -->
+    <div class="trust-bar">
+      <div class="wrap trust-grid">
+        <div class="trust-col">
+          <b>Since 1990</b>
+          <span>Three decades of trust</span>
+        </div>
+        <div class="trust-col">
+          <b>Home & Office</b>
+          <span>Furniture for every space</span>
+        </div>
+        <div class="trust-col">
+          <b>Trusted Brands</b>
+          <span>Quality you can count on</span>
+        </div>
+        <div class="trust-col">
+          <b>Hyderabad Local</b>
+          <span>Visit our showroom</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Collections Section (Receives the tumbling cards) -->
+    <section class="collections door-closed-state" id="collections">
+      <canvas id="particleCanvas"></canvas>
+
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Find your fit</div>
+            <h2>Explore the Collections</h2>
+            <div class="collection-status-pill" id="statusPill">
+              <span class="pulse-dot"></span>
+              <span id="statusPillText">Packed tightly inside wardrobe — Click door to release</span>
+            </div>
+          </div>
+          <p>
+            From the sofa you gather around to the details that make a room yours—crafted with solid woods and honest pricing.
+          </p>
+        </div>
+
+        <!-- 12 Furniture Collection Cards Grid -->
+        <div class="category-grid" id="categoryGrid">
+          <!-- Card 01 -->
+          <div class="category-card" data-index="1" style="--fall-delay: 0.05s; --rand-rot: -9deg; --rand-x: -25px;">
+            <img src="/assets/living-room.jpg" onerror="this.src='/src/assets/living-room.jpg'" alt="Living Room" loading="lazy">
+            <div class="category-card-overlay">
+              <span class="category-tag">01 • Gather</span>
+              <b class="category-name">Living Room</b>
+              <span class="category-action">Inquire on WhatsApp →</span>
+            </div>
+          </div>
+
+          <!-- Card 02 -->
+          <div class="category-card" data-index="2" style="--fall-delay: 0.12s; --rand-rot: 8deg; --rand-x: 20px;">
+            <img src="/assets/bed-room.jpg" onerror="this.src='/src/assets/bed-room.jpg'" alt="Bedroom Furniture" loading="lazy">
+            <div class="category-card-overlay">
+              <span class="category-tag">02 • Unwind</span>
+              <b class="category-name">Bedroom Sets</b>
+              <span class="category-action">Inquire on WhatsApp →</span>
+            </div>
+          </div>
+
+          <!-- Card 03 -->
+          <div class="category-card" data-index="3" style="--fall-delay: 0.18s; --rand-rot: -6deg; --rand-x: -15px;">
+            <img src="/assets/dining-table.jpg" onerror="this.src='/src/assets/dining-table.jpg'" alt="Dining Tables" loading="lazy">
+            <div class="category-card-overlay">
+              <span class="category-tag">03 • Come Together</span>
+              <b class="category-name">Dining Tables</b>
+              <span class="category-action">Inquire on WhatsApp →</span>
+            </div>
+          </div>
+
+          <!-- Card 04 -->
+          <div class="category-card" data-index="4" style="--fall-delay: 0.25s; --rand-rot: 11deg; --rand-x: 30px;">
+            <img src="/assets/sleepwell-mattress.jpg" onerror="this.src='/src/assets/sleepwell-mattress.jpg'" alt="Sleepwell Mattresses" loading="lazy">
+            <div class="category-card-overlay">
+              <span class="category-tag">04 • Rest Well</span>
+              <b class="category-name">Sleepwell Mattress</b>
+              <span class="category-action">Inquire on WhatsApp →</span>
+            </div>
+          </div>
+
+          <!-- Card 05 -->
+          <div class="category-card" data-index="5" style="--fall-delay: 0.32s; --rand-rot: -10deg; --rand-x: -28px;">
+            <img src="/assets/sofas.jpg" onerror="this.src='/src/assets/sofas.jpg'" alt="Sofa Sets" loading="lazy">
+            <div class="category-card-overlay">
+              <span class="category-tag">05 • Lounge</span>
+              <b class="category-name">Sofa Sets</b>
+              <span class="category-action">Inquire on WhatsApp →</span>
+            </div>
+          </div>
+
+          <!-- Card 06 -->
+          <div class="category-card" data-index="6" style="--fall-delay: 0.38s; --rand-rot: 7deg; --rand-x: 18px;">
+            <img src="/assets/wardrobe.jpg" onerror="this.src='/src/assets/wardrobe.jpg'" alt="Wardrobes" loading="lazy">
+            <div class="category-card-overlay">
+              <span class="category-tag">06 • Make Room</span>
+              <b class="category-name">Storage & Wardrobe</b>
+              <span class="category-action">Inquire on WhatsApp →</span>
+            </div>
+          </div>
+
+          <!-- Card 07 -->
+          <div class="category-card" data-index="7" style="--fall-delay: 0.45s; --rand-rot: -8deg; --rand-x: -20px;">
+            <img src="/assets/sofa-cum-bed.jpg" onerror="this.src='/src/assets/sofa-cum-bed.jpg'" alt="Sofa Beds" loading="lazy">
+            <div class="category-card-overlay">
+              <span class="category-tag">07 • Versatile</span>
+              <b class="category-name">Sofa - Bed</b>
+              <span class="category-action">Inquire on WhatsApp →</span>
+            </div>
+          </div>
+
+          <!-- Card 08 -->
+          <div class="category-card" data-index="8" style="--fall-delay: 0.52s; --rand-rot: 9deg; --rand-x: 24px;">
+            <img src="/assets/furnishings.jpg" onerror="this.src='/src/assets/furnishings.jpg'" alt="Furnishings" loading="lazy">
+            <div class="category-card-overlay">
+              <span class="category-tag">08 • Finishing Touch</span>
+              <b class="category-name">Home Furnishings</b>
+              <span class="category-action">Inquire on WhatsApp →</span>
+            </div>
+          </div>
+
+          <!-- Card 09 -->
+          <div class="category-card" data-index="9" style="--fall-delay: 0.58s; --rand-rot: -7deg; --rand-x: -16px;">
+            <img src="/assets/storage-solutions.jpg" onerror="this.src='/src/assets/storage-solutions.jpg'" alt="Storage Solutions" loading="lazy">
+            <div class="category-card-overlay">
+              <span class="category-tag">09 • Organize</span>
+              <b class="category-name">Storage Solutions</b>
+              <span class="category-action">Inquire on WhatsApp →</span>
+            </div>
+          </div>
+
+          <!-- Card 10 -->
+          <div class="category-card" data-index="10" style="--fall-delay: 0.65s; --rand-rot: 10deg; --rand-x: 22px;">
+            <img src="/assets/plastic-chairs.jpg" onerror="this.src='/src/assets/plastic-chairs.jpg'" alt="Plastic Chairs" loading="lazy">
+            <div class="category-card-overlay">
+              <span class="category-tag">10 • Seating</span>
+              <b class="category-name">Plastic Chairs</b>
+              <span class="category-action">Inquire on WhatsApp →</span>
+            </div>
+          </div>
+
+          <!-- Card 11 -->
+          <div class="category-card" data-index="11" style="--fall-delay: 0.72s; --rand-rot: -9deg; --rand-x: -26px;">
+            <img src="/assets/godrej-lockers.jpg" onerror="this.src='/src/assets/godrej-lockers.jpg'" alt="Godrej Lockers" loading="lazy">
+            <div class="category-card-overlay">
+              <span class="category-tag">11 • Security</span>
+              <b class="category-name">Godrej Lockers</b>
+              <span class="category-action">Inquire on WhatsApp →</span>
+            </div>
+          </div>
+
+          <!-- Card 12 -->
+          <div class="category-card" data-index="12" style="--fall-delay: 0.78s; --rand-rot: 6deg; --rand-x: 15px;">
+            <img src="/assets/miscellaneous.jpg" onerror="this.src='/src/assets/miscellaneous.jpg'" alt="Essentials" loading="lazy">
+            <div class="category-card-overlay">
+              <span class="category-tag">12 • Accessories</span>
+              <b class="category-name">Showroom Essentials</b>
+              <span class="category-action">Inquire on WhatsApp →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Interactive JavaScript Choreography -->
+  <script>
+    let isWardrobeOpen = false;
+    let isSlowMo = false;
+    let speedFactor = 1;
+
+    const wardrobeCabinet = document.getElementById('wardrobeCabinet');
+    const wardrobeCallout = document.getElementById('wardrobeCallout');
+    const calloutText = document.getElementById('calloutText');
+    const collectionsSection = document.getElementById('collections');
+    const categoryCards = document.querySelectorAll('.category-card');
+    const statusPill = document.getElementById('statusPill');
+    const statusPillText = document.getElementById('statusPillText');
+    const pocStateBadge = document.getElementById('pocStateBadge');
+    const btnToggleWardrobe = document.getElementById('btnToggleWardrobe');
+    const btnActionIcon = document.getElementById('btnActionIcon');
+    const btnActionText = document.getElementById('btnActionText');
+    const btnToggleSpeed = document.getElementById('btnToggleSpeed');
+
+    // WhatsApp Direct Inquiry for each card
+    categoryCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const title = card.querySelector('.category-name')?.textContent || 'furniture';
+        const msg = encodeURIComponent(`Hello Sri Aditya Enterprises 👋, I saw the ${title} collection on your website and would like to inquire about designs and prices!`);
+        window.open(`https://wa.me/918019404140?text=${msg}`, '_blank');
+      });
+    });
+
+    // Speed Control (1.0x vs 0.4x slow motion)
+    btnToggleSpeed.addEventListener('click', () => {
+      isSlowMo = !isSlowMo;
+      speedFactor = isSlowMo ? 2.5 : 1; // 2.5x slower = 0.4x speed
+      document.documentElement.style.setProperty('--speed-factor', speedFactor);
+      btnToggleSpeed.innerHTML = isSlowMo ? '<span>⏱️ SlowMo: 0.4x</span>' : '<span>⏱️ Speed: 1.0x</span>';
+    });
+
+    // Toggle Button
+    btnToggleWardrobe.addEventListener('click', () => {
+      if (isWardrobeOpen) {
+        closeWardrobeSequence();
+      } else {
+        openWardrobeSequence();
+      }
+    });
+
+    function handleWardrobeClick(e) {
+      if (!isWardrobeOpen) {
+        openWardrobeSequence();
+      } else {
+        closeWardrobeSequence();
+      }
+    }
+
+    // ==========================================================
+    // THE OPENING & TUMBLING CASCADE SEQUENCE
+    // ==========================================================
+    function openWardrobeSequence() {
+      if (isWardrobeOpen) return;
+      isWardrobeOpen = true;
+
+      // 1. Update UI states
+      wardrobeCabinet.classList.add('wardrobe-opened');
+      calloutText.textContent = "Wardrobe Opened! Collections Released 🔓";
+      wardrobeCallout.style.borderColor = "#344b39";
+      pocStateBadge.textContent = "Door: Open (Tumbler active)";
+      pocStateBadge.style.color = "#a0e8af";
+      btnActionIcon.textContent = "🔒";
+      btnActionText.textContent = "Close & Repack";
+
+      // 2. Play particle puff from wardrobe
+      triggerSparklePuff();
+
+      // 3. Update status text
+      statusPillText.textContent = "Door opened! Tumbling tiles into place...";
+      statusPill.style.background = "#fff4e5";
+      statusPill.style.color = "#b7834b";
+
+      // 4. Smooth scroll downward toward collections after doors crack open
+      setTimeout(() => {
+        collectionsSection.classList.remove('door-closed-state');
+
+        // Trigger the falling / tumbling animation on cards
+        categoryCards.forEach(card => {
+          card.classList.remove('card-settled');
+          card.classList.add('card-falling');
+        });
+
+        // Smooth scroll to collections
+        const offset = collectionsSection.offsetTop - 60;
+        window.scrollTo({
+          top: offset,
+          behavior: 'smooth'
+        });
+
+        // 5. When all cards have finished tumbling, mark as settled
+        const maxDelay = 1100 * speedFactor;
+        setTimeout(() => {
+          categoryCards.forEach(card => {
+            card.classList.remove('card-falling');
+            card.classList.add('card-settled');
+          });
+          statusPillText.textContent = "All 12 Collections Settled • Ready to Browse";
+          statusPill.style.background = "#eef2eb";
+          statusPill.style.color = "#344b39";
+        }, maxDelay);
+
+      }, 400 * speedFactor);
+    }
+
+    // ==========================================================
+    // CLOSE & REPACK SEQUENCE
+    // ==========================================================
+    function closeWardrobeSequence() {
+      if (!isWardrobeOpen) return;
+      isWardrobeOpen = false;
+
+      // 1. Swing doors shut
+      wardrobeCabinet.classList.remove('wardrobe-opened');
+      calloutText.textContent = "For more collections, open this door";
+      wardrobeCallout.style.borderColor = "var(--gold)";
+      pocStateBadge.textContent = "Door: Closed";
+      pocStateBadge.style.color = "#f5dfbe";
+      btnActionIcon.textContent = "🚪";
+      btnActionText.textContent = "Open Wardrobe";
+
+      // 2. Hide / Pack collections back
+      collectionsSection.classList.add('door-closed-state');
+      categoryCards.forEach(card => {
+        card.classList.remove('card-falling', 'card-settled');
+      });
+
+      statusPillText.textContent = "Packed tightly inside wardrobe — Click door to release";
+      statusPill.style.background = "#eef2eb";
+      statusPill.style.color = "#344b39";
+
+      // 3. Scroll back to hero
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // ==========================================================
+    // GOLDEN SPARKLE / DUST PUFF PARTICLES
+    // ==========================================================
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = collectionsSection.offsetWidth;
+      canvas.height = collectionsSection.offsetHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function triggerSparklePuff() {
+      particles = [];
+      const count = 40;
+      const startX = canvas.width / 2;
+      const startY = 40;
+
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 2 + Math.random() * 5;
+        particles.push({
+          x: startX + (Math.random() - 0.5) * 200,
+          y: startY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed + 2, // gravity
+          size: 2 + Math.random() * 4,
+          alpha: 1,
+          color: Math.random() > 0.5 ? '#d4a359' : '#fffefa',
+          life: 0.8 + Math.random() * 0.5
+        });
+      }
+      renderParticles();
+    }
+
+    function renderParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.1; // gravity
+        p.alpha -= 0.015;
+
+        if (p.alpha > 0) {
+          alive = true;
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.alpha);
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      });
+
+      if (alive) {
+        requestAnimationFrame(renderParticles);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+  </script>
+</body>
+</html>
