@@ -23,13 +23,13 @@ export const About = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           {/* Left: Founder Photo */}
           <div className="lg:col-span-5 flex justify-center">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/20 max-w-sm w-full group">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/20 max-w-sm w-full bg-[#142019] group">
               <img
                 src="/founder.png"
-                alt="Proprietor of Sri Aditya Enterprises"
-                className="w-full h-72 sm:h-96 object-cover object-[center_30%] group-hover:scale-102 transition-transform duration-500"
+                alt="Founder & Proprietor of Sri Aditya Enterprises"
+                className="w-full h-80 sm:h-96 object-cover object-top group-hover:scale-102 transition-transform duration-500"
               />
-              <div className="absolute bottom-3 left-3 right-3 bg-[#142019]/90 backdrop-blur-md p-3 rounded-xl border border-white/10 text-center">
+              <div className="absolute bottom-3 left-3 right-3 bg-[#142019]/90 backdrop-blur-md p-2.5 sm:p-3 rounded-xl border border-white/10 text-center">
                 <span className="block text-xs font-bold text-[#c99f52] uppercase tracking-wider">
                   Founder & Proprietor
                 </span>

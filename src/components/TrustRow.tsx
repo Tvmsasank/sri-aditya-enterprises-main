@@ -21,14 +21,21 @@ const TRUST_ITEMS = [
 
 export const TrustRow: React.FC = () => {
   return (
-    <section className="border-y border-[#e2e7e2] bg-white py-5 sm:py-7 transition-colors">
+    <section className="border-y border-[#e2e7e2] bg-white py-4 sm:py-6 transition-colors">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[#e2e7e2]">
+        <div className="grid grid-cols-2 md:grid-cols-4">
           {TRUST_ITEMS.map((item, index) => (
             <div
               key={item.title}
-              className={`text-center py-2.5 md:py-1 px-4 ${
-                index % 2 === 0 ? "border-r md:border-r-0 border-[#e2e7e2]" : ""
+              className={`text-center py-2.5 sm:py-2 px-3 sm:px-4 ${
+                // Right border for left column (items 0 & 2 on mobile, items 0, 1, 2 on desktop)
+                index % 2 === 0 ? "border-r border-[#e2e7e2]" : ""
+              } ${
+                // Desktop vertical divider after item 1
+                index === 1 ? "md:border-r md:border-[#e2e7e2]" : ""
+              } ${
+                // Top border ONLY for the second row on mobile (items 2 & 3) — NO LINE above item 1 (Home & Office)
+                index >= 2 ? "border-t border-[#e2e7e2] md:border-t-0" : ""
               }`}
             >
               <b className="block font-heading text-sm sm:text-base md:text-lg font-semibold text-[#1e3b2b] mb-0.5">

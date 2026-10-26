@@ -11,21 +11,21 @@
   justify-content: center;
   perspective: 1600px;
   user-select: none;
-  padding-top: 10px;
-  padding-bottom: 16px;
+  padding-top: 24px;
+  padding-bottom: 12px;
 }
 
-/* Floating Wardrobe Action Pill (Positioned cleanly ABOVE the cabinet) */
+/* Floating Wardrobe Action Pill (Positioned cleanly ABOVE the cabinet with ample clearance) */
 .wardrobe-callout {
   position: relative;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   z-index: 40;
   background: linear-gradient(135deg, #fffefa, #fbf7ee);
-  color: #242820;
+  color: #142019;
   padding: 8px 20px;
   border-radius: 999px;
-  border: 1px solid #b7834b;
-  box-shadow: 0 4px 16px rgba(183, 131, 75, 0.25);
+  border: 1px solid #c99f52;
+  box-shadow: 0 4px 16px rgba(201, 159, 82, 0.25);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -40,8 +40,8 @@
 }
 
 .wardrobe-callout:hover {
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 8px 24px rgba(183, 131, 75, 0.35);
+  transform: scale(1.04) translateY(-2px);
+  box-shadow: 0 8px 24px rgba(201, 159, 82, 0.35);
   background: #ffffff;
 }
 
@@ -53,7 +53,7 @@
 
 @keyframes floatBadge {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  50% { transform: translateY(-3px); }
 }
 
 @keyframes wiggle {
@@ -65,8 +65,8 @@
 /* 3D Wardrobe Cabinet Body */
 .wardrobe-cabinet {
   position: relative;
-  width: min(390px, 92%);
-  height: clamp(320px, 44vh, 430px);
+  width: min(380px, 92%);
+  height: clamp(290px, 38vh, 380px);
   background: #2a160d;
   border-radius: 12px;
   box-shadow: 

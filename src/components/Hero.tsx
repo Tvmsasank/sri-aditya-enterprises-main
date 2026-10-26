@@ -9,7 +9,7 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ isWardrobeOpen, onToggleWardrobe, onScrollTo }) => {
   return (
-    <section id="home" className="pt-20 sm:pt-26 lg:pt-30 pb-6 sm:pb-12 bg-[#f7f8f5] overflow-hidden transition-colors">
+    <section id="home" className="pt-24 sm:pt-32 lg:pt-36 pb-8 sm:pb-12 bg-[#f7f8f5] overflow-visible transition-colors">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
           {/* Left Column: Editorial Copy */}
@@ -33,12 +33,12 @@ export const Hero: React.FC<HeroProps> = ({ isWardrobeOpen, onToggleWardrobe, on
               Thoughtful furniture for every room, every gathering, and all the little moments in between. Find your next favourite piece in Hyderabad.
             </p>
 
-            {/* Buttons */}
-            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2">
+            {/* Buttons: Side-by-side horizontally on mobile, preserving compact space */}
+            <div className="flex flex-row items-center gap-2 sm:gap-3 pt-1 sm:pt-2 w-full max-w-md">
               {/* Desktop Toggle Button */}
               <button
                 onClick={onToggleWardrobe}
-                className="hidden md:inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#1e3b2b] hover:bg-[#294f3a] text-[#faeed4] font-bold text-xs tracking-wider uppercase transition-all hover:scale-105 active:scale-95 shadow-md cursor-pointer"
+                className="hidden md:inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#1e3b2b] hover:bg-[#294f3a] text-[#faeed4] font-bold text-xs tracking-wider uppercase transition-all hover:scale-105 active:scale-95 shadow-md cursor-pointer whitespace-nowrap"
               >
                 <span>{isWardrobeOpen ? "EXPLORE COLLECTIONS 🔓" : "EXPLORE COLLECTIONS 🗝️"}</span>
               </button>
@@ -46,14 +46,15 @@ export const Hero: React.FC<HeroProps> = ({ isWardrobeOpen, onToggleWardrobe, on
               {/* Mobile Direct Scroll Button */}
               <button
                 onClick={() => onScrollTo("collections")}
-                className="md:hidden inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#1e3b2b] text-[#faeed4] font-bold text-xs tracking-wider uppercase shadow-md active:scale-95 cursor-pointer"
+                className="md:hidden flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-[#1e3b2b] text-[#faeed4] font-bold text-[11px] sm:text-xs tracking-wider uppercase shadow-md active:scale-95 cursor-pointer text-center"
               >
                 <span>EXPLORE COLLECTIONS ↓</span>
               </button>
 
+              {/* Visit Showroom Button */}
               <button
                 onClick={() => onScrollTo("contact")}
-                className="inline-flex items-center justify-center px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-transparent border border-[#c8d1c8] hover:border-[#1e3b2b] text-[#1e3b2b] font-bold text-xs tracking-wider uppercase transition-colors cursor-pointer"
+                className="flex-1 md:flex-initial inline-flex items-center justify-center px-3 py-2.5 sm:px-6 sm:py-3.5 rounded-xl bg-transparent border border-[#c8d1c8] hover:border-[#1e3b2b] text-[#1e3b2b] font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-colors cursor-pointer text-center whitespace-nowrap"
               >
                 <span>VISIT OUR SHOWROOM</span>
               </button>
