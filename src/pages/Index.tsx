@@ -7,10 +7,12 @@ import { About } from "@/components/About";
 import { InstagramShowcase } from "@/components/InstagramShowcase";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
+import { FallingTilesFlight } from "@/components/FallingTilesFlight";
 import { Phone, MessageCircle } from "lucide-react";
 
 const Index = () => {
   const [isWardrobeOpen, setIsWardrobeOpen] = useState(false);
+  const [isFlightActive, setIsFlightActive] = useState(false);
 
   useEffect(() => {
     document.title = "Sri Aditya Enterprises";
@@ -26,36 +28,31 @@ const Index = () => {
     "Hello Sri Aditya Enterprises 👋, I would like to know more about your furniture collections."
   )}`;
 
-  const handleToggleWardrobe = () => {
-    setIsWardrobeOpen((prev) => {
-      const nextState = !prev;
-      if (nextState) {
-        setTimeout(() => {
-          const el = document.getElementById("collections");
-          if (el) {
-            el.scrollIntoView({ behavior: "smooth" });
-          }
-        }, 350);
-      }
-      return nextState;
-    });
-  };
-
   const handleOpenCollections = () => {
     setIsWardrobeOpen(true);
+    setIsFlightActive(true);
     setTimeout(() => {
       const el = document.getElementById("collections");
       if (el) {
         el.scrollIntoView({ behavior: "smooth" });
       }
-    }, 350);
+    }, 400);
   };
 
   const handleCloseWardrobe = () => {
     setIsWardrobeOpen(false);
+    setIsFlightActive(false);
     const heroEl = document.getElementById("home");
     if (heroEl) {
       heroEl.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleToggleWardrobe = () => {
+    if (!isWardrobeOpen) {
+      handleOpenCollections();
+    } else {
+      handleCloseWardrobe();
     }
   };
 
@@ -76,6 +73,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#f6f4ed] text-[#242820] font-sans selection:bg-[#d6b486] selection:text-[#242820]">
+      {/* Shower of In-Flight Falling Tiles down the middle of the screen */}
+      <FallingTilesFlight
+        isActive={isFlightActive}
+        onComplete={() => setIsFlightActive(false)}
+      />
+
       <Navbar onOpenCollections={handleOpenCollections} />
       <main>
         <Hero

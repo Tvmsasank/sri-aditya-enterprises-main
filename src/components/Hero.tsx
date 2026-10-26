@@ -9,11 +9,11 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ isWardrobeOpen, onToggleWardrobe, onScrollTo }) => {
   return (
-    <section id="home" className="pt-28 sm:pt-32 md:pt-36 pb-12 sm:pb-16 bg-[#f6f4ed] overflow-hidden">
+    <section id="home" className="pt-24 sm:pt-28 lg:pt-30 pb-8 sm:pb-12 bg-[#f6f4ed] overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
           {/* Left Column: Editorial Copy */}
-          <div className="lg:col-span-5 text-left space-y-5 sm:space-y-6">
+          <div className="lg:col-span-5 text-left space-y-4 sm:space-y-5">
             {/* Eyebrow */}
             <div className="flex items-center gap-3">
               <span className="w-8 h-[1px] bg-[#b7834b]" />
@@ -23,13 +23,13 @@ export const Hero: React.FC<HeroProps> = ({ isWardrobeOpen, onToggleWardrobe, on
             </div>
 
             {/* Main Title */}
-            <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-semibold text-[#242820] tracking-tight leading-[1.08]">
+            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#242820] tracking-tight leading-[1.12]">
               Comfort that<br />
               <span className="italic font-normal">feels like home.</span>
             </h1>
 
             {/* Paragraph */}
-            <p className="text-sm sm:text-base text-[#6d7168] leading-relaxed max-w-md">
+            <p className="text-xs sm:text-sm lg:text-base text-[#6d7168] leading-relaxed max-w-md">
               Thoughtful furniture for every room, every gathering, and all the little moments in between. Find your next favourite piece in Hyderabad.
             </p>
 

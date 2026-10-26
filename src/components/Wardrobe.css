@@ -1,11 +1,11 @@
 /* ========================================================
-   3D WARDROBE & FALLING TILES STYLES (MATCHING POC)
+   3D WARDROBE & FALLING TILES STYLES (RESPONSIVE FOR ALL SCREENS)
    ======================================================== */
 
 .wardrobe-stage {
   position: relative;
   width: 100%;
-  height: 520px;
+  height: clamp(340px, 46vh, 460px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,41 +16,42 @@
 /* Floating Wardrobe Action Pill */
 .wardrobe-callout {
   position: absolute;
-  top: -14px;
+  top: -12px;
   z-index: 50;
   background: linear-gradient(135deg, #fffefa, #fbf7ee);
   color: #242820;
-  padding: 9px 18px;
+  padding: 8px 16px;
   border-radius: 999px;
   border: 1px solid #b7834b;
   box-shadow: 0 8px 24px rgba(183, 131, 75, 0.25);
   display: flex;
   align-items: center;
-  gap: 9px;
-  font-size: 11px;
+  gap: 8px;
+  font-size: clamp(10px, 1.1vw, 11px);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   animation: floatBadge 3.2s ease-in-out infinite;
+  max-width: 90%;
 }
 
 .wardrobe-callout:hover {
-  transform: scale(1.06) translateY(-2px);
+  transform: scale(1.05) translateY(-2px);
   box-shadow: 0 12px 30px rgba(183, 131, 75, 0.35);
   background: #ffffff;
 }
 
 .wardrobe-callout .key-icon {
-  font-size: 14px;
+  font-size: 13px;
   display: inline-block;
   animation: wiggle 2s infinite ease-in-out;
 }
 
 @keyframes floatBadge {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  50% { transform: translateY(-5px); }
 }
 
 @keyframes wiggle {
@@ -59,16 +60,16 @@
   75% { transform: rotate(15deg); }
 }
 
-/* 3D Wardrobe Cabinet */
+/* 3D Wardrobe Cabinet (Scaled for 100% fit on laptops & mobile) */
 .wardrobe-cabinet {
   position: relative;
-  width: min(440px, 92%);
-  height: 480px;
+  width: min(390px, 92%);
+  height: clamp(320px, 44vh, 420px);
   background: #2a160d;
   border-radius: 12px;
   box-shadow: 
-    0 25px 60px -10px rgba(0, 0, 0, 0.45),
-    0 10px 20px -5px rgba(0, 0, 0, 0.25),
+    0 20px 50px -10px rgba(0, 0, 0, 0.45),
+    0 8px 16px -5px rgba(0, 0, 0, 0.25),
     inset 0 0 40px rgba(0, 0, 0, 0.8);
   transform-style: preserve-3d;
   cursor: pointer;
@@ -76,19 +77,19 @@
 }
 
 .wardrobe-cabinet:hover {
-  transform: translateY(-4px) scale(1.01);
+  transform: translateY(-3px) scale(1.01);
 }
 
 /* Top Crown Moulding */
 .wardrobe-crown {
   position: absolute;
-  top: -14px;
-  left: -10px;
-  right: -10px;
-  height: 18px;
+  top: -12px;
+  left: -8px;
+  right: -8px;
+  height: 16px;
   background: linear-gradient(180deg, #6c4026 0%, #462715 60%, #2e180d 100%);
-  border-radius: 8px 8px 3px 3px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 7px 7px 3px 3px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   border-top: 1px solid #8e5837;
   z-index: 30;
 }
@@ -96,23 +97,23 @@
 .wardrobe-crown::after {
   content: '';
   position: absolute;
-  bottom: -4px;
+  bottom: -3px;
   left: 6px;
   right: 6px;
-  height: 4px;
+  height: 3px;
   background: #2a160d;
 }
 
 /* Bottom Plinth */
 .wardrobe-base {
   position: absolute;
-  bottom: -16px;
-  left: -8px;
-  right: -8px;
-  height: 20px;
+  bottom: -14px;
+  left: -6px;
+  right: -6px;
+  height: 18px;
   background: linear-gradient(180deg, #351d11 0%, #22120a 100%);
-  border-radius: 3px 3px 8px 8px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+  border-radius: 3px 3px 7px 7px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   z-index: 30;
 }
 
@@ -120,9 +121,9 @@
 .wardrobe-frame {
   position: absolute;
   inset: 0;
-  border: 10px solid #4a2c19;
+  border: 8px solid #4a2c19;
   border-radius: 10px;
-  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.6);
   pointer-events: none;
   z-index: 25;
 }
@@ -130,63 +131,63 @@
 /* Interior of Wardrobe (Packed with collections) */
 .wardrobe-interior {
   position: absolute;
-  inset: 8px;
+  inset: 7px;
   background: linear-gradient(180deg, #1f1109 0%, #301b10 40%, #1a0e07 100%);
   border-radius: 6px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 16px;
+  padding: 12px;
   z-index: 5;
-  box-shadow: inset 0 0 45px rgba(0, 0, 0, 0.9);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.9);
 }
 
 .wardrobe-rod {
   position: absolute;
-  top: 36px;
-  left: 14px;
-  right: 14px;
-  height: 6px;
+  top: 28px;
+  left: 12px;
+  right: 12px;
+  height: 5px;
   background: linear-gradient(180deg, #d8ba82, #85693c, #3f311c);
   border-radius: 3px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
   z-index: 6;
 }
 
 .wardrobe-shelf {
   position: absolute;
-  left: 10px;
-  right: 10px;
-  height: 8px;
+  left: 8px;
+  right: 8px;
+  height: 6px;
   background: linear-gradient(180deg, #5c3822, #392113);
   border-top: 1px solid #784b2e;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
   z-index: 6;
 }
 
-.shelf-top { top: 120px; }
-.shelf-mid { top: 250px; }
-.shelf-bot { top: 375px; }
+.shelf-top { top: 26%; }
+.shelf-mid { top: 52%; }
+.shelf-bot { top: 78%; }
 
 /* The Mini Stacked Packed Cards Inside */
 .interior-packed-preview {
   position: absolute;
-  inset: 18px;
+  inset: 14px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  gap: 8px;
-  padding-top: 24px;
+  gap: 6px;
+  padding-top: 16px;
   z-index: 8;
   transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .mini-packed-card {
   background: #f4efe4;
-  border-radius: 6px;
+  border-radius: 5px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
   position: relative;
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: transform 0.4s ease, opacity 0.4s;
@@ -200,12 +201,12 @@
 
 .mini-packed-card .mini-label {
   position: absolute;
-  bottom: 2px;
-  left: 2px;
-  right: 2px;
+  bottom: 1px;
+  left: 1px;
+  right: 1px;
   background: rgba(36, 40, 32, 0.88);
   color: #f3efe3;
-  font-size: 7px;
+  font-size: 6.5px;
   font-weight: 700;
   text-transform: uppercase;
   text-align: center;
@@ -252,13 +253,13 @@
 
 .interior-crest {
   position: absolute;
-  bottom: 16px;
+  bottom: 10px;
   left: 0;
   right: 0;
   text-align: center;
   color: rgba(229, 200, 165, 0.5);
-  font-size: 9px;
-  letter-spacing: 0.2em;
+  font-size: 8px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   font-weight: 700;
   z-index: 6;
@@ -267,7 +268,7 @@
 /* ================= 3D DOUBLE WOODEN DOORS ================= */
 .doors-wrapper {
   position: absolute;
-  inset: 6px;
+  inset: 5px;
   display: flex;
   z-index: 20;
   pointer-events: auto;
@@ -287,7 +288,7 @@
     ),
     linear-gradient(135deg, #7c4728 0%, #522f1a 45%, #381f10 100%);
   box-shadow: 
-    inset 0 0 20px rgba(0, 0, 0, 0.6),
+    inset 0 0 16px rgba(0, 0, 0, 0.6),
     inset 0 2px 4px rgba(255, 255, 255, 0.15);
   transform-style: preserve-3d;
   transition: transform 0.95s cubic-bezier(0.25, 1, 0.45, 1), box-shadow 0.95s;
@@ -295,13 +296,13 @@
 }
 
 .door-left {
-  border-radius: 6px 0 0 6px;
+  border-radius: 5px 0 0 5px;
   transform-origin: left center;
   border-right: 1.5px solid #23130a;
 }
 
 .door-right {
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 5px 5px 0;
   transform-origin: right center;
   border-left: 1.5px solid #6b3e23;
 }
@@ -309,61 +310,61 @@
 .door-panel-top,
 .door-panel-bot {
   position: absolute;
-  left: 14px;
-  right: 14px;
-  border: 2px solid #331d10;
+  left: 10px;
+  right: 10px;
+  border: 1.5px solid #331d10;
   background: linear-gradient(145deg, rgba(0, 0, 0, 0.15), rgba(255, 255, 255, 0.05));
   border-radius: 4px;
   box-shadow: 
-    inset 2px 2px 6px rgba(0, 0, 0, 0.5),
+    inset 2px 2px 5px rgba(0, 0, 0, 0.5),
     1px 1px 2px rgba(255, 255, 255, 0.1);
 }
 
 .door-panel-top {
-  top: 24px;
-  height: 190px;
+  top: 5%;
+  height: 40%;
 }
 
 .door-panel-bot {
-  bottom: 24px;
-  height: 190px;
+  bottom: 5%;
+  height: 40%;
 }
 
 .door-handle {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 10px;
-  height: 72px;
+  width: 8px;
+  height: clamp(50px, 14%, 64px);
   background: linear-gradient(90deg, #fcedca 0%, #d4a359 40%, #8c6426 100%);
-  border-radius: 5px;
+  border-radius: 4px;
   box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.45),
+    0 3px 10px rgba(0, 0, 0, 0.45),
     inset 0 1px 2px rgba(255, 255, 255, 0.8);
   z-index: 25;
   transition: transform 0.2s ease;
 }
 
-.door-left .door-handle { right: 14px; }
-.door-right .door-handle { left: 14px; }
+.door-left .door-handle { right: 10px; }
+.door-right .door-handle { left: 10px; }
 
 .door-handle::before,
 .door-handle::after {
   content: '';
   position: absolute;
-  width: 14px;
-  height: 6px;
+  width: 12px;
+  height: 5px;
   background: #8c6426;
   border-radius: 2px;
   left: -2px;
 }
-.door-handle::before { top: 6px; }
-.door-handle::after { bottom: 6px; }
+.door-handle::before { top: 5px; }
+.door-handle::after { bottom: 5px; }
 
 .hinge {
   position: absolute;
-  width: 5px;
-  height: 22px;
+  width: 4px;
+  height: 18px;
   background: linear-gradient(180deg, #caa05b, #705221);
   border-radius: 2px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
@@ -371,8 +372,8 @@
 }
 .door-left .hinge { left: 2px; }
 .door-right .hinge { right: 2px; }
-.hinge-top { top: 40px; }
-.hinge-bot { bottom: 40px; }
+.hinge-top { top: 32px; }
+.hinge-bot { bottom: 32px; }
 
 /* ================= HOVER CRACK (TILES VISIBLE IN THE MIDDLE GAP!) ================= */
 .wardrobe-cabinet:hover:not(.wardrobe-opened) .door-left {
@@ -430,7 +431,13 @@
   pointer-events: auto !important;
 }
 
+/* ================= RESPONSIVE ADJUSTMENTS ================= */
 @media (max-width: 900px) {
-  .wardrobe-stage { height: 440px; }
-  .wardrobe-cabinet { height: 420px; }
+  .wardrobe-stage { height: 380px; }
+  .wardrobe-cabinet { width: 330px; height: 350px; }
+}
+
+@media (max-width: 640px) {
+  .wardrobe-stage { height: 330px; }
+  .wardrobe-cabinet { width: 280px; height: 310px; }
 }
