@@ -12,6 +12,7 @@ import { Footer } from "@/components/Footer";
 import { SectionReveal } from "@/components/SectionReveal";
 import { Phone, MessageCircle } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
+import "../styles/EditorialMotion.css";
 
 const Index = () => {
   const [isWardrobeOpen, setIsWardrobeOpen] = useState(false);
@@ -71,7 +72,7 @@ const Index = () => {
       {!reduceMotion && (
         <motion.div
           aria-hidden="true"
-          className="fixed top-0 left-0 right-0 h-[3px] origin-left bg-[#c99f52] z-[100]"
+          className="sae-scroll-progress fixed top-0 left-0 right-0 h-[3px] origin-left bg-[#c99f52] z-[100]"
           style={{ scaleX: smoothProgress }}
         />
       )}
