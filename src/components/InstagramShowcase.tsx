@@ -12,6 +12,7 @@ interface InstagramPostItem {
   photos: string[];
   title: string;
   subtitle: string;
+  fullTitle?: string;
   fullCaption: string;
   permalink: string;
   likeCount?: number;
@@ -19,6 +20,72 @@ interface InstagramPostItem {
   timestamp?: string;
   isCarousel?: boolean;
 }
+
+interface ParsedCaption {
+  title: string;
+  subtitle: string;
+  fullTitle: string;
+}
+
+// Smart caption processor: cleanly separates title and subtitle without word chopping
+const parseCaption = (raw: string, idx: number): ParsedCaption => {
+  if (!raw || !raw.trim()) {
+    const fallback = `Showroom Showcase #${idx + 1}`;
+    return {
+      title: fallback,
+      subtitle: "Handcrafted furniture curated for Hyderabad homes.",
+      fullTitle: fallback,
+    };
+  }
+
+  // Remove markdown artifacts (*, _, #)
+  const cleaned = raw.replace(/[*_#]/g, "").trim();
+  const lines = cleaned.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+
+  const fullFirstLine = lines[0] || `Showroom Showcase #${idx + 1}`;
+
+  // For the Card title: ensure we NEVER cut words in half! Truncate only at a clean word boundary
+  let title = fullFirstLine;
+  if (title.length > 72) {
+    const boundary = title.slice(0, 68).lastIndexOf(" ");
+    title = (boundary > 25 ? title.slice(0, boundary) : title.slice(0, 68)) + "…";
+  }
+
+  // Subtitle: find the next substantive sentence, avoiding hashtags or corporate tagline repetition
+  let subtitle = "";
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    const lower = line.toLowerCase();
+    if (
+      line.length > 8 &&
+      !lower.startsWith("#") &&
+      !lower.includes("trust is our asset") &&
+      !lower.includes("sri aditya enterprises")
+    ) {
+      subtitle = line;
+      break;
+    }
+  }
+
+  if (!subtitle && lines.length > 1) {
+    subtitle = lines[1];
+  }
+  if (!subtitle) {
+    subtitle = "Handcrafted teak furniture & curated living collections.";
+  }
+
+  // Truncate subtitle cleanly at word boundary if excessively long
+  if (subtitle.length > 115) {
+    const boundary = subtitle.slice(0, 110).lastIndexOf(" ");
+    subtitle = (boundary > 30 ? subtitle.slice(0, boundary) : subtitle.slice(0, 110)) + "…";
+  }
+
+  return {
+    title,
+    subtitle,
+    fullTitle: fullFirstLine,
+  };
+};
 
 const DEFAULT_BEHOLD_FEED = "https://feeds.behold.so/zRM6gORsAcNPhT0OOBld";
 
@@ -121,7 +188,9 @@ export const InstagramShowcase: React.FC = () => {
   useEffect(() => {
     const feedUrl = import.meta.env.VITE_INSTAGRAM_FEED_URL || DEFAULT_BEHOLD_FEED;
     if (feedUrl) {
-      fetch(feedUrl)
+      // Add fresh cache-busting timestamp so browser never returns stale cached feed data
+      const freshUrl = `${feedUrl}${feedUrl.includes("?") ? "&" : "?"}_t=${Date.now()}`;
+      fetch(freshUrl, { cache: "no-store" })
         .then((res) => res.json())
         .then((data) => {
           const list = Array.isArray(data)
@@ -155,20 +224,17 @@ export const InstagramShowcase: React.FC = () => {
               }
 
               const rawCaption = (p.prunedCaption || p.caption || "").trim();
-              const firstLine = rawCaption.split("\n")[0] || `Showroom Post #${idx + 1}`;
-              const cleanTitle = firstLine.replace(/[*_#]/g, "").slice(0, 42).trim();
-              const cleanSubtitle =
-                rawCaption.slice(firstLine.length).replace(/[*_#]/g, "").trim().slice(0, 95) ||
-                "Handcrafted furniture curated for Hyderabad homes.";
+              const parsed = parseCaption(rawCaption, idx);
 
               return {
                 id: p.id || idx,
                 image: primaryImg,
                 photos: collectedPhotos,
                 isCarousel: collectedPhotos.length > 1,
-                title: cleanTitle || "Sri Aditya Enterprises",
-                subtitle: cleanSubtitle,
-                fullCaption: rawCaption || cleanTitle,
+                title: parsed.title,
+                subtitle: parsed.subtitle,
+                fullTitle: parsed.fullTitle,
+                fullCaption: rawCaption || parsed.fullTitle,
                 permalink: p.permalink || instaUrl,
                 likeCount: p.likeCount,
                 commentsCount: p.commentsCount,
@@ -458,7 +524,7 @@ export const InstagramShowcase: React.FC = () => {
                 </div>
 
                 <h3 className="font-heading text-lg sm:text-xl font-bold text-[#142019] mb-2 leading-snug">
-                  {selectedPost.title}
+                  {selectedPost.fullTitle || selectedPost.title}
                 </h3>
 
                 <p className="text-xs sm:text-sm text-[#4d5f54] leading-relaxed mb-4 whitespace-pre-line max-h-[220px] overflow-y-auto pr-1">
