@@ -4,6 +4,7 @@ import {
   ArrowDown, ArrowRight, ArrowUpRight, Clock3,
   MapPin, Menu, MessageCircle, Phone, Sparkles, X
 } from "lucide-react";
+import "./RedesignedHome.css";
 import heroImage from "@/assets/hero-furniture.jpg";
 import livingRoom from "@/assets/living-room.jpg";
 import bedroom from "@/assets/bed-room.jpg";
