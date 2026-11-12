@@ -13,7 +13,7 @@ import {
 
 const navLinks = [
   { label: "Collections", target: "collections" },
-  { label: "Design studio", target: "studio" },
+  { label: "Design studio", target: "design-studio" },
   { label: "Our story", target: "about" },
   { label: "Visit us", target: "contact" },
   {
@@ -35,6 +35,7 @@ interface NavbarProps {
 export const Navbar = ({ onOpenCollections }: NavbarProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("home");
   const isRakhi = isRakshaBandhanActive();
   const isVratham = isVaralakshmiVrathamActive();
   const isIday = isIndependenceDayActive();
@@ -47,14 +48,62 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Active section scroll spy
+  useEffect(() => {
+    const tracked = [
+      { id: "home", target: "home" },
+      { id: "collections", target: "collections" },
+      { id: "design-studio", target: "design-studio" },
+      { id: "about", target: "about" },
+      { id: "instagram", target: "instagram" },
+      { id: "contact", target: "contact" },
+    ];
+
+    const handleScrollSpy = () => {
+      const scrollPos = window.scrollY + 140;
+      let matched = "";
+
+      for (const item of tracked) {
+        const el = document.getElementById(item.id) || (item.id === "design-studio" ? document.getElementById("studio") : null);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
+            matched = item.target;
+            break;
+          }
+        }
+      }
+
+      if (matched) {
+        setActiveSection(matched);
+      } else if (window.scrollY < 200) {
+        setActiveSection("home");
+      }
+    };
+
+    window.addEventListener("scroll", handleScrollSpy, { passive: true });
+    handleScrollSpy();
+    return () => window.removeEventListener("scroll", handleScrollSpy);
+  }, []);
+
   const scrollToSection = (targetId: string) => {
     const cleanId = targetId.replace(/^#/, "");
     if (cleanId === "collections" && onOpenCollections) {
       onOpenCollections();
     }
-    const element = document.getElementById(cleanId);
+    const element =
+      document.getElementById(cleanId) ||
+      document.getElementById(cleanId === "studio" ? "design-studio" : cleanId === "design-studio" ? "studio" : cleanId);
+
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      const navOffset = 80;
+      const elementPos = element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: Math.max(0, elementPos - navOffset),
+        behavior: "smooth",
+      });
+      setActiveSection(cleanId === "studio" ? "design-studio" : cleanId);
     }
     if (window.location.hash) {
       window.history.replaceState(null, "", window.location.pathname);
@@ -129,16 +178,27 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
             </button>
 
             {/* Desktop Nav Links */}
-            <div className="hidden md:flex items-center gap-7 text-xs font-semibold text-[#54665c]">
-              {navLinks.map((link) => (
-                <button
-                  key={link.label}
-                  onClick={() => handleNavClick(link)}
-                  className="hover:text-[#c99f52] transition-colors py-1 cursor-pointer"
-                >
-                  {link.label}
-                </button>
-              ))}
+            <div className="hidden md:flex items-center gap-1 sm:gap-2 text-xs font-semibold text-[#54665c]">
+              {navLinks.map((link) => {
+                const isActive =
+                  link.target &&
+                  (activeSection === link.target ||
+                    (link.target === "design-studio" && (activeSection === "studio" || activeSection === "design-studio")));
+
+                return (
+                  <button
+                    key={link.label}
+                    onClick={() => handleNavClick(link)}
+                    className={`px-3 py-1.5 rounded-full transition-all duration-200 cursor-pointer ${
+                      isActive
+                        ? "text-[#1e3b2b] font-bold bg-[#c99f52]/20 border border-[#c99f52]/50 shadow-xs scale-102"
+                        : "hover:text-[#c99f52] hover:bg-black/5"
+                    }`}
+                  >
+                    {link.label}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Right Action Button & Mobile Toggle */}
@@ -164,15 +224,26 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
           {/* Mobile Menu Drawer */}
           {isMobileMenuOpen && (
             <div className="md:hidden bg-white border border-[#e2e7e2] mt-3 py-3 rounded-2xl shadow-xl space-y-1 animate-fade-in">
-              {navLinks.map((link) => (
-                <button
-                  key={link.label}
-                  onClick={() => handleNavClick(link)}
-                  className="block w-full text-left px-4 py-2.5 text-xs font-bold text-[#142019] hover:bg-[#f7f8f5] rounded-lg transition-colors cursor-pointer"
-                >
-                  {link.label}
-                </button>
-              ))}
+              {navLinks.map((link) => {
+                const isActive =
+                  link.target &&
+                  (activeSection === link.target ||
+                    (link.target === "design-studio" && (activeSection === "studio" || activeSection === "design-studio")));
+
+                return (
+                  <button
+                    key={link.label}
+                    onClick={() => handleNavClick(link)}
+                    className={`block w-full text-left px-4 py-2.5 text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+                      isActive
+                        ? "text-[#1e3b2b] bg-[#c99f52]/20 border-l-4 border-[#c99f52]"
+                        : "text-[#142019] hover:bg-[#f7f8f5]"
+                    }`}
+                  >
+                    {link.label}
+                  </button>
+                );
+              })}
               <div className="px-4 pt-2">
                 <button
                   onClick={() => scrollToSection("contact")}

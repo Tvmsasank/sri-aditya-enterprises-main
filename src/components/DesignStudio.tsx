@@ -155,7 +155,7 @@ export const DesignStudio = () => {
             <div className="sae-control-block">
               <div className="sae-control-heading"><div><span>02 / UPHOLSTERY</span><h3>Pick a fabric tone</h3></div><b className="sae-selected-value">{fabric.name}</b></div>
               <div className="sae-swatch-row" role="group" aria-label="Fabric colour">
-                {fabrics.map((item) => <button key={item.name} className={`sae-swatch ${fabric.name === item.name ? "active" : ""}`} style={{ "--swatch": item.color } as React.CSSProperties} onClick={() => setFabric(item)} aria-label={`${item.name} fabric`} aria-pressed={fabric.name === item.name}><span />{fabric.name}</button>)}
+                {fabrics.map((item) => <button key={item.name} className={`sae-swatch ${fabric.name === item.name ? "active" : ""}`} style={{ "--swatch": item.color } as React.CSSProperties} onClick={() => setFabric(item)} aria-label={`${item.name} fabric`} aria-pressed={fabric.name === item.name}><span />{item.name}</button>)}
               </div>
             </div>
 
