@@ -1,0 +1,1109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Wardrobe Concepts PoC — Pop-Out Modal vs Dive-In Portal | Sri Aditya Enterprises</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #16241b;
+      --green: #1e3b2b;
+      --green-light: #2b523c;
+      --cream: #faf7f0;
+      --cream-card: #ffffff;
+      --gold: #c99f52;
+      --gold-glow: rgba(201, 159, 82, 0.4);
+      --wood-dark: #2a160d;
+      --wood-mid: #4a2716;
+      --wood-light: #7a4628;
+      --shadow-soft: 0 16px 40px -10px rgba(18, 38, 27, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #f5f1e8;
+      color: var(--ink);
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      perspective: 1600px;
+    }
+
+    /* Top Mode Switcher Bar */
+    .top-controls {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(22, 36, 27, 0.95);
+      backdrop-filter: blur(12px);
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      border-bottom: 1px solid rgba(201, 159, 82, 0.3);
+    }
+
+    .brand-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #faf7f0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-title span {
+      color: var(--gold);
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: rgba(201, 159, 82, 0.15);
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(201, 159, 82, 0.35);
+    }
+
+    .mode-tabs {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      gap: 4px;
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: #d1dcd5;
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, #c99f52, #e0b96c);
+      color: #1a221a;
+      box-shadow: 0 4px 14px rgba(201, 159, 82, 0.4);
+    }
+
+    .reset-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .reset-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Hero / Stage Container */
+    .hero-stage {
+      position: relative;
+      min-height: calc(100vh - 65px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px 60px;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    /* Explanation Banner */
+    .concept-explainer {
+      max-width: 780px;
+      text-align: center;
+      margin-bottom: 28px;
+      z-index: 10;
+      transition: opacity 0.4s ease;
+    }
+
+    .concept-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      background: rgba(201, 159, 82, 0.12);
+      padding: 4px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(201, 159, 82, 0.3);
+      margin-bottom: 12px;
+    }
+
+    .concept-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 3.2vw, 36px);
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .concept-desc {
+      font-size: 14px;
+      color: #55675c;
+      line-height: 1.5;
+    }
+
+    /* Interactive Instruction Pill */
+    .click-instruction {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 10px 24px;
+      border-radius: 999px;
+      border: 1.5px solid var(--gold);
+      box-shadow: 0 6px 20px rgba(201, 159, 82, 0.25);
+      margin-bottom: 24px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 20;
+      animation: pulsePill 2.5s infinite ease-in-out;
+    }
+
+    .click-instruction:hover {
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 10px 28px rgba(201, 159, 82, 0.35);
+    }
+
+    @keyframes pulsePill {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    /* 3D Wardrobe Structure */
+    .wardrobe-wrap {
+      position: relative;
+      width: min(380px, 92vw);
+      height: 380px;
+      perspective: 1400px;
+      transform-style: preserve-3d;
+      cursor: pointer;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 15;
+    }
+
+    .wardrobe-box {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #2a160d, #1c0e08);
+      border-radius: 12px;
+      box-shadow: 
+        0 25px 60px -10px rgba(0, 0, 0, 0.5),
+        0 8px 18px rgba(0, 0, 0, 0.3),
+        inset 0 0 40px rgba(0, 0, 0, 0.9);
+      transform-style: preserve-3d;
+      border: 2px solid #5a331c;
+    }
+
+    .wardrobe-crown {
+      position: absolute;
+      top: -14px;
+      left: -8px;
+      right: -8px;
+      height: 18px;
+      background: linear-gradient(180deg, #6c4026, #462715);
+      border-radius: 6px 6px 2px 2px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+      border-top: 1px solid #8e5837;
+      z-index: 30;
+    }
+
+    /* Interior of Wardrobe */
+    .wardrobe-interior {
+      position: absolute;
+      inset: 12px;
+      background: radial-gradient(circle at 50% 40%, #3e2213, #1e0f07 80%);
+      border-radius: 6px;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.8);
+    }
+
+    .interior-light {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 40%, rgba(255, 220, 160, 0.45), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      pointer-events: none;
+    }
+
+    /* Doors */
+    .doors-container {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      z-index: 20;
+    }
+
+    .door {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      background: linear-gradient(90deg, #422313, #351b0e 40%, #462615);
+      border: 1.5px solid #5d341d;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+      transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform-style: preserve-3d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .door-left {
+      left: 0;
+      transform-origin: left center;
+      border-radius: 10px 0 0 10px;
+    }
+
+    .door-right {
+      right: 0;
+      transform-origin: right center;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .door-panel {
+      position: absolute;
+      inset: 16px 12px;
+      border: 2px solid #5b331c;
+      border-radius: 6px;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .handle {
+      position: absolute;
+      width: 8px;
+      height: 48px;
+      background: linear-gradient(180deg, #f8df99, #c99f52 60%, #9b7430);
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      z-index: 5;
+    }
+    .door-left .handle { right: 14px; }
+    .door-right .handle { left: 14px; }
+
+    /* Open State for Doors */
+    .is-opened .door-left {
+      transform: rotateY(-125deg);
+    }
+    .is-opened .door-right {
+      transform: rotateY(125deg);
+    }
+    .is-opened .interior-light {
+      opacity: 1;
+    }
+
+    /* CONCEPT 1: 3D POP-OUT CARDS */
+    .burst-particles-wrap {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      transform-style: preserve-3d;
+      z-index: 40;
+    }
+
+    .pop-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80px;
+      height: 95px;
+      margin-top: -47px;
+      margin-left: -40px;
+      background: #fff;
+      border-radius: 8px;
+      padding: 4px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(201, 159, 82, 0.4);
+      opacity: 0;
+      transform: scale(0.2) translateZ(0);
+      transform-style: preserve-3d;
+      transition: all 0.9s cubic-bezier(0.25, 1, 0.5, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pop-card img {
+      width: 100%;
+      height: 68px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .pop-card span {
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-top: 3px;
+      text-transform: uppercase;
+    }
+
+    /* When Bursting Forward in Concept 1 */
+    .is-popping-out .pop-card:nth-child(1) { transform: translate3d(-190px, -140px, 320px) rotate(-14deg) scale(1.15); opacity: 1; }
+    .is-popping-out .pop-card:nth-child(2) { transform: translate3d(-70px, -170px, 380px) rotate(6deg) scale(1.2); opacity: 1; }
+    .is-popping-out .pop-card:nth-child(3) { transform: translate3d(80px, -160px, 350px) rotate(-8deg) scale(1.18); opacity: 1; }
+    .is-popping-out .pop-card:nth-child(4) { transform: translate3d(190px, -130px, 300px) rotate(12deg) scale(1.12); opacity: 1; }
+    .is-popping-out .pop-card:nth-child(5) { transform: translate3d(-220px, 10px, 340px) rotate(15deg) scale(1.16); opacity: 1; }
+    .is-popping-out .pop-card:nth-child(6) { transform: translate3d(-90px, 20px, 420px) rotate(-5deg) scale(1.3); opacity: 1; }
+    .is-popping-out .pop-card:nth-child(7) { transform: translate3d(90px, 25px, 410px) rotate(7deg) scale(1.28); opacity: 1; }
+    .is-popping-out .pop-card:nth-child(8) { transform: translate3d(210px, 15px, 330px) rotate(-11deg) scale(1.15); opacity: 1; }
+    .is-popping-out .pop-card:nth-child(9) { transform: translate3d(-170px, 150px, 300px) rotate(-9deg) scale(1.1); opacity: 1; }
+    .is-popping-out .pop-card:nth-child(10){ transform: translate3d(-50px, 170px, 360px) rotate(8deg) scale(1.2); opacity: 1; }
+    .is-popping-out .pop-card:nth-child(11){ transform: translate3d(70px, 160px, 350px) rotate(-6deg) scale(1.18); opacity: 1; }
+    .is-popping-out .pop-card:nth-child(12){ transform: translate3d(180px, 140px, 290px) rotate(10deg) scale(1.1); opacity: 1; }
+
+    /* The Screen-Fit Floating 3D Modal */
+    .popout-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(14, 26, 19, 0.72);
+      backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      perspective: 1200px;
+    }
+
+    .popout-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .popout-modal-card {
+      width: min(920px, 95vw);
+      max-height: 88vh;
+      background: linear-gradient(145deg, #ffffff, #faf7f0);
+      border-radius: 24px;
+      border: 1px solid rgba(201, 159, 82, 0.4);
+      box-shadow: 
+        0 30px 80px -15px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.85) translateZ(-100px) rotateX(10deg);
+      opacity: 0;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .popout-modal-overlay.active .popout-modal-card {
+      transform: scale(1) translateZ(0) rotateX(0deg);
+      opacity: 1;
+    }
+
+    .modal-header {
+      padding: 20px 28px;
+      background: linear-gradient(135deg, #1e3b2b, #14281d);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--gold);
+    }
+
+    .modal-title-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: #faf7f0;
+    }
+
+    .modal-title-box p {
+      font-size: 12px;
+      color: #a4beaf;
+      margin-top: 3px;
+    }
+
+    .close-modal-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .close-modal-btn:hover {
+      background: #c99f52;
+      color: #122117;
+      transform: rotate(90deg);
+    }
+
+    .modal-grid-content {
+      padding: 24px;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .modal-item-tile {
+      background: #fff;
+      border: 1px solid #e7dfcf;
+      border-radius: 14px;
+      padding: 10px;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .modal-item-tile:hover {
+      transform: translateY(-5px) scale(1.02);
+      border-color: var(--gold);
+      box-shadow: 0 12px 24px -5px rgba(201, 159, 82, 0.28);
+    }
+
+    .modal-item-tile img {
+      width: 100%;
+      height: 125px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+
+    .modal-item-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .modal-item-sub {
+      font-size: 11px;
+      color: #63776b;
+      margin-bottom: 8px;
+    }
+
+    .inquire-btn {
+      margin-top: auto;
+      background: #f4efe4;
+      border: 1px solid #dacfbe;
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--green);
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .modal-item-tile:hover .inquire-btn {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+
+    /* CONCEPT 2: DIVE-IN PORTAL */
+    .portal-stage-wrap {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 600;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      background: #0f1a13;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .portal-stage-wrap.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .diving-in {
+      animation: cameraDive 1.4s forwards cubic-bezier(0.7, 0, 0.3, 1);
+    }
+
+    @keyframes cameraDive {
+      0% {
+        transform: scale(1) translateZ(0);
+        filter: blur(0px);
+      }
+      60% {
+        transform: scale(5) translateZ(900px);
+        filter: blur(2px);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(10) translateZ(1400px);
+        filter: blur(8px);
+        opacity: 0;
+      }
+    }
+
+    .virtual-showroom-room {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      perspective: 1200px;
+      background: radial-gradient(circle at 50% 45%, #244131 0%, #0d1b12 80%);
+      color: #fff;
+      padding: 30px;
+    }
+
+    .showroom-nav-bar {
+      position: absolute;
+      top: 30px;
+      left: 40px;
+      right: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 50;
+    }
+
+    .showroom-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .exit-showroom-btn {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid var(--gold);
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .exit-showroom-btn:hover {
+      background: var(--gold);
+      color: #0d1b12;
+      box-shadow: 0 4px 18px var(--gold-glow);
+    }
+
+    .cylinder-stage {
+      position: relative;
+      width: 320px;
+      height: 400px;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .cylinder-card {
+      position: absolute;
+      width: 260px;
+      height: 350px;
+      left: 30px;
+      top: 25px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(201, 159, 82, 0.4);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.4s ease;
+      cursor: pointer;
+    }
+
+    .cylinder-card.current {
+      border-color: #ffd88a;
+      box-shadow: 0 0 35px rgba(201, 159, 82, 0.5), 0 20px 50px rgba(0, 0, 0, 0.8);
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .cylinder-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .cylinder-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: #faf7f0;
+      margin-bottom: 4px;
+    }
+
+    .cylinder-card p {
+      font-size: 12px;
+      color: #bad3c5;
+    }
+
+    .showroom-controls {
+      position: absolute;
+      bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      z-index: 50;
+    }
+
+    .nav-arrow-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-arrow-btn:hover {
+      background: var(--gold);
+      color: #122117;
+      border-color: var(--gold);
+      transform: scale(1.08);
+    }
+
+    .comparison-section {
+      width: min(1000px, 92vw);
+      margin: 40px auto 60px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px;
+      border: 1px solid #e5ded0;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .comparison-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: var(--green);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .comp-card {
+      padding: 20px;
+      border-radius: 14px;
+      background: #faf7f0;
+      border: 1px solid #ebdcc5;
+    }
+
+    .comp-card h3 {
+      font-size: 16px;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .comp-card ul {
+      list-style: none;
+      font-size: 13px;
+      color: #4a5c51;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .comp-card li::before {
+      content: "✓ ";
+      color: var(--gold);
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Controls & Mode Switcher -->
+  <header class="top-controls">
+    <div class="brand-title">
+      Sri Aditya Enterprises
+      <span>Interactive 3D PoC</span>
+    </div>
+
+    <div class="mode-tabs">
+      <button id="btnModePopout" class="mode-btn active" onclick="setMode('popout')">
+        <span>✨ Option A: 3D Pop-Out & Screen Fit</span>
+      </button>
+      <button id="btnModeDive" class="mode-btn" onclick="setMode('dive')">
+        <span>🚪 Option B: Dive-In Portal (Room Entry)</span>
+      </button>
+    </div>
+
+    <button class="reset-btn" onclick="resetDoor()">↺ Reset Wardrobe</button>
+  </header>
+
+  <!-- Main Hero Stage -->
+  <main class="hero-stage" id="heroStage">
+    
+    <!-- Dynamic Explainer based on chosen mode -->
+    <div class="concept-explainer" id="explainerBox">
+      <div class="concept-tag" id="conceptTag">Option A: 3D Holographic Pop-Out</div>
+      <h1 class="concept-title" id="conceptTitle">Tiles Fly Out in 3D & Snap Into a Screen-Fit Modal</h1>
+      <p class="concept-desc" id="conceptDesc">
+        Click the wardrobe door below. The doors swing open, and the miniature furniture tiles burst forward directly towards your screen in 3D space, smoothly assembling into a high-end luxury floating modal gallery.
+      </p>
+    </div>
+
+    <!-- Instruction Button -->
+    <div class="click-instruction" id="clickPrompt" onclick="triggerDoorAction()">
+      <span id="keyIcon">🗝️</span>
+      <span id="instructionText">CLICK THE WARDROBE DOOR TO EXPERIENCE</span>
+    </div>
+
+    <!-- 3D Wardrobe Body -->
+    <div class="wardrobe-wrap" id="wardrobeWrap" onclick="triggerDoorAction()">
+      <div class="wardrobe-box">
+        <div class="wardrobe-crown"></div>
+
+        <!-- Interior Glow & Shelving -->
+        <div class="wardrobe-interior">
+          <div class="interior-light"></div>
+          <div style="color: #e5cb9b; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.85; text-align: center; padding: 0 10px;">
+            Sri Aditya Enterprises<br><span style="font-size: 9px; color: #a88448;">Handcrafted Luxury Since 1990</span>
+          </div>
+        </div>
+
+        <!-- 3D Double Doors -->
+        <div class="doors-container">
+          <div class="door door-left">
+            <div class="door-panel"></div>
+            <div class="handle"></div>
+          </div>
+          <div class="door door-right">
+            <div class="door-panel"></div>
+            <div class="handle"></div>
+          </div>
+        </div>
+
+        <!-- Flying 3D Cards Layer (For Concept A) -->
+        <div class="burst-particles-wrap" id="burstWrap">
+          <div class="pop-card"><img src="src/assets/living-room.jpg" alt="Living" /><span>Living</span></div>
+          <div class="pop-card"><img src="src/assets/bed-room.jpg" alt="Bedroom" /><span>Bedroom</span></div>
+          <div class="pop-card"><img src="src/assets/dining-table.jpg" alt="Dining" /><span>Dining</span></div>
+          <div class="pop-card"><img src="src/assets/sofas.jpg" alt="Sofas" /><span>Sofas</span></div>
+          <div class="pop-card"><img src="src/assets/sleepwell-mattress.jpg" alt="Mattress" /><span>Mattress</span></div>
+          <div class="pop-card"><img src="src/assets/wardrobe.jpg" alt="Wardrobes" /><span>Wardrobes</span></div>
+          <div class="pop-card"><img src="src/assets/sofa-cum-bed.jpg" alt="Sofa Bed" /><span>Sofa Bed</span></div>
+          <div class="pop-card"><img src="src/assets/storage-solutions.jpg" alt="Storage" /><span>Storage</span></div>
+          <div class="pop-card"><img src="src/assets/furnishings.jpg" alt="Furnishings" /><span>Decor</span></div>
+          <div class="pop-card"><img src="src/assets/plastic-chairs.jpg" alt="Chairs" /><span>Chairs</span></div>
+          <div class="pop-card"><img src="src/assets/godrej-lockers.jpg" alt="Lockers" /><span>Lockers</span></div>
+          <div class="pop-card"><img src="src/assets/miscellaneous.jpg" alt="Office" /><span>Office</span></div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- CONCEPT 1 MODAL (Screen Fit 3D Floating Modal) -->
+  <div class="popout-modal-overlay" id="popoutModal">
+    <div class="popout-modal-card">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <h3>Curated Furniture Collections</h3>
+          <p>Sri Aditya Enterprises • Handcrafted & Direct Manufacturer Pricing</p>
+        </div>
+        <button class="close-modal-btn" onclick="closePopoutModal()">✕</button>
+      </div>
+
+      <div class="modal-grid-content">
+        <div class="modal-item-tile">
+          <img src="src/assets/living-room.jpg" alt="Living Room" />
+          <div class="modal-item-title">Living Room Suites</div>
+          <div class="modal-item-sub">Sectionals & Coffee Tables</div>
+          <div class="inquire-btn">WhatsApp Inquiry →</div>
+        </div>
+        <div class="modal-item-tile">
+          <img src="src/assets/bed-room.jpg" alt="Bedroom Sets" />
+          <div class="modal-item-title">Master Bedroom Sets</div>
+          <div class="modal-item-sub">Teak Wood King & Queen</div>
+          <div class="inquire-btn">WhatsApp Inquiry →</div>
+        </div>
+        <div class="modal-item-tile">
+          <img src="src/assets/dining-table.jpg" alt="Dining Tables" />
+          <div class="modal-item-title">Solid Wood Dining</div>
+          <div class="modal-item-sub">4 to 8 Seater Sets</div>
+          <div class="inquire-btn">WhatsApp Inquiry →</div>
+        </div>
+        <div class="modal-item-tile">
+          <img src="src/assets/sofas.jpg" alt="Luxury Sofas" />
+          <div class="modal-item-title">Designer Sofas</div>
+          <div class="modal-item-sub">Recliners & Fabric Loungers</div>
+          <div class="inquire-btn">WhatsApp Inquiry →</div>
+        </div>
+        <div class="modal-item-tile">
+          <img src="src/assets/sleepwell-mattress.jpg" alt="Sleepwell Mattress" />
+          <div class="modal-item-title">Sleepwell Mattresses</div>
+          <div class="modal-item-sub">Orthopedic & Memory Foam</div>
+          <div class="inquire-btn">WhatsApp Inquiry →</div>
+        </div>
+        <div class="modal-item-tile">
+          <img src="src/assets/wardrobe.jpg" alt="Wardrobes" />
+          <div class="modal-item-title">Custom Wardrobes</div>
+          <div class="modal-item-sub">Sliding & Hinged Almirahs</div>
+          <div class="inquire-btn">WhatsApp Inquiry →</div>
+        </div>
+        <div class="modal-item-tile">
+          <img src="src/assets/sofa-cum-bed.jpg" alt="Sofa Cum Bed" />
+          <div class="modal-item-title">Sofa Cum Bed</div>
+          <div class="modal-item-sub">Space Saving Conversions</div>
+          <div class="inquire-btn">WhatsApp Inquiry →</div>
+        </div>
+        <div class="modal-item-tile">
+          <img src="src/assets/godrej-lockers.jpg" alt="Godrej Security" />
+          <div class="modal-item-title">Godrej Safe Lockers</div>
+          <div class="modal-item-sub">Fireproof & Digital Locks</div>
+          <div class="inquire-btn">WhatsApp Inquiry →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONCEPT 2 PORTAL (First-Person Dive-In Showroom Stage) -->
+  <div class="portal-stage-wrap" id="portalStage">
+    <div class="virtual-showroom-room">
+      
+      <div class="showroom-nav-bar">
+        <div class="showroom-badge">
+          <span>👑</span> 3D Virtual Showroom Portal
+        </div>
+        <button class="exit-showroom-btn" onclick="exitVirtualShowroom()">
+          ← Exit Back to Home
+        </button>
+      </div>
+
+      <div class="cylinder-stage" id="cylinderStage">
+        <div class="cylinder-card current" style="transform: rotateY(0deg) translateZ(360px);">
+          <img src="src/assets/living-room.jpg" alt="Living Room" />
+          <h4>Living Room Suites</h4>
+          <p>Royal Sectionals & Coffee Tables</p>
+        </div>
+        <div class="cylinder-card" style="transform: rotateY(60deg) translateZ(360px);">
+          <img src="src/assets/bed-room.jpg" alt="Bedroom Sets" />
+          <h4>Master Bedroom</h4>
+          <p>Teak Wood King & Queen Beds</p>
+        </div>
+        <div class="cylinder-card" style="transform: rotateY(120deg) translateZ(360px);">
+          <img src="src/assets/dining-table.jpg" alt="Dining Tables" />
+          <h4>Solid Wood Dining</h4>
+          <p>Handcrafted 6-Seater Sets</p>
+        </div>
+        <div class="cylinder-card" style="transform: rotateY(180deg) translateZ(360px);">
+          <img src="src/assets/sofas.jpg" alt="Sofas" />
+          <h4>Luxury Sofas</h4>
+          <p>Plush Leatherette & Velvets</p>
+        </div>
+        <div class="cylinder-card" style="transform: rotateY(240deg) translateZ(360px);">
+          <img src="src/assets/wardrobe.jpg" alt="Wardrobes" />
+          <h4>Storage & Wardrobes</h4>
+          <p>Built-in Wooden Organizers</p>
+        </div>
+        <div class="cylinder-card" style="transform: rotateY(300deg) translateZ(360px);">
+          <img src="src/assets/godrej-lockers.jpg" alt="Godrej Lockers" />
+          <h4>Godrej Security</h4>
+          <p>Heavy Steel Electronic Safes</p>
+        </div>
+      </div>
+
+      <div class="showroom-controls">
+        <button class="nav-arrow-btn" onclick="rotateShowroom(-60)">‹</button>
+        <span style="font-size: 13px; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase;">Rotate 3D Showroom</span>
+        <button class="nav-arrow-btn" onclick="rotateShowroom(60)">›</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Comparison Analysis -->
+  <section class="comparison-section">
+    <h2>Proof of Concept Analysis: Which Experience Fits Best?</h2>
+    <div class="comparison-grid">
+      <div class="comp-card">
+        <h3>✨ Option A: 3D Pop-Out & Screen Fit</h3>
+        <ul>
+          <li><strong>Physics:</strong> Tiles blast forward along the Z-axis directly toward the user's screen.</li>
+          <li><strong>Transition:</strong> Fluidly gathers and fits into an organized, floating glassmorphic modal.</li>
+          <li><strong>Best For:</strong> High conversion rate — users immediately see all 12 furniture models clearly with prices/WhatsApp inquiry buttons without leaving the page.</li>
+          <li><strong>Performance:</strong> Lightweight 60fps CSS 3D transforms, works smoothly on all devices.</li>
+        </ul>
+      </div>
+
+      <div class="comp-card">
+        <h3>🚪 Option B: Dive-In Portal (Room Entry)</h3>
+        <ul>
+          <li><strong>Physics:</strong> First-person camera dive-in zooming directly through the open wooden doors.</li>
+          <li><strong>Transition:</strong> Wardrobe frame expands 10x off-screen as the user "walks into" a luxury showroom room.</li>
+          <li><strong>Best For:</strong> High "WOW" factor and storytelling — creates a magical Narnia / luxury flagship store feeling.</li>
+          <li><strong>Interaction:</strong> 3D cylindrical carousel inside that users can spin 360 degrees.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    let currentMode = 'popout';
+    let isDoorOpen = false;
+    let cylinderAngle = 0;
+
+    function setMode(mode) {
+      currentMode = mode;
+      resetDoor();
+
+      document.getElementById('btnModePopout').classList.toggle('active', mode === 'popout');
+      document.getElementById('btnModeDive').classList.toggle('active', mode === 'dive');
+
+      const tag = document.getElementById('conceptTag');
+      const title = document.getElementById('conceptTitle');
+      const desc = document.getElementById('conceptDesc');
+
+      if (mode === 'popout') {
+        tag.textContent = 'Option A: 3D Holographic Pop-Out';
+        title.textContent = 'Tiles Fly Out in 3D & Snap Into a Screen-Fit Modal';
+        desc.textContent = 'Click the wardrobe door below. The doors swing open, and the miniature furniture tiles burst forward directly towards your screen in 3D space, smoothly assembling into a high-end luxury floating modal gallery.';
+      } else {
+        tag.textContent = 'Option B: First-Person Dive-In Portal';
+        title.textContent = 'Camera Dives Through the Wardrobe Into a 3D Showroom';
+        desc.textContent = 'Click the wardrobe door below. The doors swing wide open and the camera flies directly inside the wardrobe, transforming into a 3D virtual showroom where you can rotate and browse furniture models in 360°.';
+      }
+    }
+
+    function triggerDoorAction() {
+      if (isDoorOpen) return;
+      isDoorOpen = true;
+
+      const wrap = document.getElementById('wardrobeWrap');
+      wrap.classList.add('is-opened');
+
+      document.getElementById('keyIcon').textContent = '🔓';
+      document.getElementById('instructionText').textContent = 'DOOR OPENED • ANIMATION PLAYING';
+
+      if (currentMode === 'popout') {
+        setTimeout(() => {
+          wrap.classList.add('is-popping-out');
+        }, 350);
+
+        setTimeout(() => {
+          document.getElementById('popoutModal').classList.add('active');
+        }, 1100);
+
+      } else {
+        setTimeout(() => {
+          document.getElementById('heroStage').classList.add('diving-in');
+        }, 600);
+
+        setTimeout(() => {
+          document.getElementById('portalStage').classList.add('active');
+        }, 1300);
+      }
+    }
+
+    function closePopoutModal() {
+      document.getElementById('popoutModal').classList.remove('active');
+      setTimeout(() => {
+        resetDoor();
+      }, 300);
+    }
+
+    function exitVirtualShowroom() {
+      document.getElementById('portalStage').classList.remove('active');
+      setTimeout(() => {
+        document.getElementById('heroStage').classList.remove('diving-in');
+        resetDoor();
+      }, 400);
+    }
+
+    function resetDoor() {
+      isDoorOpen = false;
+      const wrap = document.getElementById('wardrobeWrap');
+      wrap.classList.remove('is-opened', 'is-popping-out');
+      document.getElementById('popoutModal').classList.remove('active');
+      document.getElementById('portalStage').classList.remove('active');
+      document.getElementById('heroStage').classList.remove('diving-in');
+
+      document.getElementById('keyIcon').textContent = '🗝️';
+      document.getElementById('instructionText').textContent = 'CLICK THE WARDROBE DOOR TO EXPERIENCE';
+    }
+
+    function rotateShowroom(deg) {
+      cylinderAngle += deg;
+      document.getElementById('cylinderStage').style.transform = `rotateY(${cylinderAngle}deg)`;
+    }
+  </script>
+</body>
+</html>

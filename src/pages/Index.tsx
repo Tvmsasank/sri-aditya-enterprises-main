@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navbar } from "@/components/Navbar";
-import { Hero } from "@/components/Hero";
+import { NextGenHero } from "@/components/NextGenHero";
+import { CraftsmanshipStory } from "@/components/CraftsmanshipStory";
 import { TrustRow } from "@/components/TrustRow";
 import { Collections } from "@/components/Collections";
 import { About } from "@/components/About";
@@ -71,13 +72,10 @@ const Index = () => {
     <div className="min-h-screen bg-[#f7f8f5] text-[#142019] font-sans selection:bg-[#c99f52] selection:text-white transition-colors">
       <Navbar onOpenCollections={handleOpenCollections} />
       <main>
-        <Hero
-          isWardrobeOpen={isWardrobeOpen}
-          onToggleWardrobe={handleToggleWardrobe}
-          onScrollTo={scrollToSection}
-        />
+        <NextGenHero onScrollTo={scrollToSection} />
         <TrustRow />
         <Collections isOpen={isWardrobeOpen} onClose={handleCloseWardrobe} />
+        <CraftsmanshipStory />
         <About />
         <InstagramShowcase />
         <Contact />

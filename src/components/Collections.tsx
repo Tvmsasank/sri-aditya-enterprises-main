@@ -19,7 +19,8 @@ import {
 } from "@/lib/festive";
 import { DivineDivider } from "./DivineDivider";
 import { RakhiDivider } from "./RakhiDivider";
-import { ArrowUpRight, MessageCircle } from "lucide-react";
+import { ArrowUpRight, MessageCircle, ChevronLeft, ChevronRight, X, ZoomIn, Eye, Sparkles, CheckCircle2, Phone } from "lucide-react";
+import { createPortal } from "react-dom";
 import "./Wardrobe.css";
 
 const DEFAULT_OWNER_PHONE = "918019404140";
@@ -164,15 +165,72 @@ const CATEGORIES = [
 
 export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => {
   const [activeCategory, setActiveCategory] = React.useState<string>("all");
+  const [selectedItem, setSelectedItem] = React.useState<typeof furnitureItems[0] | null>(null);
   const carouselRef = React.useRef<HTMLDivElement>(null);
+
+  const filteredItems = React.useMemo(
+    () =>
+      activeCategory === "all"
+        ? furnitureItems
+        : furnitureItems.filter((item) => item.category === activeCategory),
+    [activeCategory]
+  );
+
+  // Close lightbox on Escape key
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedItem(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Prevent background scroll when collection detail modal is open
+  React.useEffect(() => {
+    if (selectedItem) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedItem]);
+
+  const [canScrollLeft, setCanScrollLeft] = React.useState(false);
+  const [canScrollRight, setCanScrollRight] = React.useState(true);
+
+  const updateScrollArrows = () => {
+    if (carouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+      setCanScrollLeft(scrollLeft > 15);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 15);
+    }
+  };
+
+  React.useEffect(() => {
+    const el = carouselRef.current;
+    if (el) {
+      updateScrollArrows();
+      el.addEventListener("scroll", updateScrollArrows);
+      window.addEventListener("resize", updateScrollArrows);
+      return () => {
+        el.removeEventListener("scroll", updateScrollArrows);
+        window.removeEventListener("resize", updateScrollArrows);
+      };
+    }
+  }, [filteredItems]);
+
+  const scrollCarousel = (direction: "left" | "right") => {
+    if (carouselRef.current) {
+      const offset = direction === "left" ? -360 : 360;
+      carouselRef.current.scrollBy({ left: offset, behavior: "smooth" });
+    }
+  };
 
   const isRakhi = isRakshaBandhanActive();
   const isIday = isIndependenceDayActive();
   const isVratham = isVaralakshmiVrathamActive();
-
-  const filteredItems = activeCategory === "all"
-    ? furnitureItems
-    : furnitureItems.filter((item) => item.category === activeCategory);
 
   const handleSelectCategory = (catId: string) => {
     setActiveCategory(catId);
@@ -191,12 +249,24 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
+  const handlePrevItem = () => {
+    if (!selectedItem) return;
+    const currentIndex = furnitureItems.findIndex((it) => it.num === selectedItem.num);
+    const prevIndex = (currentIndex - 1 + furnitureItems.length) % furnitureItems.length;
+    setSelectedItem(furnitureItems[prevIndex]);
+  };
+
+  const handleNextItem = () => {
+    if (!selectedItem) return;
+    const currentIndex = furnitureItems.findIndex((it) => it.num === selectedItem.num);
+    const nextIndex = (currentIndex + 1) % furnitureItems.length;
+    setSelectedItem(furnitureItems[nextIndex]);
+  };
+
   return (
     <section
       id="collections"
-      className={`relative py-8 sm:py-16 md:py-20 bg-[#f7f8f5] border-t border-[#e2e7e2] transition-colors ${
-        !isOpen ? "block md:hidden" : "block"
-      }`}
+      className="relative py-12 sm:py-16 md:py-20 bg-[#f7f8f5] border-t border-[#e2e7e2] transition-colors block"
     >
       {/* Tricolor Waves for Independence Day */}
       {isIday && (
@@ -226,7 +296,7 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
             </h2>
             <div className="flex items-center gap-2 mt-1.5 text-xs text-[#54665c]">
               <span className="w-2 h-2 rounded-full bg-[#1e3b2b] animate-pulse" />
-              <span>12 Signature Handcrafted Suites</span>
+              <span>12 Signature Handcrafted Suites • Tap any item to inspect in HD</span>
               <span className="md:hidden text-[#c99f52] font-semibold ml-auto flex items-center gap-1">
                 Swipe <span>👉</span>
               </span>
@@ -237,7 +307,7 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
             <p className="text-xs sm:text-sm text-[#54665c] max-w-sm leading-relaxed">
               From the sofa you gather around to the details that make a room yours—crafted with solid woods and honest pricing.
             </p>
-            {onClose && (
+            {isOpen && onClose && (
               <button
                 onClick={onClose}
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-[#c8d1c8] hover:border-[#1e3b2b] text-[#1e3b2b] hover:bg-[#1e3b2b] hover:text-[#faeed4] text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
@@ -252,73 +322,116 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
         {isRakhi && <RakhiDivider />}
         {isVratham && <DivineDivider />}
 
-        {/* ========================================================
-            MOBILE VIEW: HORIZONTAL SNAP CAROUSEL + CATEGORY PILLS
-            (Zero scroll-traps, silky smooth 1-thumb browsing)
-            ======================================================== */}
-        <div className="md:hidden">
-          {/* Category Filter Pills Row */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-2 no-scrollbar -mx-4 px-4">
+        {/* Controls Bar: Category Filter Pills */}
+        <div className="flex items-center justify-between gap-3 mb-6">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
             {CATEGORIES.map((cat) => {
               const isActive = activeCategory === cat.id;
               return (
                 <button
                   key={cat.id}
                   onClick={() => handleSelectCategory(cat.id)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
-                    isActive
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${isActive
                       ? "bg-[#1e3b2b] text-[#faeed4] shadow-sm scale-102"
                       : "bg-white text-[#54665c] border border-[#e2e7e2] hover:border-[#1e3b2b]"
-                  }`}
+                    }`}
                 >
                   {cat.label}
                 </button>
               );
             })}
           </div>
+        </div>
 
-          {/* Cards Snap Carousel */}
+        {/* ========================================================
+            SMOOTH HORIZONTAL CAROUSEL TRACK WITH FLOATING LIQUID ARROWS
+            ======================================================== */}
+        <div className="relative group/collections">
+          {/* Liquid Frosted Floating Left Arrow */}
+          <button
+            onClick={() => scrollCarousel("left")}
+            aria-label="Previous collections"
+            className={`absolute left-0 sm:-left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white/80 hover:bg-white text-[#1e3b2b] border border-[#c99f52]/40 shadow-[0_8px_30px_rgba(201,159,82,0.3)] backdrop-blur-xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer ${canScrollLeft ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-75 pointer-events-none"
+              }`}
+          >
+            <ChevronLeft size={22} className="stroke-[2.5]" />
+          </button>
+
+          {/* Liquid Frosted Floating Right Arrow */}
+          <button
+            onClick={() => scrollCarousel("right")}
+            aria-label="Next collections"
+            className={`absolute right-0 sm:-right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white/80 hover:bg-white text-[#1e3b2b] border border-[#c99f52]/40 shadow-[0_8px_30px_rgba(201,159,82,0.3)] backdrop-blur-xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer ${canScrollRight ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-75 pointer-events-none"
+              }`}
+          >
+            <ChevronRight size={22} className="stroke-[2.5]" />
+          </button>
+
           <div
             ref={carouselRef}
-            className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory py-2 -mx-4 px-4 no-scrollbar"
+            className="flex gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory py-3 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar scroll-smooth"
             style={{ WebkitOverflowScrolling: "touch" }}
           >
             {filteredItems.map((item) => (
               <div
-                key={`mobile-${item.name}`}
-                className="flex-none w-[260px] snap-start rounded-2xl bg-white border border-[#e2e7e2] shadow-sm hover:shadow-md overflow-hidden flex flex-col transition-all duration-200"
+                key={`carousel-${item.name}`}
+                className="flex-none w-[275px] sm:w-[325px] snap-start rounded-2xl bg-white border border-[#e2e7e2] hover:border-[#c99f52] shadow-sm hover:shadow-xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5 group"
               >
-                {/* Card Image */}
-                <div className="relative h-44 w-full overflow-hidden bg-[#162c20]">
+                {/* Image with Click-to-View in HD */}
+                <div
+                  onClick={() => setSelectedItem(item)}
+                  className="relative aspect-[16/11] w-full overflow-hidden bg-[#162c20] cursor-pointer"
+                  title={`Click to view ${item.name} in high-resolution`}
+                >
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-106"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <div className="absolute top-2.5 left-2.5 px-2 py-0.5 bg-[#162c20]/85 backdrop-blur-md rounded-md text-[10px] font-bold text-[#faeed4] uppercase tracking-wider border border-white/10">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+
+                  {/* Number & Tag Badge */}
+                  <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 bg-[#162c20]/85 backdrop-blur-md rounded-md text-[10px] font-bold text-[#faeed4] uppercase tracking-wider border border-white/10">
                     {item.num} • {item.tag}
+                  </div>
+
+                  {/* HD Zoom Badge Overlay */}
+                  <div className="absolute bottom-2.5 right-2.5 px-2.5 py-1 bg-white/90 backdrop-blur-md rounded-lg text-[10px] font-bold text-[#142019] opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 shadow-md">
+                    <Eye size={12} className="text-[#c99f52]" />
+                    <span>View in HD</span>
                   </div>
                 </div>
 
-                {/* Card Body */}
-                <div className="p-3.5 flex flex-col justify-between flex-1 bg-white">
-                  <div>
-                    <h3 className="font-heading text-base font-bold text-[#142019] mb-1 line-clamp-1">
+                {/* Body */}
+                <div className="p-4 flex flex-col justify-between flex-1 bg-white">
+                  <div
+                    onClick={() => setSelectedItem(item)}
+                    className="cursor-pointer"
+                  >
+                    <h3 className="font-serif text-lg font-bold text-[#142019] group-hover:text-[#1e3b2b] transition-colors mb-1 line-clamp-1">
                       {item.name}
                     </h3>
-                    <p className="text-[11.5px] text-[#54665c] line-clamp-2 leading-relaxed mb-3">
+                    <p className="text-xs text-[#54665c] line-clamp-2 leading-relaxed mb-4">
                       {item.desc}
                     </p>
                   </div>
-                  <button
-                    onClick={() => handleItemInquire(item.name)}
-                    className="w-full py-2 px-3 rounded-xl bg-[#1e3b2b] hover:bg-[#294f3a] text-[#faeed4] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-transform cursor-pointer"
-                  >
-                    <MessageCircle size={13} />
-                    <span>Inquire on WhatsApp</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setSelectedItem(item)}
+                      className="flex-1 py-2 px-2.5 rounded-xl border border-[#ded7c4] hover:border-[#1e3b2b] text-[#142019] hover:bg-[#f7f5ed] text-xs font-bold transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                    >
+                      <ZoomIn size={13} className="text-[#c99f52]" />
+                      <span>Details</span>
+                    </button>
+                    <button
+                      onClick={() => handleItemInquire(item.name)}
+                      className="flex-1 py-2 px-2.5 rounded-xl bg-[#1e3b2b] hover:bg-[#294f3a] text-[#faeed4] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 shadow-sm active:scale-98 transition-transform cursor-pointer"
+                    >
+                      <MessageCircle size={13} />
+                      <span>WhatsApp</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -326,42 +439,111 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
         </div>
 
         {/* ========================================================
-            DESKTOP / TABLET VIEW: RESPONSIVE GRID WITH TUMBLING BOUNCE
-            (Revealed on Desktop when Wardrobe Doors Open)
-            ======================================================== */}
-        <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {furnitureItems.map((item, index) => (
+          CRYSTAL-CLEAR HD LIGHTBOX / ITEM DETAIL MODAL
+          ======================================================== */}
+        {selectedItem && typeof document !== "undefined" && createPortal(
+          <div
+            role="dialog"
+            aria-modal="true"
+            className="fixed inset-0 z-[999999] bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200"
+            onClick={() => setSelectedItem(null)}
+          >
             <div
-              key={`desktop-${item.name}`}
-              onClick={() => handleItemInquire(item.name)}
-              className="category-card card-falling"
-              style={
-                {
-                  "--fall-delay": `${index * 0.065}s`,
-                  "--rand-rot": item.rot,
-                  "--rand-x": item.x,
-                } as React.CSSProperties
-              }
+              className="relative bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-hidden shadow-2xl border border-[#c99f52]/40 flex flex-col md:flex-row"
+              onClick={(e) => e.stopPropagation()}
             >
-              <img
-                src={item.image}
-                alt={item.name}
-                loading="lazy"
-              />
-              <div className="category-card-overlay">
-                <span className="category-tag">
-                  {item.num} • {item.tag}
-                </span>
-                <b className="category-name">
-                  {item.name}
-                </b>
-                <span className="category-action">
-                  Inquire on WhatsApp →
-                </span>
+              {/* Top Close Button (Mobile & Desktop) */}
+              <button
+                onClick={() => setSelectedItem(null)}
+                aria-label="Close image preview"
+                className="absolute top-3 right-3 z-30 w-9 h-9 rounded-full bg-black/60 hover:bg-[#c99f52] text-white hover:text-[#142019] flex items-center justify-center transition-all cursor-pointer backdrop-blur-sm"
+              >
+                <X size={18} />
+              </button>
+
+              {/* Left / Top Image Area (Full Clarity, No Squishing) */}
+              <div className="relative md:w-3/5 bg-[#142019] flex items-center justify-center p-4 sm:p-6 overflow-hidden min-h-[260px] sm:min-h-[380px]">
+                <img
+                  src={selectedItem.image}
+                  alt={selectedItem.name}
+                  className="max-h-[50vh] md:max-h-[70vh] w-auto h-auto object-contain rounded-2xl shadow-2xl transition-transform duration-300"
+                />
+
+                {/* Tag Pill in image */}
+                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md text-[#c99f52] text-xs font-mono font-bold tracking-wider border border-[#c99f52]/30">
+                  {selectedItem.num} • {selectedItem.tag}
+                </div>
+
+                {/* Prev / Next Arrows */}
+                <button
+                  onClick={handlePrevItem}
+                  aria-label="Previous collection"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-white text-white hover:text-[#142019] flex items-center justify-center transition-all cursor-pointer"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <button
+                  onClick={handleNextItem}
+                  aria-label="Next collection"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-white text-white hover:text-[#142019] flex items-center justify-center transition-all cursor-pointer"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+
+              {/* Right / Bottom Details Section */}
+              <div className="md:w-2/5 p-5 sm:p-7 flex flex-col justify-between bg-[#fffefa] overflow-y-auto max-h-[42vh] md:max-h-[92vh]">
+                <div>
+                  <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#c99f52] mb-1.5">
+                    <Sparkles size={12} />
+                    <span>Sri Aditya Signature Suite</span>
+                  </div>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#142019] mb-2 leading-tight">
+                    {selectedItem.name}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#54665c] leading-relaxed mb-4">
+                    {selectedItem.desc}
+                  </p>
+
+                  {/* Craftsmanship Features */}
+                  <div className="space-y-2 py-3 border-y border-[#e2e7e2] mb-4 text-xs text-[#3d4d42]">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 size={14} className="text-[#1e3b2b] flex-shrink-0" />
+                      <span>Direct Showroom Pricing with Honest Value</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 size={14} className="text-[#1e3b2b] flex-shrink-0" />
+                      <span>Custom dimensions & wood finish available</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 size={14} className="text-[#1e3b2b] flex-shrink-0" />
+                      <span>Vanasthalipuram Showroom Display piece</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="space-y-2 pt-2">
+                  <button
+                    onClick={() => handleItemInquire(selectedItem.name)}
+                    className="w-full py-3 px-4 rounded-xl bg-[#1e3b2b] hover:bg-[#294f3a] text-[#faeed4] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md active:scale-98 transition-transform cursor-pointer"
+                  >
+                    <MessageCircle size={15} />
+                    <span>Inquire on WhatsApp</span>
+                  </button>
+                  <a
+                    href="tel:+918019404140"
+                    className="w-full py-2.5 px-4 rounded-xl border border-[#1e3b2b] text-[#1e3b2b] hover:bg-[#1e3b2b]/5 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <Phone size={14} />
+                    <span>Call Showroom (+91 80194 04140)</span>
+                  </a>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
+          </div>,
+          document.body
+        )}
       </div>
     </section>
   );

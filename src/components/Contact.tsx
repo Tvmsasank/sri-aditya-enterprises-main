@@ -208,12 +208,40 @@ export const Contact = () => {
             ].map((partner) => (
               <div
                 key={partner.name}
-                className="flex items-center justify-center p-3 bg-white rounded-lg border border-[#e6e4da] shadow-sm"
+                className="flex items-center justify-center p-3 bg-white rounded-lg border border-[#e6e4da] shadow-sm hover:shadow-md transition"
               >
                 <img
                   src={partner.logo}
                   alt={partner.name}
                   className="h-9 object-contain"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Payment Partners & Easy EMI */}
+        <div className="pt-8 text-center">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#b7834b] mb-4">
+            Convenient Ways to Pay & Easy EMI Options
+          </p>
+          <div className="flex flex-wrap justify-center gap-3 items-center max-w-4xl mx-auto">
+            {[
+              { name: "Bajaj Finserv EMI", logo: "/payments/bajaj-finserv.png" },
+              { name: "Mastercard", logo: "/payments/master-cards.png" },
+              { name: "RuPay", logo: "/payments/rupay-cards.png" },
+              { name: "Visa", logo: "/payments/visa-cards.png" },
+              { name: "Pine Labs", logo: "/payments/pine-labs.png" },
+              { name: "UPI (PhonePe, GPay, Paytm)", logo: "/payments/upi.png" },
+            ].map((payment) => (
+              <div
+                key={payment.name}
+                className="flex items-center justify-center px-4 py-2.5 bg-white rounded-lg border border-[#e6e4da] shadow-sm hover:shadow-md transition"
+              >
+                <img
+                  src={payment.logo}
+                  alt={payment.name}
+                  className="h-8 max-w-[110px] object-contain"
                 />
               </div>
             ))}
