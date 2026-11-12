@@ -15,12 +15,8 @@ const navLinks = [
   { label: "Collections", target: "collections" },
   { label: "Design studio", target: "design-studio" },
   { label: "Our story", target: "about" },
+  { label: "Instagram", target: "instagram" },
   { label: "Visit us", target: "contact" },
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/sri_aditya_enterprises/",
-    external: true,
-  },
   {
     label: "Customer reviews ↗",
     href: "https://www.google.com/search?q=sri+aditya+enterprises+Reviews",
@@ -48,43 +44,58 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Active section scroll spy
+  // Active section scroll spy using getBoundingClientRect (immune to CSS transforms and container offsets)
   useEffect(() => {
-    const tracked = [
+    // List sections in natural DOM top-to-bottom order
+    const sections = [
       { id: "home", target: "home" },
       { id: "collections", target: "collections" },
       { id: "design-studio", target: "design-studio" },
+      { id: "craft", target: "about" }, // Teak Wood Craftsmanship Journey maps to "Our story"
       { id: "about", target: "about" },
       { id: "instagram", target: "instagram" },
       { id: "contact", target: "contact" },
     ];
 
     const handleScrollSpy = () => {
-      const scrollPos = window.scrollY + 140;
-      let matched = "";
+      // 1. If at the bottom of the page, always highlight "Visit us"
+      const scrollBottom = window.innerHeight + window.scrollY;
+      const docHeight = document.documentElement.scrollHeight;
+      if (scrollBottom >= docHeight - 120) {
+        setActiveSection("contact");
+        return;
+      }
 
-      for (const item of tracked) {
-        const el = document.getElementById(item.id) || (item.id === "design-studio" ? document.getElementById("studio") : null);
+      // 2. If near top, home
+      if (window.scrollY < 180) {
+        setActiveSection("home");
+        return;
+      }
+
+      // 3. Focal line ~30% into the viewport (below fixed navbar)
+      const focalLine = Math.min(260, window.innerHeight * 0.35);
+
+      // Find the last section in DOM order that has scrolled past the focal line
+      let currentSection = "home";
+      for (const section of sections) {
+        const el = document.getElementById(section.id);
         if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            matched = item.target;
-            break;
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= focalLine) {
+            currentSection = section.target;
           }
         }
       }
-
-      if (matched) {
-        setActiveSection(matched);
-      } else if (window.scrollY < 200) {
-        setActiveSection("home");
-      }
+      setActiveSection(currentSection);
     };
 
     window.addEventListener("scroll", handleScrollSpy, { passive: true });
+    window.addEventListener("resize", handleScrollSpy, { passive: true });
     handleScrollSpy();
-    return () => window.removeEventListener("scroll", handleScrollSpy);
+    return () => {
+      window.removeEventListener("scroll", handleScrollSpy);
+      window.removeEventListener("resize", handleScrollSpy);
+    };
   }, []);
 
   const scrollToSection = (targetId: string) => {
@@ -93,8 +104,10 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
       onOpenCollections();
     }
     const element =
-      document.getElementById(cleanId) ||
-      document.getElementById(cleanId === "studio" ? "design-studio" : cleanId === "design-studio" ? "studio" : cleanId);
+      cleanId === "about"
+        ? (document.getElementById("craft") || document.getElementById("about"))
+        : (document.getElementById(cleanId) ||
+           document.getElementById(cleanId === "studio" ? "design-studio" : cleanId === "design-studio" ? "studio" : cleanId));
 
     if (element) {
       const navOffset = 80;
@@ -103,7 +116,7 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
         top: Math.max(0, elementPos - navOffset),
         behavior: "smooth",
       });
-      setActiveSection(cleanId === "studio" ? "design-studio" : cleanId);
+      setActiveSection(cleanId === "studio" ? "design-studio" : cleanId === "craft" ? "about" : cleanId);
     }
     if (window.location.hash) {
       window.history.replaceState(null, "", window.location.pathname);
@@ -181,9 +194,10 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
             <div className="hidden md:flex items-center gap-1 sm:gap-2 text-xs font-semibold text-[#54665c]">
               {navLinks.map((link) => {
                 const isActive =
-                  link.target &&
+                  Boolean(link.target &&
                   (activeSection === link.target ||
-                    (link.target === "design-studio" && (activeSection === "studio" || activeSection === "design-studio")));
+                    (link.target === "about" && (activeSection === "about" || activeSection === "craft")) ||
+                    (link.target === "design-studio" && (activeSection === "studio" || activeSection === "design-studio"))));
 
                 return (
                   <button
@@ -226,9 +240,10 @@ export const Navbar = ({ onOpenCollections }: NavbarProps) => {
             <div className="md:hidden bg-white border border-[#e2e7e2] mt-3 py-3 rounded-2xl shadow-xl space-y-1 animate-fade-in">
               {navLinks.map((link) => {
                 const isActive =
-                  link.target &&
+                  Boolean(link.target &&
                   (activeSection === link.target ||
-                    (link.target === "design-studio" && (activeSection === "studio" || activeSection === "design-studio")));
+                    (link.target === "about" && (activeSection === "about" || activeSection === "craft")) ||
+                    (link.target === "design-studio" && (activeSection === "studio" || activeSection === "design-studio"))));
 
                 return (
                   <button

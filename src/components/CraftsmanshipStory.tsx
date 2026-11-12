@@ -104,6 +104,7 @@ export const CraftsmanshipStory: React.FC = () => {
 
   return (
     <section
+      id="craft"
       ref={containerRef}
       className="relative bg-[#16251c] text-[#fbf7ee] py-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
