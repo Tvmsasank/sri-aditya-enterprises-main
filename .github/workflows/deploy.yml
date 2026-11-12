@@ -4,6 +4,19 @@ on:
   push:
     branches:
       - master
+      - new-design
+      - old-design
+  workflow_dispatch:
+    inputs:
+      design_version:
+        description: 'Select Design Version to Deploy'
+        required: true
+        default: 'new-design'
+        type: choice
+        options:
+          - 'new-design'
+          - 'old-design'
+          - 'master'
 
 jobs:
   deploy:
@@ -12,6 +25,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.design_version || github.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
