@@ -213,11 +213,12 @@ export const NextGenHero: React.FC<NextGenHeroProps> = ({ onScrollTo }) => {
         id="home"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="relative min-h-[88vh] flex flex-col justify-center overflow-hidden bg-gradient-to-b from-[#f9f8f4] via-[#f4f1ea] to-[#eee8dd] text-[#142019] pt-24 pb-14 px-4 sm:px-6 lg:px-8"
+        className="sae-editorial-hero relative min-h-[88vh] flex flex-col justify-center overflow-hidden bg-gradient-to-b from-[#fbfaf6] via-[#f4f1ea] to-[#eee8dd] text-[#142019] pt-24 pb-14 px-4 sm:px-6 lg:px-8"
         style={{ perspective: 1800 }}
       >
         {/* Subtle Ambient Radial Lighting */}
-        <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full blur-[140px] opacity-25 bg-gradient-to-br from-[#c99f52] to-[#1e3b2b]" />
+        <div className="sae-hero-ambient pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full blur-[140px] opacity-25 bg-gradient-to-br from-[#c99f52] to-[#1e3b2b]" />
+        <div aria-hidden="true" className="sae-hero-grain pointer-events-none absolute inset-0" />
 
         <div className="max-w-7xl mx-auto w-full relative z-10">
           
@@ -252,7 +253,7 @@ export const NextGenHero: React.FC<NextGenHeroProps> = ({ onScrollTo }) => {
               <motion.div
                 initial={{ opacity: 0, x: -25 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1] }}
               >
                 <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#142019] leading-[1.18]">
                   Timeless Furniture,{" "}
@@ -325,7 +326,9 @@ export const NextGenHero: React.FC<NextGenHeroProps> = ({ onScrollTo }) => {
                   rotateY: isDoorOpen ? 0 : rotateY,
                   transformStyle: "preserve-3d",
                 }}
-                className="relative w-full max-w-[390px] aspect-[4/4.6] rounded-2xl shadow-2xl transition-shadow cursor-pointer select-none"
+                whileHover={{ y: -7, scale: 1.012 }}
+                transition={{ type: "spring", stiffness: 150, damping: 18 }}
+                className="sae-wardrobe-showpiece relative w-full max-w-[390px] aspect-[4/4.6] rounded-2xl shadow-2xl transition-shadow cursor-pointer select-none"
                 onClick={handleToggleDoor}
               >
                 {/* Outer Handcrafted Wood Frame */}

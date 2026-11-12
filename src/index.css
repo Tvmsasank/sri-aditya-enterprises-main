@@ -269,3 +269,72 @@
 }
 
 
+
+/* --------------------------------------------------------------------------
+   Editorial motion layer — additive, scoped to the existing showroom UI.
+   -------------------------------------------------------------------------- */
+:root {
+  --sae-ink: #142019;
+  --sae-forest: #1e3b2b;
+  --sae-gold: #c99f52;
+  --sae-ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html { scroll-padding-top: 6.5rem; }
+
+::selection { background: rgba(201, 159, 82, 0.34); color: var(--sae-ink); }
+
+:where(button, a, [role="button"], input, textarea, select):focus-visible {
+  outline: 2px solid var(--sae-gold);
+  outline-offset: 4px;
+}
+
+.sae-editorial-hero { isolation: isolate; }
+.sae-hero-ambient {
+  animation: sae-ambient-drift 16s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+.sae-hero-grain {
+  z-index: 0;
+  opacity: 0.17;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.13'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+.sae-editorial-hero > .max-w-7xl { z-index: 1; }
+.sae-wardrobe-showpiece {
+  box-shadow: 0 35px 90px -34px rgba(30, 59, 43, 0.62), 0 12px 34px -18px rgba(20, 32, 25, 0.55);
+  transform-style: preserve-3d;
+}
+.sae-wardrobe-showpiece::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  border: 1px solid rgba(255, 232, 185, 0.28);
+  box-shadow: inset 0 0 30px rgba(255, 225, 170, 0.08);
+}
+.sae-collection-card { transform-origin: center bottom; }
+.sae-collection-card img { backface-visibility: hidden; }
+.sae-collection-card:focus-within { border-color: var(--sae-gold); box-shadow: 0 22px 48px -30px rgba(30, 59, 43, 0.65); }
+.sae-collections-heading h2 { text-wrap: balance; }
+
+@keyframes sae-ambient-drift {
+  0% { transform: translate3d(-2%, -1%, 0) scale(0.96); opacity: 0.18; }
+  100% { transform: translate3d(2%, 2%, 0) scale(1.08); opacity: 0.32; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sae-collection-card img { transition: transform 900ms var(--sae-ease-editorial), filter 900ms var(--sae-ease-editorial); }
+  .sae-collection-card:hover img { filter: saturate(1.08) contrast(1.025); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

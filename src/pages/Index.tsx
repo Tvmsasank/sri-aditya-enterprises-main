@@ -9,6 +9,7 @@ import { About } from "@/components/About";
 import { InstagramShowcase } from "@/components/InstagramShowcase";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
+import { SectionReveal } from "@/components/SectionReveal";
 import { Phone, MessageCircle } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 
@@ -77,15 +78,16 @@ const Index = () => {
       <Navbar onOpenCollections={handleOpenCollections} />
       <main>
         <NextGenHero onScrollTo={scrollToSection} />
-        <TrustRow />
+        <SectionReveal><TrustRow /></SectionReveal>
         <Collections isOpen={isWardrobeOpen} onClose={handleCloseWardrobe} />
-        <DesignStudio />
+        <SectionReveal><DesignStudio /></SectionReveal>
+        {/* Keep the pinned/scroll-linked craftsmanship scene outside transformed wrappers. */}
         <CraftsmanshipStory />
-        <About />
-        <InstagramShowcase />
-        <Contact />
+        <SectionReveal><About /></SectionReveal>
+        <SectionReveal><InstagramShowcase /></SectionReveal>
+        <SectionReveal><Contact /></SectionReveal>
       </main>
-      <Footer onOpenCollections={handleOpenCollections} />
+      <SectionReveal><Footer onOpenCollections={handleOpenCollections} /></SectionReveal>
 
       {/* Floating / Sticky Mobile Action Bar */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#e2e7e2] p-2.5 flex items-center gap-2 shadow-2xl">

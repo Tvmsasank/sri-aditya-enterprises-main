@@ -1,4 +1,5 @@
 import React from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import sofasets from "@/assets/sofas.jpg";
 import plastichairs from "@/assets/plastic-chairs.jpg";
 import bedroomfurniture from "@/assets/bed-room.jpg";
@@ -165,6 +166,7 @@ const CATEGORIES = [
 
 export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => {
   const [activeCategory, setActiveCategory] = React.useState<string>("all");
+  const reduceMotion = useReducedMotion();
   const [selectedItem, setSelectedItem] = React.useState<typeof furnitureItems[0] | null>(null);
   const carouselRef = React.useRef<HTMLDivElement>(null);
 
@@ -266,7 +268,7 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
   return (
     <section
       id="collections"
-      className="relative py-12 sm:py-16 md:py-20 bg-[#f7f8f5] border-t border-[#e2e7e2] transition-colors block"
+      className="sae-collections-section relative py-14 sm:py-18 md:py-24 bg-[#f7f8f5] border-t border-[#e2e7e2] transition-colors block"
     >
       {/* Tricolor Waves for Independence Day */}
       {isIday && (
@@ -285,7 +287,13 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-5 sm:mb-8">
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="sae-collections-heading flex flex-col md:flex-row md:items-end justify-between gap-3 mb-5 sm:mb-8"
+        >
           <div>
             <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#c99f52] flex items-center gap-2 mb-1.5">
               <span className="w-6 h-[1px] bg-[#c99f52]" />
@@ -316,7 +324,7 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
               </button>
             )}
           </div>
-        </div>
+        </motion.div>
 
         {/* Festive Dividers if active */}
         {isRakhi && <RakhiDivider />}
@@ -372,10 +380,18 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
             className="flex gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory py-3 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar scroll-smooth"
             style={{ WebkitOverflowScrolling: "touch" }}
           >
+            <AnimatePresence initial={false} mode="popLayout">
             {filteredItems.map((item) => (
-              <div
+              <motion.article
                 key={`carousel-${item.name}`}
-                className="flex-none w-[275px] sm:w-[325px] snap-start rounded-2xl bg-white border border-[#e2e7e2] hover:border-[#c99f52] shadow-sm hover:shadow-xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5 group"
+                layout
+                initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.975 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                exit={reduceMotion ? undefined : { opacity: 0, y: 16, scale: 0.97, transition: { duration: 0.22 } }}
+                viewport={{ once: true, amount: 0.18 }}
+                whileHover={reduceMotion ? undefined : { y: -9, scale: 1.012 }}
+                transition={{ duration: 0.65, delay: reduceMotion ? 0 : Number(item.num) * 0.025, ease: [0.22, 1, 0.36, 1], layout: { duration: 0.45 } }}
+                className="sae-collection-card flex-none w-[275px] sm:w-[325px] snap-start rounded-2xl bg-white border border-[#e2e7e7] hover:border-[#c99f52] shadow-sm hover:shadow-2xl overflow-hidden flex flex-col group"
               >
                 {/* Image with Click-to-View in HD */}
                 <div
@@ -386,7 +402,7 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-106"
+                    className="sae-collection-image w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
@@ -433,8 +449,9 @@ export const Collections: React.FC<CollectionsProps> = ({ isOpen, onClose }) => 
                     </button>
                   </div>
                 </div>
-              </div>
+              </motion.article>
             ))}
+            </AnimatePresence>
           </div>
         </div>
 
