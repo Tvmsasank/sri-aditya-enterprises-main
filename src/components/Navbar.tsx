@@ -13,6 +13,7 @@ import {
 
 const navLinks = [
   { label: "Collections", target: "collections" },
+  { label: "Design studio", target: "studio" },
   { label: "Our story", target: "about" },
   { label: "Visit us", target: "contact" },
   {
